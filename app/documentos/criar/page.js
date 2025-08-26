@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿'use client';
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
@@ -78,11 +78,13 @@ export default function CriarDocumentoUnificadoPage() {
     prorrogavel: false,
     servicoContinuado: false,
     justificativaServicoContinuado: '',
-    produto: {
-      item: '',
-      codigoSIGA: '',
-      descricao: ''
-    },
+    produtos: [
+      {
+        item: '',
+        codigoSIGA: '',
+        descricao: ''
+      }
+    ],
     criteriosSustentabilidade: '',
     necessidadeTreinamento: false,
     bemLuxo: false,
@@ -228,12 +230,10 @@ export default function CriarDocumentoUnificadoPage() {
       ]
     },
     {
-      title: 'Produto e Especificações',
-      description: 'Detalhes do produto ou serviço a ser contratado',
+      title: 'Produtos e Especificações',
+      description: 'Detalhes dos produtos ou serviços a serem contratados',
       fields: [
-        { name: 'produto.item', label: 'Item do Produto', type: 'text' },
-        { name: 'produto.codigoSIGA', label: 'Código SIGA', type: 'text' },
-        { name: 'produto.descricao', label: 'Descrição Detalhada', type: 'textarea' },
+        { name: 'produtos', label: 'Produtos/Serviços', type: 'dynamic_array', required: true },
         { name: 'criteriosSustentabilidade', label: 'Critérios de Sustentabilidade', type: 'textarea' },
         { name: 'necessidadeTreinamento', label: 'Necessita de Treinamento?', type: 'checkbox' },
         { name: 'bemLuxo', label: 'É bem de luxo?', type: 'checkbox' },
@@ -344,6 +344,34 @@ export default function CriarDocumentoUnificadoPage() {
     }));
   };
 
+  const addProduto = () => {
+    setFormData(prev => ({
+      ...prev,
+      produtos: [
+        ...prev.produtos,
+        { item: '', codigoSIGA: '', descricao: '' }
+      ]
+    }));
+  };
+
+  const removeProduto = (index) => {
+    if (formData.produtos.length > 1) {
+      setFormData(prev => ({
+        ...prev,
+        produtos: prev.produtos.filter((_, i) => i !== index)
+      }));
+    }
+  };
+
+  const handleProdutoChange = (index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      produtos: prev.produtos.map((produto, i) => 
+        i === index ? { ...produto, [field]: value } : produto
+      )
+    }));
+  };
+
   const validateSection = (sectionIndex) => {
     const sections = getCurrentSections();
     const section = sections[sectionIndex];
@@ -365,6 +393,24 @@ export default function CriarDocumentoUnificadoPage() {
               }
               if (!responsavel.numeroFuncional || responsavel.numeroFuncional.trim() === '') {
                 newErrors[`responsaveisAcaoOrcamentaria[${index}].numeroFuncional`] = 'Número funcional é obrigatório';
+              }
+            });
+          }
+        } else if (field.name === 'produtos') {
+          const produtos = formData.produtos || [];
+          
+          if (produtos.length === 0) {
+            newErrors[field.name] = 'Deve haver pelo menos 1 produto';
+          } else {
+            produtos.forEach((produto, index) => {
+              if (!produto.item || produto.item.trim() === '') {
+                newErrors[`produtos[${index}].item`] = 'Item é obrigatório';
+              }
+              if (!produto.codigoSIGA || produto.codigoSIGA.trim() === '') {
+                newErrors[`produtos[${index}].codigoSIGA`] = 'Código SIGA é obrigatório';
+              }
+              if (!produto.descricao || produto.descricao.trim() === '') {
+                newErrors[`produtos[${index}].descricao`] = 'Descrição é obrigatória';
               }
             });
           }
@@ -435,10 +481,10 @@ export default function CriarDocumentoUnificadoPage() {
            setFormData(prev => ({
             ...prev,
             numeroETP: prev.numeroDFD ? `${prev.numeroDFD}-ETP` : '',
-            produto: {
-              ...prev.produto,
-              codigoSIGA: prev.codigoSIGA || ''
-            },
+            produtos: prev.produtos.map(produto => ({
+              ...produto,
+              codigoSIGA: produto.codigoSIGA || prev.codigoSIGA || ''
+            })),
           
             descricaoNecessidade: prev.descricaoNecessidade,
             valorEstimado: prev.valorEstimado,
@@ -533,10 +579,10 @@ export default function CriarDocumentoUnificadoPage() {
         setFormData(prev => ({
           ...prev,
           numeroETP: prev.numeroDFD ? `${prev.numeroDFD}-ETP` : '',
-          produto: {
-            ...prev.produto,
-            codigoSIGA: prev.codigoSIGA || ''
-          },
+          produtos: prev.produtos.map(produto => ({
+            ...produto,
+            codigoSIGA: produto.codigoSIGA || prev.codigoSIGA || ''
+          })),
        
           descricaoNecessidade: prev.descricaoNecessidade,
           valorEstimado: prev.valorEstimado,
@@ -600,7 +646,8 @@ export default function CriarDocumentoUnificadoPage() {
       prorrogavel: frontendData.prorrogavel,
       servicoContinuado: frontendData.servicoContinuado,
       
-      produto: frontendData.produto,
+      produto: frontendData.produtos && frontendData.produtos.length > 0 ? frontendData.produtos[0] : { item: '', codigoSIGA: '', descricao: '' },
+      produtos: frontendData.produtos || [],
       criteriosSustentabilidade: frontendData.criteriosSustentabilidade,
       necessidadeTreinamento: frontendData.necessidadeTreinamento,
       bemLuxo: frontendData.bemLuxo,
@@ -866,6 +913,107 @@ export default function CriarDocumentoUnificadoPage() {
             className="w-full border-dashed border-blue-300 text-blue-600 hover:bg-blue-50"
           >
             âž• Adicionar ResponsÃ¡vel
+          </Button>
+          
+          {hasError && <p className="text-red-500 text-sm">{hasError}</p>}
+        </div>
+      );
+    }
+
+    if (field.type === 'dynamic_array' && field.name === 'produtos') {
+      const produtos = formData.produtos || [];
+      const hasError = errors[field.name];
+      
+      return (
+        <div key={field.name} className="space-y-4 col-span-2">
+          <Label className="text-sm font-medium">
+            {field.label} {field.required && <span className="text-red-500">*</span>}
+          </Label>
+          
+          {produtos.map((produto, index) => (
+            <div key={index} className="border border-gray-200 rounded-lg p-4 space-y-4">
+              <div className="flex justify-between items-center">
+                <h4 className="text-md font-medium text-gray-700">
+                  Produto {index + 1}
+                </h4>
+                {produtos.length > 1 && (
+                  <Button
+                    type="button"
+                    onClick={() => removeProduto(index)}
+                    variant="outline"
+                    size="sm"
+                    className="text-red-600 border-red-300 hover:bg-red-50"
+                  >
+                    âŒ Remover
+                  </Button>
+                )}
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">
+                    Item <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    type="text"
+                    value={produto.item || ''}
+                    onChange={(e) => handleProdutoChange(index, 'item', e.target.value)}
+                    className={`focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                      errors[`produtos[${index}].item`] ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="Nome do item"
+                  />
+                  {errors[`produtos[${index}].item`] && (
+                    <p className="text-red-500 text-sm">{errors[`produtos[${index}].item`]}</p>
+                  )}
+                </div>
+                
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">
+                    Código SIGA <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    type="text"
+                    value={produto.codigoSIGA || ''}
+                    onChange={(e) => handleProdutoChange(index, 'codigoSIGA', e.target.value)}
+                    className={`focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                      errors[`produtos[${index}].codigoSIGA`] ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="Código SIGA"
+                  />
+                  {errors[`produtos[${index}].codigoSIGA`] && (
+                    <p className="text-red-500 text-sm">{errors[`produtos[${index}].codigoSIGA`]}</p>
+                  )}
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">
+                  Descrição Detalhada <span className="text-red-500">*</span>
+                </Label>
+                <Textarea
+                  value={produto.descricao || ''}
+                  onChange={(e) => handleProdutoChange(index, 'descricao', e.target.value)}
+                  className={`focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors[`produtos[${index}].descricao`] ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  rows={3}
+                  placeholder="Descrição detalhada do produto/serviço"
+                />
+                {errors[`produtos[${index}].descricao`] && (
+                  <p className="text-red-500 text-sm">{errors[`produtos[${index}].descricao`]}</p>
+                )}
+              </div>
+            </div>
+          ))}
+          
+          <Button
+            type="button"
+            onClick={addProduto}
+            variant="outline"
+            className="w-full border-dashed border-blue-300 text-blue-600 hover:bg-blue-50"
+          >
+            âž• Adicionar Produto
           </Button>
           
           {hasError && <p className="text-red-500 text-sm">{hasError}</p>}

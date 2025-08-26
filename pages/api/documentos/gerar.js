@@ -60,9 +60,13 @@ function createFallbackData(formData) {
 
     // --- Itens e Produtos ---
     itens: formData.itens && formData.itens.length > 0 ? formData.itens : [],
-    itens_produto: formData.produto ? [{ item: formData.produto.item || '1', codigosig_produto: formData.produto.codigoSIGA || '', descricao_detalhada_produto: formData.produto.descricao || '' }] : [],
-    codigosig_produto: formData.produto?.codigoSIGA || '',
-    descricao_detalhada_produto: formData.produto?.descricao || '',
+    itens_produto: formData.produtos && formData.produtos.length > 0 ? formData.produtos.map((produto, index) => ({
+      item: produto.item || `${index + 1}`,
+      codigosig_produto: produto.codigoSIGA || '',
+      descricao_detalhada_produto: produto.descricao || ''
+    })) : [],
+    codigosig_produto: formData.produtos && formData.produtos.length > 0 ? formData.produtos[0].codigoSIGA || '' : '',
+    descricao_detalhada_produto: formData.produtos && formData.produtos.length > 0 ? formData.produtos[0].descricao || '' : '',
     
     // --- Requisitos de Contratação (ETP) ---
     tipo_objeto_bem: toCheckbox(formData.tipoObjeto === 'Bem'),
