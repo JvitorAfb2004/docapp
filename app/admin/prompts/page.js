@@ -48,6 +48,7 @@ export default function AdminPrompts() {
     setEditingPrompt(null);
     
   
+    // Encontrar tipo disponível
     const existingTypes = prompts.map(p => p.type);
     const availableType = ['dfd', 'etp'].find(type => !existingTypes.includes(type));
     
@@ -271,20 +272,20 @@ export default function AdminPrompts() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                  disabled={editingPrompt} 
+                  disabled={editingPrompt}
                 >
                   <option 
                     value="dfd" 
                     disabled={!editingPrompt && existingTypes.includes('dfd')}
                   >
-                    DFD - Diagrama de Fluxo de Dados
+                    DFD - Documento de Formalização de Demanda
                     {!editingPrompt && existingTypes.includes('dfd') && ' (Já existe)'}
                   </option>
                   <option 
                     value="etp" 
                     disabled={!editingPrompt && existingTypes.includes('etp')}
                   >
-                    ETP - Esquema de Transição de Estados
+                    ETP - Estudo Técnico Preliminar
                     {!editingPrompt && existingTypes.includes('etp') && ' (Já existe)'}
                   </option>
                 </select>

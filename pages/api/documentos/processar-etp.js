@@ -441,24 +441,25 @@ export default async function handler(request, response) {
         console.warn('⚠️ Prompt fixo não encontrado');
       }
 
-      // 2. Buscar prompt personalizado do banco
+      // 2. Buscar prompt personalizado do banco para ETP e adicionar ao prompt fixo
       try {
         const customPrompt = await db.Prompt.findOne({
           where: { 
-            ativo: true,
-            tipo: 'sistema'
+            type: 'etp',
+            isActive: true
           },
           order: [['updatedAt', 'DESC']]
         });
         
-        if (customPrompt && customPrompt.conteudo) {
-          systemPrompt = systemPrompt + '\\n\\n--- INSTRUÇÕES PERSONALIZADAS ---\\n' + customPrompt.conteudo;
-          console.log('✅ Prompt personalizado adicionado (ID:', customPrompt.id, ')');
+        if (customPrompt && customPrompt.content) {
+          // Adicionar o prompt personalizado ao prompt fixo
+          systemPrompt = systemPrompt + '\n\n--- INSTRUÇÕES PERSONALIZADAS PARA ETP ---\n' + customPrompt.content;
+          console.log('✅ Prompt personalizado para ETP adicionado ao prompt fixo (ID:', customPrompt.id, ')');
         } else {
-          console.log('📊 Nenhum prompt personalizado encontrado');
+          console.log('📊 Usando apenas o prompt fixo - nenhum prompt personalizado para ETP encontrado');
         }
       } catch (dbError) {
-        console.warn('⚠️ Erro ao buscar prompt no banco:', dbError.message);
+        console.warn('⚠️ Erro ao buscar prompt ETP no banco:', dbError.message, '- usando apenas prompt fixo');
       }
 
       if (!systemPrompt.trim()) {
