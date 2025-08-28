@@ -831,9 +831,8 @@ export default function CriarETPPage() {
              </Button>
                            <p className="text-xs text-gray-500 mt-2">
                 Carregue um arquivo DOCX do DFD e a IA extrairá as informações disponíveis. 
-                <br />
-                <span className="text-orange-600 font-medium">⚠️ O DFD contém apenas dados básicos - você precisará complementar os demais campos manualmente.</span>
-              </p>
+            
+                       </p>
             
 
           </div>

@@ -21,36 +21,27 @@ import { Download, CheckCircle, AlertCircle, Clock, FileText, ArrowLeft } from '
    const formatCurrencyInput = (value) => {
      if (!value) return '';
      
-     // Remove tudo exceto números e vírgula
-     let cleanValue = value.replace(/[^\d,]/g, '');
+     // Remove tudo exceto números
+     let cleanValue = value.replace(/\D/g, '');
      
-     // Se tem mais de uma vírgula, mantém apenas a primeira
-     const commaCount = (cleanValue.match(/,/g) || []).length;
-     if (commaCount > 1) {
-       const parts = cleanValue.split(',');
-       cleanValue = parts[0] + ',' + parts.slice(1).join('');
-     }
+     if (cleanValue === '') return '';
      
-     // Se não tem vírgula, adiciona duas casas decimais
-     if (!cleanValue.includes(',')) {
-       cleanValue = cleanValue + ',00';
-     } else {
-       // Se tem vírgula, garante que tem pelo menos duas casas decimais
-       const [integer, decimal] = cleanValue.split(',');
-       if (decimal.length === 0) {
-         cleanValue = integer + ',00';
-       } else if (decimal.length === 1) {
-         cleanValue = integer + ',' + decimal + '0';
-       } else if (decimal.length > 2) {
-         cleanValue = integer + ',' + decimal.substring(0, 2);
-       }
-     }
+     // Converte para centavos
+     const numericValue = parseInt(cleanValue, 10);
      
-     // Adiciona pontos para milhares
-     const [integer, decimal] = cleanValue.split(',');
-     const formattedInteger = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+     // Formata como moeda brasileira
+     const formatted = new Intl.NumberFormat('pt-BR', {
+       minimumFractionDigits: 2,
+       maximumFractionDigits: 2
+     }).format(numericValue / 100);
      
-     return formattedInteger + ',' + decimal;
+     return formatted;
+   };
+   
+   // Função para obter valor numérico limpo (em centavos)
+   const getNumericValue = (formattedValue) => {
+     if (!formattedValue) return '';
+     return formattedValue.replace(/\D/g, '');
    };
   
   const [isGenerating, setIsGenerating] = useState(false);
@@ -808,19 +799,13 @@ import { Download, CheckCircle, AlertCircle, Clock, FileText, ArrowLeft } from '
                  type="text"
                  value={value || ''}
                  onChange={(e) => {
-                   // Formatar valor em tempo real
-                   const rawValue = e.target.value.replace(/[^\d,]/g, '');
-                   const formattedValue = formatCurrencyInput(rawValue);
-                   handleInputChange(field.name, formattedValue);
-                 }}
-                 onBlur={(e) => {
-                   // Formatar ao sair do campo
-                   const rawValue = e.target.value.replace(/[^\d,]/g, '');
+                   // Apenas números são permitidos, formatação acontece automaticamente
+                   const rawValue = e.target.value.replace(/\D/g, '');
                    const formattedValue = formatCurrencyInput(rawValue);
                    handleInputChange(field.name, formattedValue);
                  }}
                  className={`pl-10 ${errors[field.name] ? 'border-red-500' : ''}`}
-                 placeholder="0,00"
+                 placeholder="Digite apenas números (ex: 1500 para R$ 15,00)"
                />
              </div>
              {errors[field.name] && (

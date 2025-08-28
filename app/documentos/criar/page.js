@@ -1,4 +1,4 @@
-﻿﻿'use client';
+﻿﻿﻿﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
@@ -470,19 +470,34 @@ export default function CriarDocumentoUnificadoPage() {
 
 
 
+  // Função para formatar valores monetários
   const formatCurrency = (value) => {
     if (!value) return '';
-    const numericValue = value.replace(/\D/g, '');
-    if (numericValue === '') return '';
-    return new Intl.NumberFormat('pt-BR', {
+    
+    // Remove tudo exceto números
+    let cleanValue = value.replace(/\D/g, '');
+    
+    if (cleanValue === '') return '';
+    
+    // Converte para centavos
+    const numericValue = parseInt(cleanValue, 10);
+    
+    // Formata como moeda brasileira
+    const formatted = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
-      currency: 'BRL'
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     }).format(numericValue / 100);
+    
+    return formatted;
   };
 
   const handleCurrencyChange = (name, value) => {
+    // Apenas números são permitidos
     const numericValue = value.replace(/\D/g, '');
-    handleInputChange(name, numericValue);
+    const formattedValue = formatCurrency(numericValue);
+    handleInputChange(name, formattedValue);
   };
   const handleNext = () => {
     if (validateSection(currentSection)) {
@@ -1233,7 +1248,7 @@ export default function CriarDocumentoUnificadoPage() {
             value={formatCurrency(value)}
             onChange={(e) => handleCurrencyChange(field.name, e.target.value)}
             required={field.required}
-            placeholder="R$ 0,00"
+            placeholder="Digite apenas números (ex: 1500 para R$ 15,00)"
             className={`focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
               error ? 'border-red-500' : 'border-gray-300'
             }`}
