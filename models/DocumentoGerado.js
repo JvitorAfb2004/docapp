@@ -9,12 +9,12 @@ module.exports = (sequelize) => {
     },
     nomeArquivo: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true, // Agora opcional pois pode ser gerado depois
       comment: 'Nome do arquivo gerado'
     },
     caminhoArquivo: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true, // Agora opcional pois pode ser gerado depois
       comment: 'Caminho completo do arquivo'
     },
     tipo: {
@@ -39,9 +39,32 @@ module.exports = (sequelize) => {
     },
     tamanhoArquivo: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
+      allowNull: true, // Opcional até o arquivo ser gerado
+      defaultValue: null,
       comment: 'Tamanho do arquivo em bytes'
+    },
+    // Campos para dados processados
+    dadosProcessados: {
+      type: DataTypes.JSONB,
+      allowNull: false,
+      comment: 'Dados processados do formulário (para gerar DOCX depois)'
+    },
+    dadosOriginais: {
+      type: DataTypes.JSONB,
+      allowNull: false,
+      comment: 'Dados originais do formulário enviado pelo usuário'
+    },
+    status: {
+      type: DataTypes.ENUM('processado', 'arquivo_gerado'),
+      allowNull: false,
+      defaultValue: 'processado',
+      comment: 'Status do documento: processado (dados salvos) ou arquivo_gerado (DOCX criado)'
+    },
+    dataProcessamento: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+      comment: 'Data quando os dados foram processados'
     },
     tokensGastos: {
       type: DataTypes.INTEGER,
@@ -98,6 +121,12 @@ module.exports = (sequelize) => {
       },
       {
         fields: ['dataGeracao']
+      },
+      {
+        fields: ['status']
+      },
+      {
+        fields: ['dataProcessamento']
       }
     ]
   });

@@ -1,0 +1,133 @@
+Este é um documento de formalização de demanda (DFD) referente ao setor público brasileiro. Sua tarefa é identificar e extrair as informações de forma precisa e clara para os campos especificados abaixo.
+
+Analise o documento fornecido e extraia as seguintes informações:
+
+1. IDENTIFICAÇÃO DO DOCUMENTO:
+   - Número do DFD (ex: "48/2025/DIALP/CBMTO")
+   - Número do SGD (ex: "2025/09099/017491")
+
+2. DESCRIÇÃO DA DEMANDA E JUSTIFICATIVA DA NECESSIDADE DA CONTRATAÇÃO:
+   - O que está sendo solicitado e qual a justificativa?
+
+3. ESPECIFICAÇÃO DOS BENS E/OU SERVIÇOS:
+   - Extrair TODA a tabela com as colunas: ITEM, QTD, UNID, CÓDIGO SIGA, ESPECIFICAÇÃO
+   - Cada linha da tabela deve ser um item separado no array
+   - Não perder nenhum item da tabela
+
+4. ESTIMATIVA PRELIMINAR DO VALOR DA CONTRATAÇÃO:
+   - Qual é o valor estimado da contratação? (extrair apenas o número, sem R$)
+
+5. PROGRAMAÇÃO ORÇAMENTÁRIA:
+   - CLASSIFICAÇÃO ORÇAMENTÁRIA (exemplo: "06.182.1160.2348 - Prevenção sócio educativas")
+   - FONTE dos recursos (exemplo: "761")
+   - ELEMENTO DE DESPESA (exemplo: "33.90.39.16")
+   - Extrair da tabela ou seção 5
+
+6. RECURSO DE CONVÊNIO:
+   - Indique se há ou não recurso de convênio disponível (SIM/NÃO)
+
+7. DEMANDA NO PLANO DE CONTRATAÇÃO ANUAL (PCA):
+   - A demanda está prevista no PCA? (SIM/NÃO)
+   - Se NÃO, qual a justificativa?
+
+8. INDICAÇÃO DE FISCAL E GESTOR DO CONTRATO:
+   - Fiscal Titular: Nome completo
+   - Fiscal Suplente: Nome completo
+   - Gestor Titular: Nome completo
+   - Gestor Suplente: Nome completo
+
+9. DEMANDANTE:
+   - Órgão (exemplo: "CORPO DE BOMBEIROS MILITAR DO TOCANTINS")
+   - Setor (exemplo: "DIALP/CGR")
+   - Cargo/Função (procurar por "CARGO/FUNÇÃO:" ou inferir do contexto)
+   - Nome completo (exemplo: "MAXUELL DOS SANTOS DE SOUZA")
+   - Número funcional (exemplo: "1068350-1")
+
+10. RESPONSÁVEL PELA AÇÃO ORÇAMENTÁRIA:
+    - Nome(s) do(s) responsável(is)
+    - Número(s) funcional(is)
+    - Número da ação orçamentária
+
+11. RESPONSÁVEL PELO PLANEJAMENTO E ORÇAMENTO:
+    - Nome completo
+    - Cargo/Função
+    - Número funcional
+
+12. ASSINATURAS E APROVAÇÕES:
+    - Quais são os responsáveis pelas assinaturas e aprovações?
+
+12. ASSINATURAS E APROVAÇÕES:
+    - Gerente de Convênios e Contratos (exemplo: "RAFAEL ALVES CRUVINEL")
+    - Gerente de Compras (exemplo: "JOSÉ ROBERTO DE OLIVEIRA MENDES JUNIOR")
+    - Ordenador de Despesa/Comandante-Geral (exemplo: "PETERSON QUEIROZ DE ORNELAS")
+    - Procurar por nomes após "(Assinado digitalmente)"
+
+13. DATA E LOCAL:
+    - Data do documento (exemplo: "16 de julho de 2025")
+    - Local (exemplo: "Palmas - TO")
+
+RETORNE APENAS UM JSON VÁLIDO com a seguinte estrutura:
+
+{
+  "numeroSGD": "string",
+  "numeroDFD": "string",
+  "descricaoNecessidade": "string - texto completo da descrição da demanda",
+  "valorEstimado": "number - valor numérico sem símbolos",
+  "classificacaoOrcamentaria": "string",
+  "fonte": "string",
+  "elementoDespesa": "string",
+  "previsaoPCA": "boolean - true para SIM, false para NÃO",
+  "justificativaPCA": "string - se NÃO há previsão PCA",
+  "recursoConvenio": "boolean - true para SIM, false para NÃO",
+  "itens": [
+    {
+      "item": "string - número do item",
+      "quantidade": "string",
+      "unidade": "string",
+      "codigoSIGA": "string",
+      "especificacao": "string - descrição completa"
+    }
+  ],
+  "fiscalTitular": "string",
+  "fiscalSuplente": "string",
+  "gestorTitular": "string",
+  "gestorSuplente": "string",
+  "demandante": {
+    "orgao": "string",
+    "setor": "string",
+    "cargo": "string",
+    "nome": "string",
+    "numeroFuncional": "string"
+  },
+  "responsaveisAcaoOrcamentaria": [
+    {
+      "nome": "string",
+      "numeroFuncional": "string",
+      "acao": "string"
+    }
+  ],
+  "responsavelPlanejamento": {
+    "nome": "string",
+    "cargo": "string",
+    "numeroFuncional": "string"
+  },
+  "assinaturas": {
+    "gerenteConvenios": "string - nome do gerente de convênios",
+    "gerenteCompras": "string - nome do gerente de compras",
+    "ordenadorDespesa": "string - nome do ordenador de despesa"
+  },
+  "dataDocumento": "string - data do documento",
+  "localDocumento": "string - local do documento"
+}
+
+IMPORTANTE:
+- Se um campo não for encontrado, use string vazia "" ou false para booleanos
+- Para valores monetários, extraia apenas o número (ex: R$ 129.933,94 → 129933.94)
+- Para campos booleanos, identifique marcações como (x), [x], ☑ para determinar SIM/NÃO
+- Mantenha a formatação original dos nomes (maiúsculas/minúsculas)
+- **EXTRAIA TODAS AS LINHAS DAS TABELAS** - não perca nenhum item
+- Para a seção 3: cada linha da tabela é um item separado no array "itens"
+- Para a seção 5: extrair classificação, fonte e elemento de despesa da tabela
+- Se o cargo do demandante não estiver preenchido, tente inferir do contexto ou deixe vazio
+- Procure por assinaturas após "(Assinado digitalmente)" ou "Assinado:"
+- Retorne APENAS o JSON, sem texto adicional ou explicações

@@ -10,7 +10,7 @@ export default function Home() {
   const { isLoggedIn } = useAuth();
 
   const handleCriarAmbos = () => {
-    router.push('/documentos/criar');
+    router.push('/documentos');
   };
 
   const handleCriarDFD = () => {

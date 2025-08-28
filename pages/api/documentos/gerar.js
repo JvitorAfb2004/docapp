@@ -227,8 +227,9 @@ async function generateDocument(tipo, data) {
     const now = new Date();
     const horas = now.getHours().toString().padStart(2, '0');
     const minutos = now.getMinutes().toString().padStart(2, '0');
-    const horario = `${horas}${minutos}`;
-    const fileName = `${tipo}_--_${horario}.docx`;
+    const segundos = now.getSeconds().toString().padStart(2, '0');
+    const horario = `${horas}:${minutos}:${segundos}`;
+    const fileName = `${tipo}_${horario}.docx`;
     const uploadDir = path.join(process.cwd(), 'documentos', 'gerados');
     
     if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
@@ -325,45 +326,48 @@ export default async function handler(request, response) {
       return response.status(500).json({ error: 'Prompt do sistema não encontrado' });
     }
 
-    // 3. TENTAR PROCESSAR COM IA
-    console.log('🤖 Tentando processar com IA...');
-    let aiData = {}; // Começa com um objeto vazio
-    let tokensUsados = 0;
-    let modeloUsado = '';
+    // 3. PROCESSAMENTO CONFORME TIPO DE DOCUMENTO
+    console.log('📝 Preparando geração de documentos...');
     
-    try {
-      const aiResult = await processFormDataWithAI(formData, systemPrompt);
-      if (aiResult.success) {
-        aiData = aiResult.processedData; // Guarda os dados da IA
-        tokensUsados = aiResult.usage?.total_tokens || 0;
-        modeloUsado = aiResult.model || 'desconhecido';
-        console.log(`✅ IA processou com sucesso. Modelo: ${modeloUsado}, Tokens: ${tokensUsados}`);
-      } else {
-        console.warn('⚠️ IA falhou:', aiResult.error, 'Usando fallback local.');
-        modeloUsado = 'fallback-local';
+    // Base de dados sempre criada a partir do formulário
+    const baseData = createFallbackData(formData);
+    
+    // Para DFD: usar apenas dados do formulário (sem IA)
+    let dfdData = baseData;
+    
+    // Para ETP: usar IA se disponível, senão fallback
+    let etpData = { ...baseData }; // Começa com base
+    let tokensUsados = 0;
+    let modeloUsado = 'dados-formulario';
+    
+    // Processar ETP com IA apenas se for gerar ETP
+    if (formData.numeroETP) {
+      console.log('🤖 Processando ETP com IA...');
+      try {
+        const aiResult = await processFormDataWithAI(formData, systemPrompt);
+        if (aiResult.success) {
+          etpData = { ...baseData, ...aiResult.processedData }; // Mescla IA com base
+          tokensUsados = aiResult.usage?.total_tokens || 0;
+          modeloUsado = aiResult.model || 'openai';
+          console.log(`✅ IA processou ETP com sucesso. Modelo: ${modeloUsado}, Tokens: ${tokensUsados}`);
+        } else {
+          console.warn('⚠️ IA falhou para ETP:', aiResult.error, 'Usando dados do formulário.');
+          modeloUsado = 'fallback-formulario';
+        }
+      } catch (error) {
+        console.error('❌ Erro crítico na IA para ETP:', error.message, 'Usando dados do formulário.');
+        modeloUsado = 'fallback-erro';
       }
-    } catch (error) {
-      console.error('❌ Erro crítico na chamada da IA:', error.message, 'Usando fallback local.');
-      modeloUsado = 'fallback-local-critico';
     }
 
-    // 4. CRIAR BASE DE DADOS E MESCLAR
-    // Primeiro, usamos o fallback para garantir que TEMOS TODAS as chaves possíveis.
-    const baseData = createFallbackData(formData);
-
-    // Agora, mesclamos os dados da IA por cima da nossa base.
-    // A resposta da IA (aiData) sobrescreve os campos do fallback que ela conseguiu gerar.
-    // Os campos que a IA omitiu permanecerão com os valores do fallback (evitando undefined).
-    const finalData = { ...baseData, ...aiData };
-
-    // 5. GERAR DOCUMENTOS COM OS DADOS FINAIS E COMPLETOS
+    // 4. GERAR DOCUMENTOS COM DADOS ESPECÍFICOS
     const generatedDocs = [];
     const errors = [];
 
-    // Gerar DFD se necessário
+    // Gerar DFD (SEM IA - apenas dados do formulário)
     if (formData.numeroDFD) {
-      console.log('📋 Gerando documento DFD...');
-      const dfdResult = await generateDocument('DFD', finalData);
+      console.log('📋 Gerando documento DFD (sem IA)...');
+      const dfdResult = await generateDocument('DFD', dfdData);
       if (dfdResult.success) {
         try {
           // Salvar no banco de dados
@@ -375,8 +379,8 @@ export default async function handler(request, response) {
             numeroETP: null,
             caminhoArquivo: dfdResult.document.filePath,
             tamanhoArquivo: dfdResult.document.size,
-            tokensGastos: tokensUsados,
-            modeloIA: modeloUsado,
+            tokensGastos: 0, // DFD não usa tokens
+            modeloIA: 'sem-ia-formulario',
             criadoPor: decoded.userId,
             dataGeracao: new Date(),
             ativo: true,
@@ -389,6 +393,7 @@ export default async function handler(request, response) {
             fileName: dfdResult.document.fileName,
             size: dfdResult.document.size
           });
+          console.log('✅ DFD gerado com sucesso (sem IA)');
         } catch (dbError) {
           console.error('❌ Erro ao salvar DFD no banco:', dbError.message);
           errors.push({ type: 'DFD', error: 'Documento gerado mas não salvo no banco' });
@@ -398,10 +403,10 @@ export default async function handler(request, response) {
       }
     }
 
-    // Gerar ETP se necessário
+    // Gerar ETP (COM IA quando possível)
     if (formData.numeroETP) {
-      console.log('🔍 Gerando documento ETP...');
-      const etpResult = await generateDocument('ETP', finalData);
+      console.log('🔍 Gerando documento ETP (com IA)...');
+      const etpResult = await generateDocument('ETP', etpData);
       if (etpResult.success) {
         try {
           // Salvar no banco de dados
@@ -413,7 +418,7 @@ export default async function handler(request, response) {
             numeroETP: formData.numeroETP,
             caminhoArquivo: etpResult.document.filePath,
             tamanhoArquivo: etpResult.document.size,
-            tokensGastos: tokensUsados,
+            tokensGastos: tokensUsados, // ETP pode usar tokens da IA
             modeloIA: modeloUsado,
             criadoPor: decoded.userId,
             dataGeracao: new Date(),
@@ -427,6 +432,7 @@ export default async function handler(request, response) {
             fileName: etpResult.document.fileName,
             size: etpResult.document.size
           });
+          console.log('✅ ETP gerado com sucesso (com IA)');
         } catch (dbError) {
           console.error('❌ Erro ao salvar ETP no banco:', dbError.message);
           errors.push({ type: 'ETP', error: 'Documento gerado mas não salvo no banco' });
@@ -437,8 +443,20 @@ export default async function handler(request, response) {
     }
     
     console.log('✅ Processo de geração finalizado!');
+    console.log('📋 DFD: gerado sem IA (apenas formulário)');
+    console.log('🔍 ETP: gerado com IA (quando possível)');
     console.log('📄 Documentos gerados:', generatedDocs.length);
     console.log('⚠️ Erros encontrados:', errors.length);
+    
+    // Determinar mensagem baseada no tipo de processamento
+    let mensagemProcessamento = '';
+    if (formData.numeroDFD && formData.numeroETP) {
+      mensagemProcessamento = `DFD gerado com dados do formulário. ETP gerado com ${modeloUsado.includes('openai') ? 'IA' : 'dados do formulário'}.`;
+    } else if (formData.numeroDFD) {
+      mensagemProcessamento = 'DFD gerado com dados do formulário (sem IA).';
+    } else if (formData.numeroETP) {
+      mensagemProcessamento = `ETP gerado com ${modeloUsado.includes('openai') ? 'IA' : 'dados do formulário'}.`;
+    }
     
     return response.status(200).json({
       success: true,
@@ -449,7 +467,8 @@ export default async function handler(request, response) {
         numeroSGD: formData.numeroSGD,
         documentosGerados: generatedDocs.length,
         tokensUsados,
-        modeloUsado
+        modeloUsado,
+        processamento: mensagemProcessamento
       },
       modeloUsado,
       tokensUsados

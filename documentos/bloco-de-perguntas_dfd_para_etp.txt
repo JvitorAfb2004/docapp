@@ -1,0 +1,208 @@
+BLOCOS DE PERGUNTAS PARA CONVERSÃO DFD → ETP
+INSTRUÇÕES DE USO
+Execute os blocos SEQUENCIALMENTE (1 → 7)
+Apresente UM BLOCO por vez ao usuário
+Aguarde todas as respostas antes de prosseguir ao próximo
+Use as perguntas EXATAMENTE como escritas
+Explique brevemente a importância técnica/legal de cada bloco
+BLOCO 1 - CARACTERÍSTICAS CONTRATUAIS FUNDAMENTAIS
+"Vamos definir os aspectos contratuais básicos, essenciais para enquadramento legal:"
+1. Tipo de objeto
+O objeto da contratação é:
+( ) Bem
+( ) Serviço
+2. Vigência do contrato
+Qual será a duração?
+( ) 30 dias (pronta entrega)
+( ) 12 meses (padrão para serviços anuais)
+( ) 60 meses (máximo para serviços continuados)
+( ) Outro: [especificar em dias/meses/anos]
+3. Prorrogação
+Será possível prorrogar o contrato?
+( ) Sim - Por quê e por quanto tempo?
+( ) Não - Justifique
+( ) Não se aplica (prazo indeterminado)
+4. Natureza da contratação
+( ) Continuada sem monopólio (competitiva)
+( ) Continuada com monopólio (única fonte)
+( ) Não continuada (pontual/específica)
+5. Fornecimento/serviço continuado
+O objeto é de fornecimento ou prestação continuada?
+( ) Sim - Justifique conforme art. 106 da Lei 14.133/2021
+( ) Não - Explique a natureza
+6. Endereço completo de execução
+Forneça endereço detalhado com CEP, referências e especificidades do local.
+7. Número do protocolo PNCP
+Qual o número do protocolo de envio do PCA ao PNCP? (Se disponível)
+BLOCO 2 - REQUISITOS TÉCNICOS E REGULAMENTARES
+"Agora vamos definir aspectos técnicos e de conformidade:"
+8. Sustentabilidade
+Há critérios ambientais ou de sustentabilidade?
+( ) Sim - Especifique quais
+( ) Não - Confirme
+9. Treinamento
+Haverá necessidade de capacitação?
+( ) Sim - Descreva o escopo
+( ) Não - Confirme
+10. Bem de luxo
+O objeto se enquadra como bem de luxo (Decreto 10.818/2021)?
+( ) Sim - Justifique obrigatoriamente
+( ) Não - Confirme enquadramento
+11. Transição contratual
+A contratada deve transferir conhecimento/tecnologia?
+( ) Sim - Contrato atual nº ___ com prazo final ___
+( ) Não se aplica
+12. Normativos específicos
+Há normas técnicas aplicáveis?
+( ) Sim - Liste todas (NBR, NR, resoluções, etc.)
+( ) Não se aplica
+13. Amostra/prova de conceito
+Será exigida demonstração prévia?
+( ) Sim - Justifique necessidade e descreva escopo
+( ) Não necessário
+14. Marca específica
+Há exigência de marca?
+( ) Sim - Justifique tecnicamente conforme legislação
+( ) Não há restrição
+15. Subcontratação
+Será permitida terceirização de partes do serviço?
+( ) Sim - Com limitações até ___% ou em quais atividades
+( ) Não permitida - Justifique
+BLOCO 3 - DIMENSIONAMENTO QUANTITATIVO
+"Vamos detalhar como foram calculadas as quantidades:"
+16. Metodologia do quantitativo
+Como chegou aos números?
+( ) Análise de contratações anteriores deste órgão
+( ) Análise de contratações similares (outros órgãos)
+( ) Outro método - Especifique
+17. Descrição detalhada
+Explique passo a passo o cálculo das quantidades (frequência, área, volume, tempo, etc.)
+18. Série histórica
+Possui dados de consumo/utilização anteriores?
+( ) Sim - Forneça dados de pelo menos 3 exercícios
+( ) Não disponível - Justifique base de cálculo
+19. Confirmação de unidades
+Confirme a unidade de medida exata para cada item do DFD.
+BLOCO 4 - ANÁLISE DE MERCADO E VIABILIDADE
+"Vamos fundamentar a escolha da solução:"
+20. Fontes de pesquisa
+Onde foram pesquisadas as soluções?
+( ) Sites oficiais de governo/Painel de Preços
+( ) Contratações similares
+( ) Internet especializada
+( ) Consulta a fornecedores
+( ) Outros - Especifique
+21. Justificativa técnica
+Forneça análise técnica COMPLETA:
+Por que esta solução atende à necessidade?
+Quais alternativas foram avaliadas?
+Aspectos técnicos diferenciais
+Conformidade com normas
+22. Justificativa econômica
+Forneça análise econômica DETALHADA:
+Comparação de custos (próprio vs terceirizado)
+Custo-benefício da solução
+Economia gerada ou justificativa de valor
+Previsibilidade orçamentária
+23. Restrições de mercado
+Há limitações de fornecedores?
+( ) Sim - Explique quais e por quê
+( ) Não há restrições conhecidas
+24. Tratamento ME/EPP
+Será dispensado tratamento diferenciado?
+( ) Sim - Justifique conforme LC 123/2006
+( ) Não - Aplicará tratamento normal
+BLOCO 5 - SOLUÇÃO TÉCNICA DETALHADA
+"Vamos especificar completamente a solução:"
+25. Pesquisa de preços
+Quais meios foram utilizados?
+( ) Painel de Preços do Governo
+( ) Contratações similares (últimos 6 meses)
+( ) Cotação com fornecedores
+( ) Tabelas oficiais (SINAPI, etc.)
+( ) Outros - Especifique
+26. Descrição completa da contratação
+Detalhe TUDO que será contratado:
+Escopo completo dos serviços/produtos
+Frequência de execução
+Materiais/insumos inclusos
+Mão de obra especializada
+Equipamentos necessários
+27. Garantia
+Qual prazo de garantia?
+( ) Não há
+( ) 90 dias
+( ) 12 meses
+( ) Outro: ___ dias/meses/anos
+28. Assistência técnica
+É necessária?
+( ) Sim - Descreva escopo e condições
+( ) Não se aplica
+29. Manutenção
+Há necessidade de manutenção?
+( ) Sim - Detalhe tipo e periodicidade
+( ) Não aplicável
+30. Parcelamento
+A solução será dividida em lotes?
+( ) Sim - Justifique viabilidade técnica e econômica
+( ) Não - Item único (justifique economia de escala)
+BLOCO 6 - RESULTADOS E GESTÃO
+"Vamos definir resultados esperados e gestão:"
+31. Benefícios pretendidos
+Quais resultados espera-se obter?
+( ) Manutenção do funcionamento administrativo
+( ) Redução de custos operacionais
+( ) Aproveitamento de recursos humanos
+( ) Redução de riscos do trabalho
+( ) Ganho de eficiência operacional
+( ) Melhoria na qualidade de produtos/serviços
+( ) Realização de política pública específica
+( ) Outro - Especifique
+32. Nota explicativa dos resultados
+Forneça uma descrição DETALHADA dos resultados esperados com a contratação, explicando como os
+benefícios selecionados na pergunta anterior contribuirão para os objetivos institucionais.
+33. Providências pendentes
+Há ações necessárias antes da contratação?
+( ) Sim - Liste todas
+( ) Não há pendências
+34. Gestão e fiscalização
+Confirme requisitos específicos:
+Competências necessárias para gestor
+Competências necessárias para fiscal
+Conhecimentos técnicos específicos
+Frequência de acompanhamento
+35. Contratações relacionadas
+Há interdependências?
+( ) Sim - Especifique quais contratos/processos
+( ) Não há correlações
+BLOCO 7 - ASPECTOS COMPLEMENTARES E FINALIZAÇÕES
+"Últimas informações para completar o ETP:"
+36. Impactos ambientais
+Há previsão de impactos?
+( ) Sim - Especifique impactos e medidas mitigatórias
+( ) Não há impactos significativos
+37. Medidas de mitigação ambiental
+Se respondeu "Sim" na pergunta anterior, detalhe as medidas de mitigação, logística reversa, baixo
+consumo de energia e outros recursos que serão adotadas.
+38. Viabilidade da contratação
+A contratação possui viabilidade técnica, socioeconômica e ambiental?
+( ) Sim - Justifique resumidamente
+( ) Não - Explique os impedimentos
+39. Posicionamento conclusivo
+Forneça um posicionamento técnico DETALHADO sobre a adequação da contratação para atendimento
+da necessidade, incluindo síntese da solução, especificações, localização e referência ao Termo de
+Referência.
+40. Equipe de elaboração
+Quem são os responsáveis técnicos?
+Nome completo e cargo de cada elaborador
+Qualificações específicas para o ETP
+41. Dados para aprovação
+Confirme:
+Dados atualizados do ordenador de despesa
+Cargo completo e titulações
+Data prevista para aprovação
+OBSERVAÇÕES IMPORTANTES
+Total de perguntas: 41 organizadas em 7 blocos temáticos
+Tempo estimado: 20-30 minutos para coleta completa
+Objetivo: Coletar 100% das informações necessárias para ETP completo
+Uso obrigatório: Todas as perguntas devem ser respondidas antes de criar o ETP

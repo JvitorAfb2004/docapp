@@ -296,12 +296,12 @@ export default function ListaDocumentosPage() {
                           {downloading[documento.id] ? (
                             <>
                               <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                              Baixando...
+                              Gerando...
                             </>
                           ) : (
                             <>
                               <Download className="h-4 w-4 mr-2" />
-                              Download
+                              Gerar e Baixar
                             </>
                           )}
                         </Button>
