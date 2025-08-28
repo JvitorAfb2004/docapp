@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿'use client';
+﻿﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
@@ -12,7 +12,7 @@ import ProtectedRoute from '../../../components/ProtectedRoute';
 import MinimizableLoadingModal from '../../../components/MinimizableLoadingModal';
 import { useCustomAlert } from '../../../components/CustomAlert';
 import { Download, CheckCircle, AlertCircle, Clock, FileText, Upload } from 'lucide-react';
-import PDFImportModal from '../../../components/PDFImportModal';
+
 
 
 export default function CriarDocumentoUnificadoPage() {
@@ -25,7 +25,6 @@ export default function CriarDocumentoUnificadoPage() {
   const [generationMessage, setGenerationMessage] = useState('');
   const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [documents, setDocuments] = useState([]);
-  const [showPDFImportModal, setShowPDFImportModal] = useState(false);
   const [processingType, setProcessingType] = useState(null); // 'dfd' ou 'etp'
   
   const [formData, setFormData] = useState({
@@ -469,120 +468,7 @@ export default function CriarDocumentoUnificadoPage() {
     }
   };
 
-  // Função para processar dados extraídos do PDF
-  const handlePDFDataExtracted = (extractedData) => {
-    try {
-      console.log('Dados extraídos do PDF:', extractedData);
-      
-      // Mapear dados do resumo DFD
-      const resumoDFD = extractedData.resumoDFD || {};
-      const bloco1 = extractedData.bloco1 || {};
-      const bloco2 = extractedData.bloco2 || {};
-      const bloco3 = extractedData.bloco3 || {};
-      const bloco4 = extractedData.bloco4 || {};
-      const bloco5 = extractedData.bloco5 || {};
-      const bloco6 = extractedData.bloco6 || {};
-      const bloco7 = extractedData.bloco7 || {};
-      
-      setFormData(prev => ({
-        ...prev,
-        // Dados básicos do DFD
-        numeroSGD: resumoDFD.sgd || prev.numeroSGD,
-        numeroDFD: resumoDFD.numero || prev.numeroDFD,
-        descricaoNecessidade: resumoDFD.descricaoObjeto || prev.descricaoNecessidade,
-        valorEstimado: resumoDFD.valorEstimado ? resumoDFD.valorEstimado.replace(/[^\d]/g, '') : prev.valorEstimado,
-        classificacaoOrcamentaria: resumoDFD.classificacao || prev.classificacaoOrcamentaria,
-        fonte: resumoDFD.fonte || prev.fonte,
-        protocoloPNCP: bloco1.protocoloPNCP || prev.protocoloPNCP,
-        codigoSIGA: resumoDFD.siga || prev.codigoSIGA,
-        
-        // Especificações do DFD
-        especificacaoBensServicos: resumoDFD.descricaoObjeto || prev.especificacaoBensServicos,
-        item: resumoDFD.itens && resumoDFD.itens.length > 0 ? resumoDFD.itens[0] : prev.item,
-        quantidade: resumoDFD.quantidadeTotal || prev.quantidade,
-        unidade: 'UN', // padrão
-        especificacaoDetalhada: resumoDFD.descricaoObjeto || prev.especificacaoDetalhada,
-        
-        // Responsáveis
-        fiscalTitular: resumoDFD.fiscal || prev.fiscalTitular,
-        gestorTitular: resumoDFD.gestor || prev.gestorTitular,
-        
-        // Dados do ETP - Bloco 1
-        tipoObjeto: bloco1.tipoObjeto || prev.tipoObjeto,
-        vigencia: bloco1.vigenciaContrato || prev.vigencia,
-        localEntrega: bloco1.enderecoCompleto || prev.localEntrega,
-        
-        // Dados do ETP - Bloco 2
-        criteriosSustentabilidade: bloco2.sustentabilidade !== 'Não informado no DFD' ? bloco2.sustentabilidade : prev.criteriosSustentabilidade,
-        necessidadeTreinamento: bloco2.treinamento === 'Sim' || bloco2.treinamento === 'true',
-        bemLuxo: bloco2.bemLuxo === 'Sim' || bloco2.bemLuxo === 'true',
-        transicaoContratual: bloco2.transicaoContratual === 'Sim' || bloco2.transicaoContratual === 'true',
-        normativosTecnicos: bloco2.normativosEspecificos !== 'Não informado no DFD' ? bloco2.normativosEspecificos : prev.normativosTecnicos,
-        marcaEspecifica: bloco2.marcaEspecifica === 'Sim' || bloco2.marcaEspecifica === 'true',
-        subcontratacao: bloco2.subcontratacao === 'Sim' || bloco2.subcontratacao === 'true',
-        
-        // Dados do ETP - Bloco 3
-        estimativasQuantidades: {
-          metodo: bloco3.metodologiaQuantitativo || prev.estimativasQuantidades.metodo,
-          descricao: bloco3.descricaoDetalhada || prev.estimativasQuantidades.descricao
-        },
-        
-        // Dados do ETP - Bloco 4
-        levantamentoMercado: {
-          fontes: bloco4.fontesPesquisa || prev.levantamentoMercado.fontes,
-          justificativa: bloco4.justificativaTecnica || prev.levantamentoMercado.justificativa,
-          restricoes: bloco4.restricoesMercado || prev.levantamentoMercado.restricoes,
-          tratamentoME: bloco4.tratamentoMEEPP === 'Sim' || bloco4.tratamentoMEEPP === 'true'
-        },
-        
-        // Dados do ETP - Bloco 5
-        meiosPesquisaPrecos: bloco5.pesquisaPrecos || prev.meiosPesquisaPrecos,
-        descricaoSolucao: bloco5.descricaoCompleta || prev.descricaoSolucao,
-        prazoGarantia: bloco5.garantia || prev.prazoGarantia,
-        assistenciaTecnica: bloco5.assistenciaTecnica === 'Sim' || bloco5.assistenciaTecnica === 'true',
-        manutencao: bloco5.manutencao === 'Sim' || bloco5.manutencao === 'true',
-        parcelamento: bloco5.parcelamento === 'Sim' || bloco5.parcelamento === 'true',
-        
-        // Dados do ETP - Bloco 6
-        resultadosPretendidos: {
-          beneficios: bloco6.beneficiosPretendidos || prev.resultadosPretendidos.beneficios,
-          notaExplicativa: bloco6.notaExplicativa || prev.resultadosPretendidos.notaExplicativa
-        },
-        
-        providenciasPrevias: {
-          providencias: bloco6.providenciasPendentes || prev.providenciasPrevias.providencias,
-          requisitosGestao: bloco6.gestaoFiscalizacao ? bloco6.gestaoFiscalizacao.split('Fiscalização:')[0] : prev.providenciasPrevias.requisitosGestao,
-          requisitosFiscalizacao: bloco6.gestaoFiscalizacao ? bloco6.gestaoFiscalizacao.split('Fiscalização:')[1] || bloco6.gestaoFiscalizacao : prev.providenciasPrevias.requisitosFiscalizacao
-        },
-        
-        contratacoesCorrelatas: bloco6.contratacoesRelacionadas === 'Sim' || bloco6.contratacoesRelacionadas === 'true',
-        indicacaoContratacoesCorrelatas: bloco6.contratacoesRelacionadas !== 'Não informado no DFD' ? bloco6.contratacoesRelacionadas : prev.indicacaoContratacoesCorrelatas,
-        
-        // Dados do ETP - Bloco 7
-        impactosAmbientais: bloco7.impactosAmbientais === 'Sim' || bloco7.impactosAmbientais === 'true',
-        especificacaoImpactosAmbientais: bloco7.medidasMitigacao || prev.especificacaoImpactosAmbientais,
-        
-        posicionamentoConclusivo: {
-          viabilidade: bloco7.viabilidadeContratacao === 'Sim' || bloco7.viabilidadeContratacao === 'true',
-          textoConclusivo: bloco7.posicionamentoConclusivo || prev.posicionamentoConclusivo.textoConclusivo
-        }
-      }));
-      
-      showAlert({
-        title: 'PDF Importado com Sucesso!',
-        message: `Dados do DFD foram extraídos e preenchidos automaticamente nos campos do formulário. Revise as informações antes de prosseguir.`,
-        type: 'success'
-      });
-      
-    } catch (error) {
-      console.error('Erro ao processar dados do PDF:', error);
-      showAlert({
-        title: 'Erro ao Importar',
-        message: 'Houve um erro ao processar os dados do PDF. Verifique o arquivo e tente novamente.',
-        type: 'error'
-      });
-    }
-  };
+
 
   const formatCurrency = (value) => {
     if (!value) return '';
@@ -1409,16 +1295,8 @@ export default function CriarDocumentoUnificadoPage() {
             {/* Botão de Importar PDF - apenas no ETP */}
             {currentDocument === 'etp' && (
               <div className="mt-4">
-                <Button
-                  onClick={() => setShowPDFImportModal(true)}
-                  variant="outline"
-                  className="bg-orange-50 border-orange-200 text-orange-700 hover:bg-orange-100"
-                >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Importar ETP do PDF
-                </Button>
-                <p className="text-xs text-gray-500 mt-2">
-                  Carregue um PDF do ETP e a IA preencherá automaticamente os campos
+                <p className="text-xs text-gray-500">
+                  💡 Para importar dados de DFD existente, use a função "Importar DFD (DOCX)" na página de criação individual do ETP.
                 </p>
               </div>
             )}
@@ -1520,7 +1398,7 @@ export default function CriarDocumentoUnificadoPage() {
                     className="bg-green-600 hover:bg-green-700 text-white px-6"
                     disabled={isGenerating}
                   >
-                    🔍 Processar ETP
+                     Processar ETP
                   </Button>
                   <p className="text-xs text-gray-500 mt-2">
                     Processa ETP com IA e salva no banco
@@ -1605,13 +1483,6 @@ export default function CriarDocumentoUnificadoPage() {
 
         {/* Alert Component */}
         <AlertComponent />
-        
-        {/* Modal de Importação de PDF */}
-        <PDFImportModal
-          isOpen={showPDFImportModal}
-          onClose={() => setShowPDFImportModal(false)}
-          onDataExtracted={handlePDFDataExtracted}
-        />
       </div>
     </ProtectedRoute>
   );
