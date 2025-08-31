@@ -3,7 +3,7 @@
     "username": "postgres",
     "password": "349c4a233a14f64070d7",
     "database": "postgres",
-    "host": "tdlvwd.easypanel.host/",
+    "host": "tdlvwd.easypanel.host",
     "dialect": "postgres",
     "port": 5432
   },
@@ -11,7 +11,7 @@
     "username": "postgres",
     "password": "349c4a233a14f64070d7",
     "database": "postgres",
-    "host": "tdlvwd.easypanel.host/",
+    "host": "tdlvwd.easypanel.host",
     "dialect": "postgres",
     "port": 5432
   }
