@@ -168,7 +168,7 @@ function createFallbackData(formData) {
     justificativa_subcontratacao: formData.justificativaSubcontratacao || '',
     justificativa_subcontratacao_permitida: formData.justificativaSubcontratacao || '',
     justificativa_subcontratacao_permitida_contratacao: formData.justificativaSubcontratacao || '',
-    justificativa_subcontratacao_permitida_contratacao_contratacao: formData.justificativaSubcontratacao || ''
+    justificativa_subcontratacao_permitida_contratacao_contratacao: formData.justificativaSubcontratacao || '',
 
     // --- Estimativas de Quantidades (ETP) ---
     obtencao_quantitativo_contratos_anteriores: toCheckbox(formData.obtencaoQuantitativo === 'anteriores'),
@@ -244,7 +244,7 @@ function createFallbackData(formData) {
     tratamento_me_nao: toCheckbox(!formData.levantamentoMercado?.tratamentoME),
     justificativa_tratamento_me: formData.levantamentoMercado?.justificativa || '',
     justificativa_tratamento_me_contratacao: formData.levantamentoMercado?.justificativa || '',
-    justificativa_tratamento_me_contratacao_contratacao: formData.levantamentoMercado?.justificativa || ''
+    justificativa_tratamento_me_contratacao_contratacao: formData.levantamentoMercado?.justificativa || '',
     restricao_fornecedores_sim: toCheckbox(formData.restricaoFornecedores),
     restricao_fornecedores_nao: toCheckbox(!formData.restricaoFornecedores),
     justificativa_restricao_fornecedores: formData.justificativaRestricaoFornecedores || '',
@@ -280,7 +280,8 @@ function createFallbackData(formData) {
     justificativa_tratamento_diferenciado: formData.justificativaTratamentoDiferenciado || '',
     justificativa_tratamento_diferenciado_simplificado: formData.justificativaTratamentoDiferenciado || '',
     justificativa_tratamento_diferenciado_simplificado_contratacao: formData.justificativaTratamentoDiferenciado || '',
-    justificativa_tratamento_diferenciado_simplificado_contratacao_contratacao: formData.justificativaTratamentoDiferenciado || ''
+    justificativa_tratamento_diferenciado_simplificado_contratacao_contratacao: formData.justificativaTratamentoDiferenciado || '',
+    
 
     // --- Descrição da Solução (ETP) ---
     solucao_escolhida: formData.descricaoSolucao || '',
@@ -288,7 +289,7 @@ function createFallbackData(formData) {
     descricao_detalhada_contratacao: formData.descricaoDetalhadaContratacao || '',
     justificativa_solucao: formData.descricaoSolucao || '',
     justificativa_solucao_contratacao: formData.descricaoSolucao || '',
-    justificativa_solucao_contratacao_contratacao: formData.descricaoSolucao || ''
+    justificativa_solucao_contratacao_contratacao: formData.descricaoSolucao || '',
     prazo_garantia_nao_ha: toCheckbox(formData.prazoGarantiaDetalhado === 'nao_ha'),
     prazo_garantia_90_dias: toCheckbox(formData.prazoGarantiaDetalhado === '90_dias'),
     prazo_garantia_12_meses: toCheckbox(formData.prazoGarantiaDetalhado === '12_meses'),
@@ -329,7 +330,7 @@ function createFallbackData(formData) {
     // --- Pagamento Parcelado ---
     pagamento_parcelado_sim: toCheckbox(formData.pagamentoParcelado),
     pagamento_parcelado_nao: toCheckbox(!formData.pagamentoParcelado),
-    justificativa_pagamento_parcelado: formData.justificativaPagamentoParcelado || ''
+    justificativa_pagamento_parcelado: formData.justificativaPagamentoParcelado || '',
     
     // --- Benefícios Pretendidos (Mapeamento correto) ---
     beneficios_pretendidos_manutencao: toCheckbox(formData.beneficios?.includes('manutencao')),
