@@ -1,18 +1,18 @@
 {
   "development": {
     "username": "postgres",
-    "password": "349c4a233a14f64070d7",
-    "database": "postgres",
-    "host": "tdlvwd.easypanel.host",
+    "password": "bb526c6688793e07af10",
+    "database": "docapp",
+    "host": "69.62.99.122",
     "dialect": "postgres",
-    "port": 5432
+    "port": 5442
   },
   "production": {
     "username": "postgres",
-    "password": "349c4a233a14f64070d7",
-    "database": "postgres",
-    "host": "tdlvwd.easypanel.host",
+    "password": "bb526c6688793e07af10",
+    "database": "docapp",
+    "host": "69.62.99.122",
     "dialect": "postgres",
-    "port": 5432
+    "port": 5442
   }
 }
