@@ -97,13 +97,6 @@ export default function AdminPainel() {
       color: 'bg-blue-600 hover:bg-blue-700'
     },
     {
-      title: 'Configurar OpenAI',
-      description: 'Gerenciar tokens e configurações da API',
-      action: () => router.push('/admin/openai'),
-      icon: Settings,
-      color: 'bg-green-600 hover:bg-green-700'
-    },
-    {
       title: 'Gerenciar Prompts',
       description: 'Configurar prompts para DFD e ETP',
       action: () => router.push('/admin/prompts'),
@@ -162,7 +155,7 @@ export default function AdminPainel() {
           <CardDescription>Acesse rapidamente as principais funções administrativas</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {quickActions.map((action, index) => (
               <Button
                 key={index}

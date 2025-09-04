@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import { useAuth } from '../lib/AuthContext';
 import { useAdminCheck } from '../lib/hooks/useAdminCheck';
-import { User, FileText, Plus, Home, LogOut, ChevronDown, Settings, Menu, MessageSquare, Key, Users } from 'lucide-react';
+import { User, FileText, Plus, Home, LogOut, ChevronDown, Settings, Menu, MessageSquare, Users } from 'lucide-react';
 import { 
   DropdownMenu, 
   DropdownMenuTrigger, 
@@ -45,9 +45,6 @@ function Header() {
         break;
       case 'prompts':
         router.push('/admin/prompts');
-        break;
-      case 'openai':
-        router.push('/admin/openai');
         break;
       case 'usuarios':
         router.push('/admin/usuarios');
@@ -131,10 +128,6 @@ function Header() {
                     <DropdownMenuItem onClick={() => handleMenuClick('prompts')} className="cursor-pointer text-purple-600 hover:bg-purple-50">
                       <MessageSquare className="h-4 w-4 mr-2" />
                       Gerenciar Prompts
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleMenuClick('openai')} className="cursor-pointer text-purple-600 hover:bg-purple-50">
-                      <Key className="h-4 w-4 mr-2" />
-                      Configurações OpenAI
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleMenuClick('usuarios')} className="cursor-pointer text-purple-600 hover:bg-purple-50">
                       <Users className="h-4 w-4 mr-2" />
