@@ -11,7 +11,9 @@ import {
   Trash2,
   Calendar,
   Activity,
-  Shield
+  Shield,
+  Plus,
+  X
 } from 'lucide-react';
 
 export default function AdminUsuarios() {
@@ -24,6 +26,14 @@ export default function AdminUsuarios() {
   const [userToDelete, setUserToDelete] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [registerForm, setRegisterForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    isAdmin: false
+  });
+  const [registerLoading, setRegisterLoading] = useState(false);
 
   
   useEffect(() => {
@@ -73,10 +83,48 @@ export default function AdminUsuarios() {
   };
 
   const confirmDeleteUser = () => {
-
     setUsers(users.filter(u => u.id !== userToDelete.id));
     setShowDeleteModal(false);
     setUserToDelete(null);
+  };
+
+  const handleRegisterUser = async (e) => {
+    e.preventDefault();
+    setRegisterLoading(true);
+
+    try {
+      const response = await fetch('/api/admin/usuarios/cadastrar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(registerForm)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUsers([...users, data.user]);
+        setShowRegisterModal(false);
+        setRegisterForm({ name: '', email: '', password: '', isAdmin: false });
+        alert('Usuário cadastrado com sucesso!');
+      } else {
+        const error = await response.json();
+        alert(`Erro: ${error.error}`);
+      }
+    } catch (error) {
+      console.error('Erro ao cadastrar usuário:', error);
+      alert('Erro ao cadastrar usuário');
+    } finally {
+      setRegisterLoading(false);
+    }
+  };
+
+  const handleRegisterFormChange = (field, value) => {
+    setRegisterForm(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   const formatDate = (dateString) => {
@@ -94,8 +142,15 @@ export default function AdminUsuarios() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Gerenciar Usuários</h1>
-          <p className="text-gray-600">Visualize usuários do sistema Doc App</p>
+          <p className="text-gray-600">Visualize e gerencie usuários do sistema Doc App</p>
         </div>
+        <Button 
+          onClick={() => setShowRegisterModal(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Cadastrar Usuário
+        </Button>
       </div>
 
       {/* Estatísticas */}
@@ -296,6 +351,102 @@ export default function AdminUsuarios() {
                 Excluir
               </Button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Cadastro de Usuário */}
+      {showRegisterModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-gray-900">
+                Cadastrar Novo Usuário
+              </h2>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setShowRegisterModal(false);
+                  setRegisterForm({ name: '', email: '', password: '', isAdmin: false });
+                }}
+                className="h-8 w-8 p-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            <form onSubmit={handleRegisterUser} className="space-y-4">
+              <div>
+                <Label htmlFor="name">Nome Completo</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={registerForm.name}
+                  onChange={(e) => handleRegisterFormChange('name', e.target.value)}
+                  placeholder="Digite o nome completo"
+                  required
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={registerForm.email}
+                  onChange={(e) => handleRegisterFormChange('email', e.target.value)}
+                  placeholder="Digite o email"
+                  required
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="password">Senha</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={registerForm.password}
+                  onChange={(e) => handleRegisterFormChange('password', e.target.value)}
+                  placeholder="Digite a senha (mín. 6 caracteres)"
+                  required
+                  minLength={6}
+                />
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <input
+                  id="isAdmin"
+                  type="checkbox"
+                  checked={registerForm.isAdmin}
+                  onChange={(e) => handleRegisterFormChange('isAdmin', e.target.checked)}
+                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <Label htmlFor="isAdmin" className="text-sm font-medium text-gray-700">
+                  Administrador
+                </Label>
+              </div>
+              
+              <div className="flex justify-end space-x-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setShowRegisterModal(false);
+                    setRegisterForm({ name: '', email: '', password: '', isAdmin: false });
+                  }}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={registerLoading}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  {registerLoading ? 'Cadastrando...' : 'Cadastrar'}
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       )}

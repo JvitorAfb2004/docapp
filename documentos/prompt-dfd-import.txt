@@ -3,8 +3,9 @@ Este é um documento de formalização de demanda (DFD) referente ao setor públ
 Analise o documento fornecido e extraia as seguintes informações:
 
 1. IDENTIFICAÇÃO DO DOCUMENTO:
-   - Número do DFD (ex: "48/2025/DIALP/CBMTO")
-   - Número do SGD (ex: "2025/09099/017491")
+   - Número do DFD (ex: "57/2025/ASSEINFO/CBMTO")
+   - Número do SGD (ex: "2025/09099/020457")
+   - SIGA (ex: "400700100001")
 
 2. DESCRIÇÃO DA DEMANDA E JUSTIFICATIVA DA NECESSIDADE DA CONTRATAÇÃO:
    - O que está sendo solicitado e qual a justificativa?
@@ -18,9 +19,9 @@ Analise o documento fornecido e extraia as seguintes informações:
    - Qual é o valor estimado da contratação? (extrair apenas o número, sem R$)
 
 5. PROGRAMAÇÃO ORÇAMENTÁRIA:
-   - CLASSIFICAÇÃO ORÇAMENTÁRIA (exemplo: "06.182.1160.2348 - Prevenção sócio educativas")
-   - FONTE dos recursos (exemplo: "761")
-   - ELEMENTO DE DESPESA (exemplo: "33.90.39.16")
+   - CLASSIFICAÇÃO ORÇAMENTÁRIA (exemplo: "06.126.1100.2248.0000")
+   - FONTE dos recursos (exemplo: "500")
+   - ELEMENTO DE DESPESA (exemplo: "33.90.40")
    - Extrair da tabela ou seção 5
 
 6. RECURSO DE CONVÊNIO:
@@ -37,10 +38,10 @@ Analise o documento fornecido e extraia as seguintes informações:
    - Gestor Suplente: Nome completo
 
 9. DEMANDANTE:
-   - Órgão (exemplo: "CORPO DE BOMBEIROS MILITAR DO TOCANTINS")
-   - Setor (exemplo: "DIALP/CGR")
+   - Órgão (exemplo: "Corpo de Bombeiros Militar do Estado do Tocantins (CBMTO)")
+   - Setor (exemplo: "ASSEINFO")
    - Cargo/Função (procurar por "CARGO/FUNÇÃO:" ou inferir do contexto)
-   - Nome completo (exemplo: "MAXUELL DOS SANTOS DE SOUZA")
+   - Nome completo (exemplo: "Welton Pereira dos Santos Alves")
    - Número funcional (exemplo: "1068350-1")
 
 10. RESPONSÁVEL PELA AÇÃO ORÇAMENTÁRIA:
@@ -56,21 +57,25 @@ Analise o documento fornecido e extraia as seguintes informações:
 12. ASSINATURAS E APROVAÇÕES:
     - Quais são os responsáveis pelas assinaturas e aprovações?
 
-12. ASSINATURAS E APROVAÇÕES:
-    - Gerente de Convênios e Contratos (exemplo: "RAFAEL ALVES CRUVINEL")
-    - Gerente de Compras (exemplo: "JOSÉ ROBERTO DE OLIVEIRA MENDES JUNIOR")
-    - Ordenador de Despesa/Comandante-Geral (exemplo: "PETERSON QUEIROZ DE ORNELAS")
-    - Procurar por nomes após "(Assinado digitalmente)"
-
 13. DATA E LOCAL:
     - Data do documento (exemplo: "16 de julho de 2025")
     - Local (exemplo: "Palmas - TO")
+
+14. INFORMAÇÕES ADICIONAIS PARA BLOCO 1:
+    - Tipo de objeto: "Bem" ou "Serviço"
+    - Vigência do contrato: duração em meses/dias
+    - Prorrogação: se é possível prorrogar e justificativa
+    - Natureza da contratação: "Continuada sem monopólio", "Continuada com monopólio", ou "Não continuada"
+    - Fornecimento/serviço continuado: se é continuado e justificativa conforme art. 106 da Lei 14.133/2021
+    - Endereço completo de execução: endereço detalhado com CEP e referências
+    - Número do protocolo PNCP: se disponível
 
 RETORNE APENAS UM JSON VÁLIDO com a seguinte estrutura:
 
 {
   "numeroSGD": "string",
   "numeroDFD": "string",
+  "siga": "string",
   "descricaoNecessidade": "string - texto completo da descrição da demanda",
   "valorEstimado": "number - valor numérico sem símbolos",
   "classificacaoOrcamentaria": "string",
@@ -117,7 +122,22 @@ RETORNE APENAS UM JSON VÁLIDO com a seguinte estrutura:
     "ordenadorDespesa": "string - nome do ordenador de despesa"
   },
   "dataDocumento": "string - data do documento",
-  "localDocumento": "string - local do documento"
+  "localDocumento": "string - local do documento",
+  "bloco1": {
+    "tipoObjeto": "string - 'Bem' ou 'Serviço'",
+    "vigenciaContrato": "string - duração em meses/dias",
+    "prorrogacao": {
+      "possivel": "boolean",
+      "justificativa": "string - se possível, explicar por quê e por quanto tempo"
+    },
+    "naturezaContratacao": "string - 'Continuada sem monopólio', 'Continuada com monopólio', ou 'Não continuada'",
+    "fornecimentoContinuado": {
+      "sim": "boolean",
+      "justificativa": "string - justificativa conforme art. 106 da Lei 14.133/2021"
+    },
+    "enderecoExecucao": "string - endereço completo com CEP e referências",
+    "protocoloPNCP": "string - número do protocolo se disponível"
+  }
 }
 
 IMPORTANTE:
@@ -130,4 +150,5 @@ IMPORTANTE:
 - Para a seção 5: extrair classificação, fonte e elemento de despesa da tabela
 - Se o cargo do demandante não estiver preenchido, tente inferir do contexto ou deixe vazio
 - Procure por assinaturas após "(Assinado digitalmente)" ou "Assinado:"
+- Para o bloco 1: analise o contexto do documento para inferir as características contratuais
 - Retorne APENAS o JSON, sem texto adicional ou explicações

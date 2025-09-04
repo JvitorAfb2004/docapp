@@ -152,14 +152,9 @@ function Header() {
             </DropdownMenu>
           </div>
         ) : (
-          <>
-            <Button onClick={() => router.push('/login')} variant="outline">
-              Entrar
-            </Button>
-            <Button onClick={() => router.push('/register')}>
-              Cadastrar
-            </Button>
-          </>
+          <Button onClick={() => router.push('/login')} variant="outline">
+            Entrar
+          </Button>
         )}
       </nav>
     </header>

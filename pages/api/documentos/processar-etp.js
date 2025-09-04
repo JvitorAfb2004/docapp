@@ -78,18 +78,28 @@ function createFallbackData(formData) {
     natureza_com_monopolio: toCheckbox(formData.natureza === 'com monopólio'),
     natureza_sem_monopolio: toCheckbox(formData.natureza === 'sem monopólio'),
     natureza_nao_continuada: toCheckbox(formData.natureza === 'não continuada'),
-   vigencia_contrato_30_dias: toCheckbox(formData.vigencia === '30 dias'),
-    vigencia_contrato_12_meses: toCheckbox(formData.vigencia === '12 meses'), // Marca a opção principal
-    vigencia_contrato_5_anos: toCheckbox(formData.vigencia === '5 anos'),
-    vigencia_contrato_indeterminado: toCheckbox(formData.vigencia === 'indeterminado'),
+   vigencia_contrato_30_dias: toCheckbox(formData.vigencia && formData.vigencia.includes('30 dias')),
+    vigencia_contrato_12_meses: toCheckbox(formData.vigencia && formData.vigencia.includes('12 meses')),
+    vigencia_contrato_5_anos: toCheckbox(formData.vigencia && formData.vigencia.includes('5 anos')),
+    vigencia_contrato_indeterminado: toCheckbox(formData.vigencia && formData.vigencia.includes('indeterminado')),
    
-    vigencia_contrato_outro: toCheckbox(formData.vigencia === 'outro' || !!formData.vigenciaDias || !!formData.vigenciaMeses || !!formData.vigenciaAnos),
+    // Só marca "Outro" se não for nenhuma das opções padrão
+    vigencia_contrato_outro: toCheckbox(
+      formData.vigencia && 
+      !formData.vigencia.includes('30 dias') && 
+      !formData.vigencia.includes('12 meses') && 
+      !formData.vigencia.includes('5 anos') && 
+      !formData.vigencia.includes('indeterminado') &&
+      formData.vigencia.trim() !== ''
+    ),
     vigencia_contrato_qtd_dias: formData.vigenciaDias || '',
-    vigencia_contrato_qtd_meses: formData.vigenciaMeses || (formData.vigencia === '12 meses' ? '12' : ''),
+    vigencia_contrato_qtd_meses: formData.vigenciaMeses || '',
     vigencia_contrato_qtd_anos: formData.vigenciaAnos || '',
     prorrogacao_contrato_sim: toCheckbox(formData.prorrogavel),
     prorrogacao_contrato_nao: toCheckbox(!formData.prorrogavel),
-    prorrogacao_contrato_indeterminado: toCheckbox(formData.prazoIndeterminado),
+    prorrogacao_contrato_indeterminado: toCheckbox(
+      formData.vigencia && formData.vigencia.includes('indeterminado')
+    ),
     objeto_continuado_sim: toCheckbox(formData.servicoContinuado),
     objeto_continuado_nao: toCheckbox(!formData.servicoContinuado),
     objeto_continuado_justificativa: formData.justificativaServicoContinuado || '',
@@ -127,6 +137,17 @@ function createFallbackData(formData) {
     justificativa_normativos_tecnicos: formData.normativosTecnicos || '',
     justificativa_normativos_tecnicos_contratacao: formData.normativosTecnicos || '',
     local_entrega_servico: formData.localEntrega || '',
+    
+    // --- Especificação de Bens/Serviços (ETP) ---
+    especificacao_bens_servicos: formData.especificacaoBensServicos || '',
+    especificacao_objeto: formData.especificacaoBensServicos || '',
+    especificacao_objeto_contratacao: formData.especificacaoBensServicos || '',
+    especificacao_objeto_contratacao_contratacao: formData.especificacaoBensServicos || '',
+    local_entrega: formData.localEntrega || '',
+    local_entrega_execucao: formData.localEntrega || '',
+    local_entrega_execucao_contratacao: formData.localEntrega || '',
+    local_entrega_execucao_contratacao_contratacao: formData.localEntrega || '',
+    
     amostra_prova_conceito_sim: toCheckbox(formData.amostraProvaConceito),
     amostra_prova_conceito_nao: toCheckbox(!formData.amostraProvaConceito),
     amostra_prova_conceito_justificativa: formData.justificativaAmostra || '',
@@ -147,7 +168,7 @@ function createFallbackData(formData) {
     justificativa_subcontratacao: formData.justificativaSubcontratacao || '',
     justificativa_subcontratacao_permitida: formData.justificativaSubcontratacao || '',
     justificativa_subcontratacao_permitida_contratacao: formData.justificativaSubcontratacao || '',
-    justificativa_subcontratacao_permitida_contratacao_contratacao: formData.justificativaSubcontratacao || '',
+    justificativa_subcontratacao_permitida_contratacao_contratacao: formData.justificativaSubcontratacao || ''
 
     // --- Estimativas de Quantidades (ETP) ---
     obtencao_quantitativo_contratos_anteriores: toCheckbox(formData.obtencaoQuantitativo === 'anteriores'),
@@ -204,11 +225,26 @@ function createFallbackData(formData) {
     justificativa_levantamento_mercado_fontes: formData.levantamentoMercado?.fontes || '',
     justificativa_levantamento_mercado_contratacao: formData.levantamentoMercado?.justificativa || '',
     justificativa_levantamento_mercado_contratacao_contratacao: formData.levantamentoMercado?.justificativa || '',
+    
+    // --- Dados Históricos ---
+    dados_historicos_sim: toCheckbox(formData.levantamentoMercado?.dadosHistoricos),
+    dados_historicos_nao: toCheckbox(!formData.levantamentoMercado?.dadosHistoricos),
+    justificativa_dados_historicos: formData.levantamentoMercado?.justificativaDadosHistoricos || '',
+    
+    // --- Confirmação de Unidades e Quantidades ---
+    confirmacao_unidades_quantidades_sim: toCheckbox(formData.confirmacaoUnidadesQuantidades),
+    confirmacao_unidades_quantidades_nao: toCheckbox(!formData.confirmacaoUnidadesQuantidades),
+    justificativa_unidades_quantidades: formData.justificativaUnidadesQuantidades || '',
+    
+    // --- Restrições de Mercado ---
+    restricoes_mercado: formData.restricoesMercado || '',
+    restricoes_mercado_detalhes: formData.restricoesMercado || '',
+    
     tratamento_me_sim: toCheckbox(formData.levantamentoMercado?.tratamentoME),
     tratamento_me_nao: toCheckbox(!formData.levantamentoMercado?.tratamentoME),
     justificativa_tratamento_me: formData.levantamentoMercado?.justificativa || '',
     justificativa_tratamento_me_contratacao: formData.levantamentoMercado?.justificativa || '',
-    justificativa_tratamento_me_contratacao_contratacao: formData.levantamentoMercado?.justificativa || '',
+    justificativa_tratamento_me_contratacao_contratacao: formData.levantamentoMercado?.justificativa || ''
     restricao_fornecedores_sim: toCheckbox(formData.restricaoFornecedores),
     restricao_fornecedores_nao: toCheckbox(!formData.restricaoFornecedores),
     justificativa_restricao_fornecedores: formData.justificativaRestricaoFornecedores || '',
@@ -235,20 +271,24 @@ function createFallbackData(formData) {
     justificativa_meios_pesquisa_contratacao_contratacao: formData.outrosMeiosPesquisa || '',
     
     // --- Tratamento diferenciado ME/EPP ---
+    tratamento_diferenciado_me_sim: toCheckbox(formData.tratamentoDiferenciadoME),
+    tratamento_diferenciado_me_nao: toCheckbox(!formData.tratamentoDiferenciadoME),
+    justificativa_tratamento_diferenciado_me: formData.justificativaTratamentoDiferenciado || '',
     tratamento_diferenciado_simplificado_sim: toCheckbox(formData.tratamentoDiferenciado),
     tratamento_diferenciado_simplificado_nao: toCheckbox(!formData.tratamentoDiferenciado),
     tratamento_diferenciado_simplificado_justificativa: formData.justificativaTratamentoDiferenciado || '',
     justificativa_tratamento_diferenciado: formData.justificativaTratamentoDiferenciado || '',
     justificativa_tratamento_diferenciado_simplificado: formData.justificativaTratamentoDiferenciado || '',
     justificativa_tratamento_diferenciado_simplificado_contratacao: formData.justificativaTratamentoDiferenciado || '',
-    justificativa_tratamento_diferenciado_simplificado_contratacao_contratacao: formData.justificativaTratamentoDiferenciado || '',
+    justificativa_tratamento_diferenciado_simplificado_contratacao_contratacao: formData.justificativaTratamentoDiferenciado || ''
 
     // --- Descrição da Solução (ETP) ---
     solucao_escolhida: formData.descricaoSolucao || '',
     descricao_solucao: formData.descricaoSolucao || '',
+    descricao_detalhada_contratacao: formData.descricaoDetalhadaContratacao || '',
     justificativa_solucao: formData.descricaoSolucao || '',
     justificativa_solucao_contratacao: formData.descricaoSolucao || '',
-    justificativa_solucao_contratacao_contratacao: formData.descricaoSolucao || '',
+    justificativa_solucao_contratacao_contratacao: formData.descricaoSolucao || ''
     prazo_garantia_nao_ha: toCheckbox(formData.prazoGarantiaDetalhado === 'nao_ha'),
     prazo_garantia_90_dias: toCheckbox(formData.prazoGarantiaDetalhado === '90_dias'),
     prazo_garantia_12_meses: toCheckbox(formData.prazoGarantiaDetalhado === '12_meses'),
@@ -276,7 +316,7 @@ function createFallbackData(formData) {
     justificativa_manutencao_necessidade_contratacao_contratacao: formData.justificativaManutencao || '',
     justificativa_manutencao_necessidade_contratacao_contratacao_contratacao: formData.justificativaManutencao || '',
 
-    // --- Parcelamento e Resultados (ETP) ---
+    // --- Parcelamento e Pagamento (ETP) ---
     solucao_dividida_itens_sim: toCheckbox(formData.parcelamento),
     solucao_dividida_itens_nao: toCheckbox(!formData.parcelamento),
     // LÓGICA DE PREENCHIMENTO AUTOMÁTICO: Se não permite parcelamento, preenche justificativa automaticamente
@@ -285,6 +325,11 @@ function createFallbackData(formData) {
     justificativa_parcelamento_solucao: formData.justificativaParcelamento || '',
     justificativa_parcelamento_solucao_contratacao: formData.justificativaParcelamento || '',
     justificativa_parcelamento_solucao_contratacao_contratacao: formData.justificativaParcelamento || '',
+    
+    // --- Pagamento Parcelado ---
+    pagamento_parcelado_sim: toCheckbox(formData.pagamentoParcelado),
+    pagamento_parcelado_nao: toCheckbox(!formData.pagamentoParcelado),
+    justificativa_pagamento_parcelado: formData.justificativaPagamentoParcelado || ''
     
     // --- Benefícios Pretendidos (Mapeamento correto) ---
     beneficios_pretendidos_manutencao: toCheckbox(formData.beneficios?.includes('manutencao')),
@@ -385,7 +430,19 @@ export default async function handler(request, response) {
       console.log('📋 FormData recebido:', formData);
       
              // Validar campos obrigatórios - mas permitir que alguns venham do DFD
-       const requiredFields = ['numeroSGD', 'numeroETP'];
+       const requiredFields = [
+         'numeroSGD', 
+         'numeroETP',
+         'descricaoNecessidade',
+         'valorEstimado',
+         'confirmacaoUnidadesQuantidades',
+         'tratamentoDiferenciadoME',
+         'descricaoDetalhadaContratacao',
+         'prazoGarantiaDetalhado',
+         'assistenciaTecnica',
+         'manutencao',
+         'pagamentoParcelado'
+       ];
        let missing = validateRequiredFields(formData, requiredFields);
        
        // Se há dados do DFD, verificar se eles preenchem os campos obrigatórios
@@ -409,7 +466,16 @@ export default async function handler(request, response) {
          // Criar mensagem de erro mais detalhada
          const missingLabels = {
            numeroSGD: 'Número do SGD',
-           numeroETP: 'Número do ETP'
+           numeroETP: 'Número do ETP',
+           descricaoNecessidade: 'Descrição da Necessidade',
+           valorEstimado: 'Valor Estimado',
+           confirmacaoUnidadesQuantidades: 'Confirmação de Unidades e Quantidades',
+           tratamentoDiferenciadoME: 'Tratamento Diferenciado para ME/EPP',
+           descricaoDetalhadaContratacao: 'Descrição Detalhada da Contratação',
+           prazoGarantiaDetalhado: 'Prazo de Garantia Contratual',
+           assistenciaTecnica: 'Assistência Técnica Prevista',
+           manutencao: 'Manutenção Planejada',
+           pagamentoParcelado: 'Pagamento Parcelado'
          };
          
          const missingFieldLabels = missing.map(field => missingLabels[field] || field);

@@ -65,7 +65,7 @@ export default function DocumentosPage() {
           {/* ETP */}
           <Card className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 hover:border-green-400 transition-all duration-300 hover:shadow-lg">
             <CardContent className="p-8 text-center">
-     
+            <div className="text-6xl mb-6">📋</div>
               <h2 className="text-2xl font-bold text-green-800 mb-4">
                 Criar ETP
               </h2>
@@ -87,36 +87,7 @@ export default function DocumentosPage() {
         </div>
 
        
-        {/* Informações sobre o processo */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <Card className="text-center p-6 bg-blue-50 border-blue-200">
-            <div className="text-4xl mb-4">📋</div>
-            <h3 className="text-lg font-semibold mb-2 text-blue-800">DFD</h3>
-            <p className="text-blue-700 text-sm">
-              Sem IA - Geração direta dos dados
-            </p>
-          </Card>
-          
-          <Card className="text-center p-6 bg-green-50 border-green-200">
-        
-            <h3 className="text-lg font-semibold mb-2 text-green-800">ETP</h3>
-            <p className="text-green-700 text-sm">
-              Com IA - Manual ou importação PDF
-            </p>
-          </Card>
-          
-       
-        </div>
-
-        <div className="text-center">
-          <Button 
-            onClick={handleVerDocumentos}
-            variant="outline"
-            className="bg-white hover:bg-gray-50 px-8 py-3"
-          >
-            📚 Ver Documentos Existentes
-          </Button>
-        </div>
+ 
       </div>
     </ProtectedRoute>
   );

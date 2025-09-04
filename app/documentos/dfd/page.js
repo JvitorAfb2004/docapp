@@ -11,44 +11,47 @@ import { useRouter } from 'next/navigation';
 import ProtectedRoute from '../../../components/ProtectedRoute';
 import MinimizableLoadingModal from '../../../components/MinimizableLoadingModal';
 import { useCustomAlert } from '../../../components/CustomAlert';
-import { Download, CheckCircle, AlertCircle, Clock, FileText, ArrowLeft } from 'lucide-react';
+import { Download, CheckCircle, AlertCircle, Clock, FileText, ArrowLeft, Upload, X } from 'lucide-react';
 
- export default function CriarDFDPage() {
-   const router = useRouter();
-   const { showAlert, AlertComponent } = useCustomAlert();
-   
-   // Função para formatar entrada de valores monetários
-   const formatCurrencyInput = (value) => {
-     if (!value) return '';
-     
-     // Remove tudo exceto números
-     let cleanValue = value.replace(/\D/g, '');
-     
-     if (cleanValue === '') return '';
-     
-     // Converte para centavos
-     const numericValue = parseInt(cleanValue, 10);
-     
-     // Formata como moeda brasileira
-     const formatted = new Intl.NumberFormat('pt-BR', {
-       minimumFractionDigits: 2,
-       maximumFractionDigits: 2
-     }).format(numericValue / 100);
-     
-     return formatted;
-   };
-   
-   // Função para obter valor numérico limpo (em centavos)
-   const getNumericValue = (formattedValue) => {
-     if (!formattedValue) return '';
-     return formattedValue.replace(/\D/g, '');
-   };
+export default function CriarDFDPage() {
+  const router = useRouter();
+  const { showAlert, AlertComponent } = useCustomAlert();
   
+  // Função para formatar entrada de valores monetários
+  const formatCurrencyInput = (value) => {
+    if (!value) return '';
+    
+    // Remove tudo exceto números
+    let cleanValue = value.replace(/\D/g, '');
+    
+    if (cleanValue === '') return '';
+    
+    // Converte para centavos
+    const numericValue = parseInt(cleanValue, 10);
+    
+    // Formata como moeda brasileira
+    const formatted = new Intl.NumberFormat('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(numericValue / 100);
+    
+    return formatted;
+  };
+  
+  // Função para obter valor numérico limpo (em centavos)
+  const getNumericValue = (formattedValue) => {
+    if (!formattedValue) return '';
+    return formattedValue.replace(/\D/g, '');
+  };
+ 
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [generationMessage, setGenerationMessage] = useState('');
   const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [documents, setDocuments] = useState([]);
+  const [dfdResumo, setDfdResumo] = useState(null);
+  const [isProcessingDfd, setIsProcessingDfd] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
   
   const [formData, setFormData] = useState({
     // Dados básicos
@@ -113,7 +116,19 @@ import { Download, CheckCircle, AlertCircle, Clock, FileText, ArrowLeft } from '
 
   const dfdSections = [
     {
-      title: '1. Identificação do DFD',
+      title: '📋 RESUMO OBRIGATÓRIO DO DFD',
+      description: 'Importe o DFD para continuar - esta etapa é obrigatória',
+      type: 'dfd-import',
+      required: true
+    },
+    {
+      title: '📌 BLOCO 1 - CARACTERÍSTICAS CONTRATUAIS FUNDAMENTAIS',
+      description: 'Vamos definir os aspectos contratuais básicos, essenciais para enquadramento legal',
+      type: 'bloco1',
+      required: true
+    },
+    {
+      title: '2. Identificação do DFD',
       description: 'Documento de Formalização de Demanda',
       fields: [
         { name: 'numeroDFD', label: 'Número do DFD', type: 'text', required: true },
@@ -121,27 +136,27 @@ import { Download, CheckCircle, AlertCircle, Clock, FileText, ArrowLeft } from '
       ]
     },
     {
-      title: '2. Descrição da Demanda e Justificativa da Necessidade da Contratação',
+      title: '3. Descrição da Demanda e Justificativa da Necessidade da Contratação',
       description: 'Detalhamento da necessidade e justificativa legal',
       fields: [
         { name: 'descricaoNecessidade', label: 'Descrição da Demanda e Justificativa da Necessidade', type: 'textarea', required: true, rows: 6 }
       ]
     },
     {
-      title: '3. Especificação dos Bens e/ou Serviços',
+      title: '4. Especificação dos Bens e/ou Serviços',
       description: 'Detalhamento dos itens com quantidades e especificações',
       type: 'dynamic-items',
       required: true
     },
     {
-      title: '4. Estimativa Preliminar do Valor da Contratação',
+      title: '5. Estimativa Preliminar do Valor da Contratação',
       description: 'Valor total estimado para a contratação',
       fields: [
         { name: 'valorEstimado', label: 'Valor Total Estimado (R$)', type: 'currency', required: true }
       ]
     },
     {
-      title: '5. Programação Orçamentária',
+      title: '6. Programação Orçamentária',
       description: 'Dados da classificação orçamentária',
       fields: [
         { name: 'classificacaoOrcamentaria', label: 'Classificação Orçamentária', type: 'text', required: true },
@@ -150,48 +165,48 @@ import { Download, CheckCircle, AlertCircle, Clock, FileText, ArrowLeft } from '
       ]
     },
          {
-       title: '6. Recurso de Convênio',
+       title: '7. Recurso de Convênio',
        description: 'Indicação se o recurso é proveniente de convênio',
        fields: [
          { name: 'recursoConvenio', label: 'O recurso é de convênio?', type: 'checkbox' }
        ]
      },
      {
-       title: '7. Demanda Prevista no PCA',
+       title: '8. Demanda Prevista no PCA',
        description: 'Indicação se a demanda está prevista no Plano de Contratação Anual',
        type: 'pca-section',
        required: true
      },
          {
-       title: '8. Fiscal Titular',
+       title: '9. Fiscal Titular',
        description: 'Responsável pela fiscalização do contrato',
        fields: [
          { name: 'fiscalTitular', label: 'Fiscal Titular', type: 'text', required: true }
        ]
      },
          {
-       title: '9. Fiscal Suplente',
+       title: '10. Fiscal Suplente',
        description: 'Substituto do fiscal titular',
        fields: [
          { name: 'fiscalSuplente', label: 'Fiscal Suplente', type: 'text', required: true }
        ]
      },
      {
-       title: '10. Gestor Titular',
+       title: '11. Gestor Titular',
        description: 'Responsável pela gestão do contrato',
        fields: [
          { name: 'gestorTitular', label: 'Gestor Titular', type: 'text', required: true }
        ]
      },
      {
-       title: '11. Gestor Suplente',
+       title: '12. Gestor Suplente',
        description: 'Substituto do gestor titular',
        fields: [
          { name: 'gestorSuplente', label: 'Gestor Suplente', type: 'text', required: true }
        ]
      },
      {
-       title: '12. Demandante',
+       title: '13. Demandante',
        description: 'Informações do órgão demandante',
        fields: [
          { name: 'demandante.orgao', label: 'Órgão', type: 'text', required: true },
@@ -202,18 +217,492 @@ import { Download, CheckCircle, AlertCircle, Clock, FileText, ArrowLeft } from '
        ]
      },
      {
-       title: '13. Responsável pela Ação Orçamentária',
+       title: '14. Responsável pela Ação Orçamentária',
        description: 'Responsável pela execução da ação orçamentária',
        type: 'dynamic-acao-orcamentaria',
        required: true
      },
      {
-       title: '14. Responsável pelo Planejamento e Orçamento',
+       title: '15. Responsável pelo Planejamento e Orçamento',
        description: 'Responsável pelo acompanhamento das metas físicas e financeiras',
        type: 'dynamic-planejamento',
        required: true
      }
   ];
+
+  // Função para processar o arquivo DFD
+  const processDFDFile = async () => {
+    if (!selectedFile) return;
+    
+    setIsProcessingDfd(true);
+    setErrors({});
+    
+    try {
+      const formData = new FormData();
+      formData.append('docx', selectedFile);
+      
+      const response = await fetch('/api/documentos/processar-dfd-direto', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: formData
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Erro ao processar DFD');
+      }
+      
+      // Extrair dados do DFD
+      const dfdData = result.dadosProcessados;
+      
+      // Criar resumo do DFD
+      const resumo = {
+        numeroDFD: dfdData.numeroDFD || '',
+        orgao: dfdData.demandante?.orgao || '',
+        sgd: dfdData.numeroSGD || '',
+        siga: dfdData.siga || '',
+        objeto: dfdData.bloco1?.tipoObjeto || '',
+        descricao: dfdData.descricaoNecessidade || '',
+        tipo: dfdData.bloco1?.tipoObjeto || '',
+        especificacoes: dfdData.itens || [],
+        valorEstimado: dfdData.valorEstimado || '',
+        classificacao: dfdData.classificacaoOrcamentaria || '',
+        fonte: dfdData.fonte || '',
+        elemento: dfdData.elementoDespesa || '',
+        fiscal: {
+          titular: dfdData.fiscalTitular || '',
+          suplente: dfdData.fiscalSuplente || ''
+        },
+        gestor: {
+          titular: dfdData.gestorTitular || '',
+          suplente: dfdData.gestorSuplente || ''
+        },
+        demandante: dfdData.demandante || {},
+        statusPCA: dfdData.previsaoPCA ? 'Incluído' : 'Não incluído',
+        bloco1: dfdData.bloco1 || {}
+      };
+      
+      setDfdResumo(resumo);
+      
+      // Preencher automaticamente o formData com os dados extraídos
+      setFormData(prev => ({
+        ...prev,
+        numeroDFD: dfdData.numeroDFD || '',
+        numeroSGD: dfdData.numeroSGD || '',
+        descricaoNecessidade: dfdData.descricaoNecessidade || '',
+        valorEstimado: dfdData.valorEstimado ? formatCurrencyInput(dfdData.valorEstimado.toString()) : '',
+        classificacaoOrcamentaria: dfdData.classificacaoOrcamentaria || '',
+        fonte: dfdData.fonte || '',
+        elementoDespesa: dfdData.elementoDespesa || '',
+        itens: dfdData.itens || [{ item: '', quantidade: '', unidade: '', codigoSIGA: '', especificacaoDetalhada: '' }],
+        recursoConvenio: dfdData.recursoConvenio || false,
+        previsaoPCA: dfdData.previsaoPCA || false,
+        justificativaPCA: dfdData.justificativaPCA || '',
+        fiscalTitular: dfdData.fiscalTitular || '',
+        fiscalSuplente: dfdData.fiscalSuplente || '',
+        gestorTitular: dfdData.gestorTitular || '',
+        gestorSuplente: dfdData.gestorSuplente || '',
+        demandante: dfdData.demandante || { orgao: '', setor: '', cargo: '', nome: '', numeroFuncional: '' },
+        acaoOrcamentariaNumero: dfdData.responsaveisAcaoOrcamentaria?.[0]?.acao || '',
+        responsaveisAcaoOrcamentaria: dfdData.responsaveisAcaoOrcamentaria || [{ nome: '', numeroFuncional: '' }],
+        responsaveisPlanejamento: dfdData.responsavelPlanejamento ? [dfdData.responsavelPlanejamento] : [{ nome: '', numeroFuncional: '', cargo: '' }]
+      }));
+      
+      showAlert('DFD processado com sucesso!', 'success');
+      
+    } catch (error) {
+      console.error('Erro ao processar DFD:', error);
+      showAlert(error.message || 'Erro ao processar DFD', 'error');
+    } finally {
+      setIsProcessingDfd(false);
+    }
+  };
+
+  // Função para renderizar o resumo do DFD
+  const renderDFDResumo = () => {
+    if (!dfdResumo) return null;
+    
+    return (
+      <Card className="mb-6 border-green-200 bg-green-50">
+        <CardHeader>
+          <CardTitle className="text-lg text-green-700 flex items-center gap-2">
+            <CheckCircle className="h-5 w-5" />
+            Resumo do DFD Analisado
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-medium text-gray-700 mb-2">Identificação:</h4>
+                <div className="space-y-1 text-sm">
+                  <p><span className="font-medium">DFD nº:</span> {dfdResumo.numeroDFD}</p>
+                  <p><span className="font-medium">Órgão:</span> {dfdResumo.orgao}</p>
+                  <p><span className="font-medium">SGD:</span> {dfdResumo.sgd}</p>
+                  <p><span className="font-medium">SIGA:</span> {dfdResumo.siga}</p>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-medium text-gray-700 mb-2">Objeto da Contratação:</h4>
+                <div className="space-y-1 text-sm">
+                  <p><span className="font-medium">Descrição:</span> {dfdResumo.descricao}</p>
+                  <p><span className="font-medium">Tipo:</span> {dfdResumo.tipo}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="font-medium text-gray-700 mb-2">Especificações Principais:</h4>
+              <div className="space-y-1 text-sm">
+                <p><span className="font-medium">Item(ns):</span></p>
+                {dfdResumo.especificacoes.map((item, index) => (
+                  <div key={index} className="ml-4">
+                    {index + 1}. {item.item} - {item.quantidade} {item.unidade} - {item.especificacao}
+                  </div>
+                ))}
+                <p><span className="font-medium">Quantidade total:</span> {dfdResumo.especificacoes.length} unidade(s) (serviços)</p>
+              </div>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-medium text-gray-700 mb-2">Aspectos Orçamentários:</h4>
+                <div className="space-y-1 text-sm">
+                  <p><span className="font-medium">Valor estimado:</span> R$ {dfdResumo.valorEstimado}</p>
+                  <p><span className="font-medium">Classificação:</span> {dfdResumo.classificacao}</p>
+                  <p><span className="font-medium">Fonte:</span> {dfdResumo.fonte}</p>
+                  <p><span className="font-medium">Elemento:</span> {dfdResumo.elemento}</p>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-medium text-gray-700 mb-2">Gestão:</h4>
+                <div className="space-y-1 text-sm">
+                  <p><span className="font-medium">Fiscal:</span> {dfdResumo.fiscal.titular} (titular), {dfdResumo.fiscal.suplente} (suplente)</p>
+                  <p><span className="font-medium">Gestor:</span> {dfdResumo.gestor.titular} (titular), {dfdResumo.gestor.suplente} (suplente)</p>
+                  <p><span className="font-medium">Demandante:</span> {dfdResumo.demandante.nome} – {dfdResumo.demandante.cargo}</p>
+                  <p><span className="font-medium">Status PCA:</span> {dfdResumo.statusPCA}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  // Função para renderizar a seção de importação do DFD
+  const renderDFDImport = () => {
+    return (
+      <div className="space-y-6">
+        {!dfdResumo ? (
+          <>
+            <div className="text-center py-8">
+              <FileText className="w-16 h-16 text-blue-500 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                Importação Obrigatória do DFD
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Para continuar, você deve importar um arquivo DFD (DOCX). Esta etapa é obrigatória.
+              </p>
+            </div>
+            
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+              <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-lg font-medium text-gray-700 mb-2">
+                Arraste o arquivo DOCX aqui ou clique para selecionar
+              </p>
+              <p className="text-sm text-gray-500 mb-4">
+                Apenas arquivos DOCX são aceitos (máx. 10MB)
+              </p>
+              <Button
+                onClick={() => document.getElementById('dfd-file-input')?.click()}
+                variant="outline"
+                className="mb-4"
+              >
+                Selecionar Arquivo DFD
+              </Button>
+              <input
+                id="dfd-file-input"
+                type="file"
+                accept=".docx"
+                className="hidden"
+                onChange={(e) => setSelectedFile(e.target.files[0])}
+              />
+              
+              {selectedFile && (
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <FileText className="w-6 h-6 text-blue-500" />
+                      <div className="text-left">
+                        <p className="font-medium text-sm">{selectedFile.name}</p>
+                        <p className="text-xs text-gray-500">
+                          {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSelectedFile(null)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  
+                  <Button
+                    onClick={processDFDFile}
+                    disabled={isProcessingDfd}
+                    className="w-full mt-3"
+                  >
+                    {isProcessingDfd ? 'Processando...' : 'Processar DFD'}
+                  </Button>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-4">
+            <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-2" />
+            <p className="text-green-700 font-medium">DFD importado com sucesso!</p>
+            <p className="text-sm text-gray-600">Clique em "Próximo" para continuar</p>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Função para renderizar o bloco 1
+  const renderBloco1 = () => {
+    if (!dfdResumo?.bloco1) return null;
+    
+    return (
+      <div className="space-y-6">
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">
+                Tipo de objeto <span className="text-red-500">*</span>
+              </Label>
+              <p className="text-sm text-gray-600 mb-2">
+                O objeto da contratação é:
+              </p>
+              <div className="space-y-2">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="tipoObjeto"
+                    value="Bem"
+                    checked={dfdResumo.bloco1.tipoObjeto === 'Bem'}
+                    readOnly
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">Bem</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="tipoObjeto"
+                    value="Serviço"
+                    checked={dfdResumo.bloco1.tipoObjeto === 'Serviço'}
+                    readOnly
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">Serviço</span>
+                </label>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">
+                Vigência do contrato <span className="text-red-500">*</span>
+              </Label>
+              <p className="text-sm text-gray-600 mb-2">
+                Qual será a duração?
+              </p>
+              <div className="space-y-2">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="vigencia"
+                    value="30"
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">30 dias (pronta entrega)</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="vigencia"
+                    value="12"
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">12 meses (padrão para serviços anuais)</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="vigencia"
+                    value="60"
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">60 meses (máximo para serviços continuados)</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="vigencia"
+                    value="outro"
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">Outro: [especificar em dias/meses/anos]</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">
+                Prorrogação <span className="text-red-500">*</span>
+              </Label>
+              <p className="text-sm text-gray-600 mb-2">
+                Será possível prorrogar o contrato?
+              </p>
+              <div className="space-y-2">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="prorrogacao"
+                    value="sim"
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">Sim – Por quê e por quanto tempo?</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="prorrogacao"
+                    value="nao"
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">Não – Justifique</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="prorrogacao"
+                    value="nao-aplica"
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">Não se aplica (prazo indeterminado)</span>
+                </label>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">
+                Natureza da contratação <span className="text-red-500">*</span>
+              </Label>
+              <div className="space-y-2">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="natureza"
+                    value="continuada-sem-monopolio"
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">Continuada sem monopólio (competitiva)</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="natureza"
+                    value="continuada-com-monopolio"
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">Continuada com monopólio (única fonte)</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="natureza"
+                    value="nao-continuada"
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">Não continuada (pontual/específica)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Fornecimento/serviço continuado <span className="text-red-500">*</span>
+            </Label>
+            <p className="text-sm text-gray-600 mb-2">
+              O objeto é de fornecimento ou prestação continuada?
+            </p>
+            <div className="space-y-2">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  name="fornecimentoContinuado"
+                  value="sim"
+                  className="text-blue-600"
+                />
+                <span className="text-sm">Sim – Justifique conforme art. 106 da Lei 14.133/2021</span>
+              </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  name="fornecimentoContinuado"
+                  value="nao"
+                  className="text-blue-600"
+                />
+                <span className="text-sm">Não – Explique a natureza</span>
+              </label>
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="enderecoExecucao" className="text-sm font-medium">
+              Endereço completo de execução <span className="text-red-500">*</span>
+            </Label>
+            <p className="text-sm text-gray-600 mb-2">
+              Forneça endereço detalhado com CEP, referências e especificidades do local.
+            </p>
+            <Textarea
+              id="enderecoExecucao"
+              placeholder="Digite o endereço completo de execução"
+              rows={3}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="protocoloPNCP" className="text-sm font-medium">
+              Número do protocolo PNCP
+            </Label>
+            <p className="text-sm text-gray-600 mb-2">
+              Qual o número do protocolo de envio do PCA ao PNCP? (Se disponível).
+            </p>
+            <Input
+              id="protocoloPNCP"
+              placeholder="Número do protocolo PNCP"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const handleInputChange = (fieldName, value) => {
     setFormData(prev => {
@@ -750,6 +1239,12 @@ import { Download, CheckCircle, AlertCircle, Clock, FileText, ArrowLeft } from '
              </div>
            );
 
+         case 'dfd-import':
+           return renderDFDImport();
+
+         case 'bloco1':
+           return renderBloco1();
+
          case 'textarea':
         return (
           <div key={key} className="space-y-2">
@@ -1271,6 +1766,10 @@ import { Download, CheckCircle, AlertCircle, Clock, FileText, ArrowLeft } from '
                renderField({ name: 'dynamic-acao-orcamentaria', type: 'dynamic-acao-orcamentaria' })
              ) : dfdSections[currentSection].type === 'dynamic-planejamento' ? (
                renderField({ name: 'dynamic-planejamento', type: 'dynamic-planejamento' })
+             ) : dfdSections[currentSection].type === 'dfd-import' ? (
+               renderDFDImport()
+             ) : dfdSections[currentSection].type === 'bloco1' ? (
+               renderBloco1()
              ) : (
                <div className="grid md:grid-cols-2 gap-6">
                  {dfdSections[currentSection].fields.map(renderField)}

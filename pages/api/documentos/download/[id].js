@@ -15,16 +15,54 @@ async function generateDocumentFromData(tipo, data) {
       return { success: false, error: 'Template não encontrado' };
     }
 
-    const content = fs.readFileSync(templatePath, 'binary');
+    const content = fs.readFileSync(templatePath);
     const zip = new PizZip(content);
-    const doc = new DocxTemplater(zip, { paragraphLoop: true, linebreaks: true, nullGetter: () => "" });
+    const doc = new DocxTemplater(zip, { 
+      paragraphLoop: true, 
+      linebreaks: true, 
+      nullGetter: () => "",
+      delimiters: {
+        start: '{',
+        end: '}'
+      }
+    });
 
     console.log(`\n--- Dados enviados para template ${tipo} ---`);
     console.log(JSON.stringify(data, null, 2));
     console.log('--- Fim dos dados ---\n');
+    
+    // Limpar valores undefined/null e substituir por strings vazias
+    Object.keys(data).forEach(key => {
+      if (data[key] === undefined || data[key] === null) {
+        data[key] = '';
+      }
+      // Garantir que valores não sejam objetos complexos
+      if (typeof data[key] === 'object' && !Array.isArray(data[key])) {
+        data[key] = JSON.stringify(data[key]);
+      }
+    });
 
-    doc.render(data);
-    const buf = doc.getZip().generate({ type: 'nodebuffer' });
+    try {
+      doc.render(data);
+      console.log('✅ Template renderizado com sucesso no download');
+    } catch (renderError) {
+      console.error('❌ Erro ao renderizar template no download:', renderError.message);
+      if (renderError.properties && renderError.properties.errors) {
+        console.error('📋 Erros detalhados no download:');
+        renderError.properties.errors.forEach((err, index) => {
+          console.error(`  ${index + 1}. ${err.name}: ${err.message}`);
+        });
+      }
+      throw renderError;
+    }
+    
+    const buf = doc.getZip().generate({
+      type: 'nodebuffer',
+      compression: 'DEFLATE',
+      compressionOptions: {
+        level: 6,
+      },
+    });
 
     const now = new Date();
     const horas = now.getHours().toString().padStart(2, '0');
@@ -78,16 +116,43 @@ export default async function handler(request, response) {
         });
       }
 
-      // Verificar se o documento tem dados processados
+      // Verificar se existe um arquivo físico já gerado
+      if (documento.caminhoArquivo && fs.existsSync(documento.caminhoArquivo)) {
+        console.log(`Arquivo físico encontrado: ${documento.caminhoArquivo}`);
+        
+        // Atualizar estatísticas do documento
+        await documento.update({
+          downloadCount: documento.downloadCount + 1,
+          ultimoDownload: new Date()
+        });
+
+        console.log(`Acesso autorizado para usuário ${decoded.email}`);
+        console.log(`Arquivo existente: ${documento.nomeArquivo}`);
+        console.log(`Caminho: ${documento.caminhoArquivo}`);
+        console.log(`Total de downloads: ${documento.downloadCount + 1}`);
+
+        // Ler e enviar o arquivo existente
+        const fileBuffer = fs.readFileSync(documento.caminhoArquivo);
+        
+        response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        response.setHeader('Content-Disposition', `attachment; filename="${documento.nomeArquivo}"`);
+        response.setHeader('Content-Length', fileBuffer.length);
+
+        console.log(`Download iniciado: ${documento.nomeArquivo}`);
+        
+        return response.status(200).send(fileBuffer);
+      }
+
+      // Se não existe arquivo físico, verificar se tem dados processados para gerar
       if (!documento.dadosProcessados) {
-        console.log(`Documento ${id} não tem dados processados`);
+        console.log(`Documento ${id} não tem dados processados nem arquivo físico`);
         return response.status(400).json({ 
           error: 'Documento sem dados processados',
           message: 'Este documento não foi processado corretamente'
         });
       }
 
-      console.log(`Gerando ${documento.tipo} a partir dos dados salvos...`);
+      console.log(`Arquivo físico não encontrado, gerando ${documento.tipo} a partir dos dados salvos...`);
       console.log(`Status atual: ${documento.status}`);
 
       // Gerar documento DOCX a partir dos dados salvos

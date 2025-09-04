@@ -51,6 +51,8 @@ export default function ListaDocumentosPage() {
 
   const handleDownload = async (documentoId) => {
     try {
+      setDownloading(prev => ({ ...prev, [documentoId]: true }));
+      
       const response = await fetch(`/api/documentos/download/${documentoId}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -63,7 +65,6 @@ export default function ListaDocumentosPage() {
         const link = document.createElement('a');
         link.href = url;
         
-    
         const contentDisposition = response.headers.get('content-disposition');
         const nomeArquivo = contentDisposition 
           ? contentDisposition.split('filename=')[1]?.replace(/"/g, '')
@@ -74,6 +75,9 @@ export default function ListaDocumentosPage() {
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
+        
+        // Atualizar a lista para refletir o novo download
+        carregarDocumentos();
       } else {
         console.error('Erro no download:', response.statusText);
         showAlert({
@@ -89,6 +93,8 @@ export default function ListaDocumentosPage() {
         message: 'Erro ao fazer download do documento. Verifique sua conexão e tente novamente.',
         type: 'error'
       });
+    } finally {
+      setDownloading(prev => ({ ...prev, [documentoId]: false }));
     }
   };
 
@@ -296,12 +302,12 @@ export default function ListaDocumentosPage() {
                           {downloading[documento.id] ? (
                             <>
                               <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                              Gerando...
+                              Baixando...
                             </>
                           ) : (
                             <>
                               <Download className="h-4 w-4 mr-2" />
-                              Gerar e Baixar
+                              Baixar
                             </>
                           )}
                         </Button>

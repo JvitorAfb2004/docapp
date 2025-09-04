@@ -75,18 +75,28 @@ function createFallbackData(formData) {
     natureza_com_monopolio: toCheckbox(formData.natureza === 'com monopólio'),
     natureza_sem_monopolio: toCheckbox(formData.natureza === 'sem monopólio'),
     natureza_nao_continuada: toCheckbox(formData.natureza === 'não continuada'),
-   vigencia_contrato_30_dias: toCheckbox(formData.vigencia === '30 dias'),
-    vigencia_contrato_12_meses: toCheckbox(formData.vigencia === '12 meses'), // Marca a opção principal
-    vigencia_contrato_5_anos: toCheckbox(formData.vigencia === '5 anos'),
-    vigencia_contrato_indeterminado: toCheckbox(formData.vigencia === 'indeterminado'),
+   vigencia_contrato_30_dias: toCheckbox(formData.vigencia && formData.vigencia.includes('30 dias')),
+    vigencia_contrato_12_meses: toCheckbox(formData.vigencia && formData.vigencia.includes('12 meses')),
+    vigencia_contrato_5_anos: toCheckbox(formData.vigencia && formData.vigencia.includes('5 anos')),
+    vigencia_contrato_indeterminado: toCheckbox(formData.vigencia && formData.vigencia.includes('indeterminado')),
    
-    vigencia_contrato_outro: toCheckbox(formData.vigencia === 'outro' || !!formData.vigenciaDias || !!formData.vigenciaMeses || !!formData.vigenciaAnos),
+    // Só marca "Outro" se não for nenhuma das opções padrão
+    vigencia_contrato_outro: toCheckbox(
+      formData.vigencia && 
+      !formData.vigencia.includes('30 dias') && 
+      !formData.vigencia.includes('12 meses') && 
+      !formData.vigencia.includes('5 anos') && 
+      !formData.vigencia.includes('indeterminado') &&
+      formData.vigencia.trim() !== ''
+    ),
     vigencia_contrato_qtd_dias: formData.vigenciaDias || '',
-    vigencia_contrato_qtd_meses: formData.vigenciaMeses || (formData.vigencia === '12 meses' ? '12' : ''),
+    vigencia_contrato_qtd_meses: formData.vigenciaMeses || '',
     vigencia_contrato_qtd_anos: formData.vigenciaAnos || '',
     prorrogacao_contrato_sim: toCheckbox(formData.prorrogavel),
     prorrogacao_contrato_nao: toCheckbox(!formData.prorrogavel),
-    prorrogacao_contrato_indeterminado: toCheckbox(formData.prazoIndeterminado),
+    prorrogacao_contrato_indeterminado: toCheckbox(
+      formData.vigencia && formData.vigencia.includes('indeterminado')
+    ),
     objeto_continuado_sim: toCheckbox(formData.servicoContinuado),
     objeto_continuado_nao: toCheckbox(!formData.servicoContinuado),
     objeto_continuado_justificativa: formData.justificativaServicoContinuado || '',

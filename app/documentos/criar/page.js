@@ -1,4 +1,4 @@
-﻿﻿﻿﻿'use client';
+﻿﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
@@ -94,8 +94,12 @@ export default function CriarDocumentoUnificadoPage() {
     normativosTecnicos: '',
     localEntrega: '',
     amostraProvaConceito: false,
+    justificativaAmostra: '',
     marcaEspecifica: false,
+    justificativaMarca: '',
     subcontratacao: false,
+    justificativaSubcontratacao: '',
+    limitesSubcontratacao: '',
     estimativasQuantidades: {
       metodo: '',
       descricao: ''
@@ -115,15 +119,34 @@ export default function CriarDocumentoUnificadoPage() {
       fontes: '',
       justificativa: '',
       restricoes: '',
-      tratamentoME: false
+      tratamentoME: false,
+      dadosHistoricos: false,
+      justificativaDadosHistoricos: ''
     },
+    // Campos adicionais obrigatórios
+    confirmacaoUnidadesQuantidades: false,
+    justificativaUnidadesQuantidades: '',
+    restricoesMercado: '',
+    tratamentoDiferenciadoME: false,
+    justificativaTratamentoDiferenciado: '',
+    descricaoDetalhadaContratacao: '',
     meiosPesquisaPrecos: '',
     descricaoSolucao: '',
     prazoGarantia: '',
+    prazoGarantiaDetalhado: 'nao_ha',
+    garantiaPersonalizada: {
+      tipo: 'meses',
+      valor: ''
+    },
+    justificativaGarantia: '',
     assistenciaTecnica: false,
+    justificativaAssistencia: '',
     manutencao: false,
+    justificativaManutencao: '',
     parcelamento: false,
     justificativaParcelamento: '',
+    pagamentoParcelado: false,
+    justificativaPagamentoParcelado: '',
     resultadosPretendidos: {
       beneficios: '',
       notaExplicativa: ''
@@ -276,8 +299,13 @@ export default function CriarDocumentoUnificadoPage() {
         { name: 'necessidadeTreinamento', label: 'Necessita de Treinamento?', type: 'checkbox' },
         { name: 'bemLuxo', label: 'É bem de luxo?', type: 'checkbox' },
         { name: 'localEntrega', label: 'Local de Entrega/Execução', type: 'text' },
+        { name: 'amostraProvaConceito', label: 'Exige amostra ou prova de conceito?', type: 'checkbox' },
+        { name: 'justificativaAmostra', label: 'Justificativa para amostra/prova de conceito', type: 'textarea', conditional: 'amostraProvaConceito' },
         { name: 'marcaEspecifica', label: 'Exige marca específica?', type: 'checkbox' },
-        { name: 'subcontratacao', label: 'Permite subcontratação?', type: 'checkbox' }
+        { name: 'justificativaMarca', label: 'Justificativa para marca específica', type: 'textarea', conditional: 'marcaEspecifica' },
+        { name: 'subcontratacao', label: 'Permite subcontratação?', type: 'checkbox' },
+        { name: 'justificativaSubcontratacao', label: 'Justificativa para subcontratação', type: 'textarea', conditional: 'subcontratacao' },
+        { name: 'limitesSubcontratacao', label: 'Limites da subcontratação', type: 'text', conditional: 'subcontratacao' }
       ]
     },
     {
@@ -288,6 +316,13 @@ export default function CriarDocumentoUnificadoPage() {
         { name: 'estimativasQuantidades.descricao', label: 'Descrição do Quantitativo', type: 'textarea' },
         { name: 'levantamentoMercado.fontes', label: 'Fontes de Pesquisa de Mercado', type: 'textarea', placeholder: 'Ex: contratações similares, sites especializados' },
         { name: 'levantamentoMercado.justificativa', label: 'Justificativa Técnica e Econômica', type: 'textarea' },
+        { name: 'levantamentoMercado.dadosHistoricos', label: 'Dados históricos disponíveis?', type: 'checkbox' },
+        { name: 'levantamentoMercado.justificativaDadosHistoricos', label: 'Justificativa sobre dados históricos', type: 'textarea', conditional: 'levantamentoMercado.dadosHistoricos' },
+        { name: 'confirmacaoUnidadesQuantidades', label: 'Confirmação de unidades e quantidades?', type: 'checkbox', required: true },
+        { name: 'justificativaUnidadesQuantidades', label: 'Justificativa para unidades e quantidades', type: 'textarea', conditional: 'confirmacaoUnidadesQuantidades' },
+        { name: 'restricoesMercado', label: 'Restrições de mercado', type: 'textarea' },
+        { name: 'tratamentoDiferenciadoME', label: 'Aplicar tratamento diferenciado para ME/EPP?', type: 'checkbox', required: true },
+        { name: 'justificativaTratamentoDiferenciado', label: 'Justificativa para tratamento diferenciado', type: 'textarea', conditional: 'tratamentoDiferenciadoME' },
         { name: 'meiosPesquisaPrecos', label: 'Meios Usados na Pesquisa de Preços', type: 'textarea' }
       ]
     },
@@ -296,11 +331,19 @@ export default function CriarDocumentoUnificadoPage() {
       description: 'Solução técnica e requisitos',
       fields: [
         { name: 'descricaoSolucao', label: 'Descrição Completa da Solução', type: 'textarea', required: true, rows: 6 },
-        { name: 'prazoGarantia', label: 'Prazo de Garantia', type: 'text' },
-        { name: 'assistenciaTecnica', label: 'Necessita de assistência técnica?', type: 'checkbox' },
-        { name: 'manutencao', label: 'Necessita de manutenção?', type: 'checkbox' },
+        { name: 'descricaoDetalhadaContratacao', label: 'Descrição detalhada de todos os aspectos da contratação', type: 'textarea', required: true, rows: 4 },
+        { name: 'prazoGarantiaDetalhado', label: 'Prazo de Garantia Contratual', type: 'select', options: ['nao_ha', '90_dias', '12_meses', 'outro'], required: true },
+        { name: 'garantiaPersonalizada.valor', label: 'Valor da garantia personalizada', type: 'text', conditional: 'prazoGarantiaDetalhado:outro' },
+        { name: 'garantiaPersonalizada.tipo', label: 'Tipo da garantia personalizada', type: 'select', options: ['dias', 'meses', 'anos'], conditional: 'prazoGarantiaDetalhado:outro' },
+        { name: 'justificativaGarantia', label: 'Justificativa para garantia contratual', type: 'textarea', conditional: 'prazoGarantiaDetalhado:!nao_ha' },
+        { name: 'assistenciaTecnica', label: 'Assistência técnica prevista?', type: 'checkbox', required: true },
+        { name: 'justificativaAssistencia', label: 'Justificativa para assistência técnica', type: 'textarea', conditional: 'assistenciaTecnica' },
+        { name: 'manutencao', label: 'Manutenção planejada?', type: 'checkbox', required: true },
+        { name: 'justificativaManutencao', label: 'Justificativa para manutenção', type: 'textarea', conditional: 'manutencao' },
         { name: 'parcelamento', label: 'A solução será dividida em itens?', type: 'checkbox' },
-        { name: 'justificativaParcelamento', label: 'Justificativa para parcelamento', type: 'textarea' }
+        { name: 'justificativaParcelamento', label: 'Justificativa para parcelamento', type: 'textarea', conditional: 'parcelamento' },
+        { name: 'pagamentoParcelado', label: 'Pagamento parcelado?', type: 'checkbox', required: true },
+        { name: 'justificativaPagamentoParcelado', label: 'Justificativa para pagamento parcelado', type: 'textarea', conditional: 'pagamentoParcelado' }
       ]
     },
     {
