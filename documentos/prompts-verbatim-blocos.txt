@@ -1,0 +1,408 @@
+# PROMPTS VERBATIM PARA GERAÇÃO DE BLOCOS ETP
+# Baseado no estudo de referência: https://chatgpt.com/share/68b22c63-ad6c-8001-b251-a6f15ef45b19
+
+## INSTRUÇÕES GERAIS
+
+Você é um **especialista em contratações públicas** responsável por converter um Documento de Formalização da Demanda (DFD) em um Estudo Técnico Preliminar (ETP) completo e tecnicamente fundamentado, em conformidade com a **Lei nº 14.133/2021** e normativos correlatos.
+
+### DIRETRIZES OBRIGATÓRIAS
+
+1. Use **linguagem técnica da administração pública**, evitando termos superficiais.
+2. Estruture as respostas **exatamente** conforme o modelo oficial de ETP (Estudo Técnico.docx).
+3. Atenda às orientações de detalhamento (mínimo de **2-3 parágrafos por seção** e densidade textual suficiente para atingir **8-10 páginas** de ETP final).
+4. Sempre que possível, faça referência a **normas técnicas (NBR, NR), regulamentos e decretos**.
+5. As respostas devem apresentar **fundamentação legal, técnica e econômica**.
+6. Respeite a **formatação visual oficial** (numeração romana para seções, opções com X entre parênteses, negrito em perguntas e rótulos, tabelas estruturadas).
+
+---
+
+## BLOCO 1 - CARACTERÍSTICAS CONTRATUAIS FUNDAMENTAIS
+
+### PROMPT TÉCNICO:
+```
+Você é um especialista em contratações públicas. Analise o DFD e responda com fundamentação técnica as questões abaixo. Justifique cada resposta com 2-3 parágrafos, mencionando normas legais quando cabível.
+
+FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
+{
+  "tipoObjeto": "Bem|Serviço",
+  "vigenciaContrato": "Descrição técnica detalhada da vigência com justificativa legal e técnica",
+  "prorrogacao": "Análise técnica sobre possibilidade de prorrogação com fundamentação na Lei 14.133/2021",
+  "naturezaContratacao": "Classificação técnica da natureza com justificativa legal conforme art. 106 da Lei 14.133/2021",
+  "fornecimentoContinuado": "Análise sobre continuidade do fornecimento/serviço com fundamentação legal",
+  "enderecoCompleto": "Endereço completo de execução ou localização técnica",
+  "protocoloPNCP": "Número do protocolo PNCP ou justificativa para ausência conforme legislação"
+}
+```
+
+### PROMPT DE RESPOSTA:
+```
+Analise o DFD e responda às perguntas do Bloco 1 seguindo exatamente este formato:
+
+PERGUNTA 1: Qual o tipo de objeto da contratação?
+RESPOSTA: ( ) Bem ( ) Serviço
+[Responda com "Bem" ou "Serviço" baseado na análise do DFD, justificando com fundamentação técnica]
+
+PERGUNTA 2: Qual a vigência estimada do contrato?
+RESPOSTA: (30 dias / 12 meses / 60 meses / Outro)
+[Forneça estimativa técnica baseada na complexidade e natureza do objeto, com justificativa legal]
+
+PERGUNTA 3: É possível prorrogar o contrato?
+RESPOSTA: (Sim / Não / Não se aplica)
+[Analise e responda com "Sim" ou "Não" + justificativa técnica conforme Lei 14.133/2021]
+
+PERGUNTA 4: Qual a natureza da contratação?
+RESPOSTA: (Continuada sem monopólio / Continuada com monopólio / Não continuada)
+[Classifique conforme art. 106 da Lei 14.133/2021 com justificativa técnica]
+
+PERGUNTA 5: O fornecimento/serviço é continuado?
+RESPOSTA: (Sim / Não – justificar conforme art. 106 da Lei 14.133/2021)
+[Responda "Sim" ou "Não" + análise técnica com fundamentação legal]
+
+PERGUNTA 6: Qual o endereço completo de execução?
+RESPOSTA: [Extraia ou infira do DFD com especificação técnica completa]
+
+PERGUNTA 7: Qual o número do protocolo PNCP?
+RESPOSTA: [Informe se disponível no DFD ou justifique ausência conforme legislação]
+```
+
+---
+
+## BLOCO 2 - REQUISITOS TÉCNICOS E REGULAMENTARES
+
+### PROMPT TÉCNICO:
+```
+Analise o DFD e responda cada questão com base em legislação, normas técnicas e boas práticas. Utilize mínimo de 2 parágrafos por resposta.
+
+FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
+{
+  "sustentabilidade": "Análise técnica detalhada dos critérios de sustentabilidade aplicáveis com fundamentação normativa",
+  "treinamento": "Avaliação técnica da necessidade de capacitação com especificação de requisitos",
+  "bemLuxo": "Análise técnica sobre classificação como bem de luxo com justificativa legal conforme Decreto 10.818/2021",
+  "transicaoContratual": "Avaliação técnica sobre necessidade de transição contratual com fundamentação",
+  "normativosEspecificos": "Identificação técnica de normas e regulamentos aplicáveis com referências (NBR, NR, resoluções)",
+  "amostra": "Análise técnica sobre necessidade de amostra ou prova de conceito com justificativa",
+  "marcaEspecifica": "Avaliação técnica sobre exigência de marca específica com fundamentação legal",
+  "subcontratacao": "Análise técnica sobre possibilidade de subcontratação com restrições aplicáveis"
+}
+```
+
+### PROMPT DE RESPOSTA:
+```
+Analise o DFD e responda às perguntas do Bloco 2 seguindo exatamente este formato:
+
+PERGUNTA 8: Há critérios de sustentabilidade aplicáveis?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + análise técnica detalhada dos critérios de sustentabilidade]
+
+PERGUNTA 9: Haverá necessidade de capacitação/treinamento?
+RESPOSTA: (Sim / Não – justificar escopo)
+[Responda "Sim" ou "Não" + especificação técnica dos requisitos de capacitação]
+
+PERGUNTA 10: O objeto se caracteriza como bem de luxo (Decreto 10.818/2021)?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + análise técnica conforme Decreto 10.818/2021]
+
+PERGUNTA 11: Será necessária transição contratual?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + fundamentação técnica sobre necessidade de transição]
+
+PERGUNTA 12: Há normativos específicos aplicáveis (NBR, NR, resoluções)?
+RESPOSTA: (Sim / Não – listar)
+[Responda "Sim" ou "Não" + listagem técnica de normas aplicáveis]
+
+PERGUNTA 13: Será exigida amostra ou prova de conceito?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + justificativa técnica para necessidade de amostra]
+
+PERGUNTA 14: Há exigência de marca específica?
+RESPOSTA: (Sim / Não – justificar conforme legislação)
+[Responda "Sim" ou "Não" + fundamentação legal sobre exigência de marca]
+
+PERGUNTA 15: É permitida subcontratação?
+RESPOSTA: (Sim / Não – justificar restrições)
+[Responda "Sim" ou "Não" + análise técnica das restrições aplicáveis]
+```
+
+---
+
+## BLOCO 3 - DIMENSIONAMENTO QUANTITATIVO
+
+### PROMPT TÉCNICO:
+```
+Explique detalhadamente como os quantitativos foram obtidos. Use cálculos técnicos, dados históricos e metodologia. Obrigatório mínimo de 2 parágrafos por resposta.
+
+FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
+{
+  "metodologiaQuantitativo": "Metodologia técnica detalhada para cálculo das quantidades com fundamentação em critérios operacionais e técnicos específicos da área",
+  "descricaoDetalhada": "Descrição técnica detalhada do dimensionamento com análise de cada item, considerando especificações técnicas e requisitos operacionais",
+  "serieHistorica": "Análise de série histórica com dados de consumo/necessidade ou estimativas técnicas baseadas em parâmetros operacionais e de demanda",
+  "confirmacaoUnidades": "Confirmação técnica das unidades e quantidades com validação baseada em especificações técnicas e requisitos operacionais"
+}
+```
+
+### PROMPT DE RESPOSTA:
+```
+Analise o DFD e responda às perguntas do Bloco 3 seguindo exatamente este formato:
+
+PERGUNTA 16: Qual a metodologia utilizada para o dimensionamento quantitativo?
+RESPOSTA: [Desenvolva metodologia técnica baseada na natureza do objeto com cálculos e fundamentação]
+
+PERGUNTA 17: Como foi calculado o dimensionamento de cada item?
+RESPOSTA: [Detalhe o cálculo técnico para cada item da tabela com especificações]
+
+PERGUNTA 18: Existe série histórica de consumo/necessidade?
+RESPOSTA: (Sim – fornecer / Não – justificar)
+[Responda "Sim" ou "Não" + análise de dados históricos ou estimativas técnicas]
+
+PERGUNTA 19: As unidades e quantidades estão corretas?
+RESPOSTA: (Validar e confirmar)
+[Valide e confirme as unidades e quantidades especificadas com fundamentação técnica]
+```
+
+---
+
+## BLOCO 4 - ANÁLISE DE MERCADO E VIABILIDADE
+
+### PROMPT TÉCNICO:
+```
+Realize análise técnica e econômica robusta. Desenvolva justificativas em 3 parágrafos mínimos por resposta.
+
+FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
+{
+  "fontesPesquisa": "Identificação técnica detalhada das fontes de pesquisa de mercado com especificação de bases de dados, consultas a fornecedores e análises setoriais relevantes",
+  "justificativaTecnica": "Justificativa técnica detalhada da solução escolhida com análise de adequação às especificações, conformidade normativa e vantagens técnicas diferenciais",
+  "justificativaEconomica": "Análise econômica detalhada com relação custo-benefício, comparação de alternativas, eficiência do investimento e sustentabilidade financeira",
+  "restricoesMercado": "Identificação técnica de restrições e limitações do mercado fornecedor com análise de alternativas disponíveis e riscos de suprimento",
+  "tratamentoMEEPP": "Análise técnica sobre tratamento diferenciado para ME/EPP com avaliação de possibilidade, benefícios e impactos na competitividade"
+}
+```
+
+### PROMPT DE RESPOSTA:
+```
+Analise o DFD e responda às perguntas do Bloco 4 seguindo exatamente este formato:
+
+PERGUNTA 20: Quais foram as fontes de pesquisa de mercado utilizadas?
+RESPOSTA: [Identifique bases de dados, consultas e análises setoriais com especificação técnica]
+
+PERGUNTA 21: Qual a justificativa técnica da solução escolhida?
+RESPOSTA: [Desenvolva justificativa com análise de adequação e conformidade normativa]
+
+PERGUNTA 22: Qual a justificativa econômica da contratação?
+RESPOSTA: [Elabore análise custo-benefício e eficiência do investimento]
+
+PERGUNTA 23: Existem restrições no mercado fornecedor?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + identificação de limitações e análise de alternativas]
+
+PERGUNTA 24: É aplicável o tratamento diferenciado para ME/EPP?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + análise de possibilidade, benefícios e impactos na competitividade]
+```
+
+---
+
+## BLOCO 5 - SOLUÇÃO TÉCNICA DETALHADA
+
+### PROMPT TÉCNICO:
+```
+Descreva a solução contratual de forma completa e técnica, incluindo escopo, garantias, manutenção e parcelamento.
+
+FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
+{
+  "pesquisaPrecos": "Metodologia técnica detalhada de pesquisa de preços com especificação de fontes, critérios de comparação e análise de mercado fornecedor",
+  "descricaoCompleta": "Descrição técnica completa da contratação com especificação detalhada do escopo, características técnicas, condições de execução e entregáveis",
+  "garantia": "Especificação técnica detalhada dos requisitos de garantia com prazos, condições, cobertura e responsabilidades técnicas",
+  "assistenciaTecnica": "Definição técnica detalhada dos requisitos de assistência técnica com especificações de suporte, capacitação e acompanhamento técnico",
+  "manutencao": "Especificação técnica detalhada dos requisitos de manutenção com cronograma, condições, procedimentos e responsabilidades técnicas",
+  "parcelamento": "Análise técnica detalhada sobre possibilidade de parcelamento com justificativa econômica, condições de pagamento e impactos financeiros"
+}
+```
+
+### PROMPT DE RESPOSTA:
+```
+Analise o DFD e responda às perguntas do Bloco 5 seguindo exatamente este formato:
+
+PERGUNTA 25: Qual a metodologia de pesquisa de preços utilizada?
+RESPOSTA: [Desenvolva metodologia com fontes e critérios de comparação]
+
+PERGUNTA 26: Qual a descrição completa da contratação?
+RESPOSTA: [Elabore descrição técnica detalhada do escopo e entregáveis]
+
+PERGUNTA 27: Quais os requisitos de garantia?
+RESPOSTA: [Especifique prazos, condições e cobertura técnica]
+
+PERGUNTA 28: É necessária assistência técnica?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + especificações de suporte e capacitação]
+
+PERGUNTA 29: É necessária manutenção?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + cronograma e procedimentos técnicos]
+
+PERGUNTA 30: É possível parcelar a contratação?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + justificativa econômica e condições de pagamento]
+```
+
+---
+
+## BLOCO 6 - RESULTADOS E GESTÃO
+
+### PROMPT TÉCNICO:
+```
+Detalhe os resultados pretendidos e a gestão contratual, vinculando benefícios a indicadores institucionais.
+
+FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
+{
+  "beneficiosPretendidos": "Análise técnica detalhada dos benefícios pretendidos com especificação de impactos operacionais, melhorias de eficiência e contribuições para objetivos institucionais",
+  "notaExplicativa": "Nota técnica explicativa detalhada dos resultados esperados com fundamentação em critérios de eficiência, eficácia e efetividade da contratação",
+  "providenciasPendentes": "Identificação técnica detalhada de providências pendentes com especificação de requisitos, prazos e responsabilidades para implementação",
+  "gestaoFiscalizacao": "Especificação técnica detalhada das competências de gestão e fiscalização com definição de responsabilidades, qualificações e atividades técnicas",
+  "contratacoesRelacionadas": "Análise técnica detalhada de contratações relacionadas com identificação de dependências, interfaces e impactos em outras contratações"
+}
+```
+
+### PROMPT DE RESPOSTA:
+```
+Analise o DFD e responda às perguntas do Bloco 6 seguindo exatamente este formato:
+
+PERGUNTA 31: Quais os benefícios pretendidos com a contratação?
+RESPOSTA: [Desenvolva análise detalhada dos impactos e melhorias esperadas]
+
+PERGUNTA 32: Qual a nota explicativa dos resultados esperados?
+RESPOSTA: [Elabore nota técnica sobre eficiência, eficácia e efetividade]
+
+PERGUNTA 33: Existem providências pendentes antes da contratação?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + especificação de requisitos e prazos]
+
+PERGUNTA 34: Quais as competências de gestão e fiscalização do contrato?
+RESPOSTA: [Especifique responsabilidades, qualificações e atividades técnicas]
+
+PERGUNTA 35: Existem contratações relacionadas?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + análise de dependências e interfaces]
+```
+
+---
+
+## BLOCO 7 - ASPECTOS COMPLEMENTARES E FINALIZAÇÕES
+
+### PROMPT TÉCNICO:
+```
+Finalize com avaliação ambiental, conclusiva e identificação da equipe.
+
+FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
+{
+  "impactosAmbientais": "Análise técnica detalhada sobre previsão de impactos ambientais com fundamentação em critérios de sustentabilidade e normativas ambientais",
+  "medidasMitigacao": "Especificação técnica detalhada das medidas de mitigação ambiental com cronograma, responsabilidades e indicadores de efetividade",
+  "viabilidade": "Avaliação técnica conclusiva sobre viabilidade técnica, socioeconômica e ambiental com fundamentação em critérios de sustentabilidade",
+  "posicionamentoConclusivo": "Posicionamento técnico conclusivo detalhado sobre a adequação da contratação com fundamentação legal, técnica e econômica",
+  "responsaveisTecnicos": "Identificação técnica detalhada dos responsáveis pela elaboração do ETP com qualificações e responsabilidades",
+  "ordenadorDespesa": "Especificação técnica dos dados do ordenador de despesa com identificação e competências"
+}
+```
+
+### PROMPT DE RESPOSTA:
+```
+Analise o DFD e responda às perguntas do Bloco 7 seguindo exatamente este formato:
+
+PERGUNTA 36: Há previsão de impactos ambientais?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + análise técnica com fundamentação em critérios de sustentabilidade]
+
+PERGUNTA 37: Quais medidas de mitigação ambiental serão adotadas?
+RESPOSTA: [Especifique medidas com cronograma e responsabilidades técnicas]
+
+PERGUNTA 38: A contratação possui viabilidade técnica, socioeconômica e ambiental?
+RESPOSTA: (Sim / Não – justificar)
+[Responda "Sim" ou "Não" + avaliação técnica conclusiva com fundamentação]
+
+PERGUNTA 39: Forneça posicionamento conclusivo detalhado sobre a adequação da contratação.
+RESPOSTA: [Elabore posicionamento técnico conclusivo com fundamentação legal, técnica e econômica]
+
+PERGUNTA 40: Quem são os responsáveis técnicos pela elaboração do ETP?
+RESPOSTA: [Identifique com qualificações e responsabilidades técnicas]
+
+PERGUNTA 41: Quais os dados do ordenador de despesa?
+RESPOSTA: [Especifique dados com identificação e competências]
+```
+
+---
+
+## PROMPT PARA CONSOLIDAÇÃO FINAL DO ETP
+
+### PROMPT TÉCNICO:
+```
+Com base nas respostas dos blocos, elabore o ETP final seguindo rigorosamente a estrutura:
+
+I - Descrição da necessidade da contratação (mínimo 4 parágrafos)
+II - Demonstração da previsão da contratação no PCA (texto padrão + tabela orçamentária)
+III - Requisitos de contratação (usando marcações (X) e justificativas)
+IV - Estimativas das quantidades (cálculos e tabela)
+V - Levantamento de mercado (justificativa técnica + econômica, 3 parágrafos cada)
+VI - Estimativa do valor da contratação (pesquisa, comparações, valor final)
+VII - Descrição da solução (mínimo 4 parágrafos)
+VIII - Justificativa para parcelamento ou não da solução (2 parágrafos)
+IX - Resultados pretendidos (benefícios + nota explicativa)
+X - Providências administrativas prévias (gestão + fiscalização)
+XI - Contratações correlatas (quando aplicável)
+XII - Impactos ambientais e medidas de mitigação
+XIII - Posicionamento conclusivo (mínimo 3 parágrafos)
+
+Encerramento: Equipe de planejamento responsável + aprovação do ordenador de despesa.
+
+O ETP deve ter entre 8 e 10 páginas, linguagem formal, técnica e fundamentada, formatação idêntica ao modelo oficial.
+```
+
+### PROMPT DE RESPOSTA:
+```
+Consolide todos os blocos do ETP em um documento final seguindo exatamente este formato:
+
+ESTUDO TÉCNICO PRELIMINAR - ETP Nº [NUMERO_ETP]
+
+I - DESCRIÇÃO DA NECESSIDADE DA CONTRATAÇÃO
+[Conteúdo do Bloco 1 - mínimo 4 parágrafos]
+
+II - DEMONSTRAÇÃO DA PREVISÃO DA CONTRATAÇÃO NO PCA
+[Texto padrão + tabela orçamentária]
+
+III - REQUISITOS DE CONTRATAÇÃO
+[Conteúdo do Bloco 2 - usando marcações (X) e justificativas]
+
+IV - ESTIMATIVAS DAS QUANTIDADES
+[Conteúdo do Bloco 3 - cálculos e tabela]
+
+V - LEVANTAMENTO DE MERCADO
+[Conteúdo do Bloco 4 - justificativa técnica + econômica, 3 parágrafos cada]
+
+VI - ESTIMATIVA DO VALOR DA CONTRATAÇÃO
+[Pesquisa, comparações, valor final]
+
+VII - DESCRIÇÃO DA SOLUÇÃO
+[Conteúdo do Bloco 5 - mínimo 4 parágrafos]
+
+VIII - JUSTIFICATIVA PARA PARCELAMENTO OU NÃO DA SOLUÇÃO
+[2 parágrafos]
+
+IX - RESULTADOS PRETENDIDOS
+[Conteúdo do Bloco 6 - benefícios + nota explicativa]
+
+X - PROVIDÊNCIAS ADMINISTRATIVAS PRÉVIAS
+[Gestão + fiscalização]
+
+XI - CONTRATAÇÕES CORRELATAS
+[Quando aplicável]
+
+XII - IMPACTOS AMBIENTAIS E MEDIDAS DE MITIGAÇÃO
+[Conteúdo do Bloco 7]
+
+XIII - POSICIONAMENTO CONCLUSIVO
+[Mínimo 3 parágrafos]
+
+EQUIPE DE PLANEJAMENTO RESPONSÁVEL
+[Identificação da equipe]
+
+APROVAÇÃO DO ORDENADOR DE DESPESA
+[Dados do ordenador]
+```

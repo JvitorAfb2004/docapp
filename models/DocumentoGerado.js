@@ -55,10 +55,10 @@ module.exports = (sequelize) => {
       comment: 'Dados originais do formulário enviado pelo usuário'
     },
     status: {
-      type: DataTypes.ENUM('processado', 'arquivo_gerado'),
+      type: DataTypes.ENUM('processado', 'arquivo_gerado', 'consolidado'),
       allowNull: false,
       defaultValue: 'processado',
-      comment: 'Status do documento: processado (dados salvos) ou arquivo_gerado (DOCX criado)'
+      comment: 'Status do documento: processado (dados salvos), arquivo_gerado (DOCX criado) ou consolidado (ETP consolidado)'
     },
     dataProcessamento: {
       type: DataTypes.DATE,

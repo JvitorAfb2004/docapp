@@ -11,28 +11,36 @@ import { useRouter } from 'next/navigation';
 import ProtectedRoute from '../../../components/ProtectedRoute';
 
 import { useCustomAlert } from '../../../components/CustomAlert';
-import { Download, CheckCircle, AlertCircle, Clock, FileText, Upload, ArrowLeft, X, Loader2, Play, Pause } from 'lucide-react';
+import { Download, CheckCircle, AlertCircle, Clock, FileText, Upload, ArrowLeft, X, Loader2, Play, Pause, ChevronRight } from 'lucide-react';
 
 export default function CriarETPPage() {
   const router = useRouter();
   const { showAlert, AlertComponent } = useCustomAlert();
   
-  // Estados para o novo sistema unificado
+  // Estados para o novo fluxo sequencial
   const [selectedFile, setSelectedFile] = useState(null);
   const [isProcessingDfd, setIsProcessingDfd] = useState(false);
-  const [dfdResumo, setDfdResumo] = useState(null); // Resumo do DFD
-  const [textoDFD, setTextoDFD] = useState(''); // Texto extraído do DFD
-  const [blocosGerados, setBlocosGerados] = useState([]); // Blocos gerados pela IA
-  const [blocoAtivo, setBlocoAtivo] = useState(null); // Bloco sendo visualizado/editado
-  const [editandoBloco, setEditandoBloco] = useState(null); // ID do bloco sendo editado
-  const [conteudoEditado, setConteudoEditado] = useState({}); // Conteúdo editado do bloco
-  const [isGeneratingETP, setIsGeneratingETP] = useState(false);
+  const [dfdResumo, setDfdResumo] = useState(null);
+  const [textoDFD, setTextoDFD] = useState('');
+  
+  // Estados dos blocos
+  const [blocosGerados, setBlocosGerados] = useState([]);
+  const [blocoAtual, setBlocoAtual] = useState(1); // Próximo bloco a ser gerado
+  const [isGeneratingBloco, setIsGeneratingBloco] = useState(false);
+  const [blocoVisualizando, setBlocoVisualizando] = useState(null);
+  const [blocoEditando, setBlocoEditando] = useState(null);
+  const [editandoPergunta, setEditandoPergunta] = useState(null);
+  
+  // Estados do ETP final
+  const [etpConsolidado, setEtpConsolidado] = useState(null);
+  const [isConsolidando, setIsConsolidando] = useState(false);
   const [numeroETP, setNumeroETP] = useState('');
-  const [isGeneratingBloco, setIsGeneratingBloco] = useState(null); // ID do bloco sendo gerado
+  const [podeFazerDownload, setPodeFazerDownload] = useState(false);
+  const [documentoId, setDocumentoId] = useState(null);
   
 
   
-  // Função para processar o arquivo DFD com o prompt unificado
+  // Função para processar o arquivo DFD
   const processDFDFile = async () => {
     if (!selectedFile) return;
     
@@ -60,12 +68,15 @@ export default function CriarETPPage() {
       setDfdResumo(result.resumoDFD);
       setTextoDFD(result.textoDFD);
       
-      // Inicializar lista de blocos vazia
+      // Inicializar estados
       setBlocosGerados([]);
+      setBlocoAtual(1);
+      setEtpConsolidado(null);
+      setPodeFazerDownload(false);
       
       showAlert({
         title: '✅ DFD Processado!',
-        message: 'DFD processado com sucesso! Agora você pode editar os campos e gerar o ETP.',
+        message: 'DFD processado com sucesso! Agora você pode iniciar a geração dos blocos.',
         type: 'success'
       });
       
@@ -81,8 +92,8 @@ export default function CriarETPPage() {
     }
   };
 
-  // Função para gerar um bloco individual
-  const gerarBloco = async (numeroBloco) => {
+  // Função para gerar o próximo bloco sequencialmente
+  const gerarProximoBloco = async () => {
     if (!textoDFD) {
       showAlert({
         title: '❌ Erro',
@@ -92,10 +103,19 @@ export default function CriarETPPage() {
       return;
     }
 
-    setIsGeneratingBloco(numeroBloco);
+    if (blocoAtual > 7) {
+      showAlert({
+        title: '✅ Todos os Blocos Gerados!',
+        message: 'Todos os 7 blocos foram gerados. Agora você pode consolidar o ETP.',
+        type: 'success'
+      });
+      return;
+    }
+
+    setIsGeneratingBloco(true);
 
     try {
-      const response = await fetch('/api/documentos/gerar-bloco-individual', {
+      const response = await fetch('/api/documentos/gerar-bloco-verbatim', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -103,7 +123,7 @@ export default function CriarETPPage() {
         },
         body: JSON.stringify({
           textoDFD,
-          numeroBloco,
+          numeroBloco: blocoAtual,
           resumoDFD: dfdResumo
         })
       });
@@ -115,21 +135,13 @@ export default function CriarETPPage() {
       }
 
       // Adicionar o bloco gerado à lista
-      setBlocosGerados(prev => {
-        const existingIndex = prev.findIndex(b => b.id === numeroBloco);
-        if (existingIndex >= 0) {
-          // Substituir bloco existente
-          const newBlocos = [...prev];
-          newBlocos[existingIndex] = result.bloco;
-          return newBlocos;
-        } else {
-          // Adicionar novo bloco
-          return [...prev, result.bloco];
-        }
-      });
+      setBlocosGerados(prev => [...prev, result.bloco]);
 
-      // Definir o bloco gerado como ativo
-      setBlocoAtivo(result.bloco);
+      // Avançar para o próximo bloco
+      setBlocoAtual(prev => prev + 1);
+
+      // Definir o bloco gerado como visualizando
+      setBlocoVisualizando(result.bloco);
 
       showAlert({
         title: '✅ Bloco Gerado!',
@@ -145,16 +157,16 @@ export default function CriarETPPage() {
         type: 'error'
       });
     } finally {
-      setIsGeneratingBloco(null);
+      setIsGeneratingBloco(false);
     }
   };
 
-  // Função para gerar o ETP final
-  const generateETP = async () => {
+  // Função para consolidar o ETP final
+  const consolidarETP = async () => {
     if (!dfdResumo || blocosGerados.length === 0) {
       showAlert({
         title: '❌ Erro',
-        message: 'Você precisa importar um DFD primeiro.',
+        message: 'Você precisa gerar pelo menos um bloco primeiro.',
         type: 'error'
       });
       return;
@@ -169,131 +181,227 @@ export default function CriarETPPage() {
       return;
     }
     
-    setIsGeneratingETP(true);
+    setIsConsolidando(true);
     
     try {
-      // Combinar dados do resumo e blocos para gerar o ETP
-      const dadosFinais = {
-        resumoDFD: dfdResumo,
-        blocos: blocosGerados,
-        numeroETP: numeroETP,
-        dataAtual: new Date().toLocaleDateString('pt-BR')
-      };
-      
-      const response = await fetch('/api/documentos/gerar-etp-final', {
+      const response = await fetch('/api/documentos/consolidar-etp-final', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify(dadosFinais)
+        body: JSON.stringify({
+          blocos: blocosGerados,
+          resumoDFD: dfdResumo,
+          numeroETP: numeroETP
+        })
       });
       
       const result = await response.json();
       
       if (!response.ok) {
-        throw new Error(result.error || 'Erro ao gerar ETP');
+        throw new Error(result.error || 'Erro ao consolidar ETP');
       }
       
+      setEtpConsolidado(result.etp);
+      setDocumentoId(result.documento.id);
+      setPodeFazerDownload(true);
+      
       showAlert({
-        title: '✅ ETP Gerado!',
-        message: `ETP gerado com sucesso! ID: ${result.documento.id}`,
+        title: '✅ ETP Consolidado!',
+        message: `ETP consolidado com sucesso! Agora você pode fazer o download.`,
         type: 'success'
       });
       
-      // Opcional: redirecionar para lista de documentos
-      setTimeout(() => {
-        router.push('/documentos/lista');
-      }, 2000);
-      
     } catch (error) {
-      console.error('Erro ao gerar ETP:', error);
+      console.error('Erro ao consolidar ETP:', error);
       showAlert({
         title: '❌ Erro',
-        message: error.message || 'Erro ao gerar ETP',
+        message: error.message || 'Erro ao consolidar ETP',
         type: 'error'
       });
     } finally {
-      setIsGeneratingETP(false);
+      setIsConsolidando(false);
     }
-  };
-
-  // Função para iniciar edição de um bloco
-  const iniciarEdicao = (bloco) => {
-    setEditandoBloco(bloco.id);
-    setConteudoEditado(bloco.dados);
-  };
-
-  // Função para salvar edição de um bloco
-  const salvarEdicao = (blocoId) => {
-    setBlocosGerados(prev => prev.map(bloco => 
-      bloco.id === blocoId 
-        ? { ...bloco, dados: conteudoEditado }
-        : bloco
-    ));
-    setEditandoBloco(null);
-    setConteudoEditado({});
-  };
-
-  // Função para cancelar edição
-  const cancelarEdicao = () => {
-    setEditandoBloco(null);
-    setConteudoEditado({});
   };
 
   // Função para visualizar um bloco específico
   const visualizarBloco = (bloco) => {
-      setBlocoAtivo(bloco);
-      iniciarEdicao(bloco);
+    setBlocoVisualizando(bloco);
+    setBlocoEditando(null);
+    setEditandoPergunta(null);
   };
 
-  // Função para renderizar o resumo do DFD
+  // Função para editar um bloco
+  const editarBloco = (bloco) => {
+    setBlocoEditando(bloco);
+    setBlocoVisualizando(bloco);
+    setEditandoPergunta(null);
+  };
+
+  // Função para salvar edições do bloco
+  const salvarEdicoesBloco = () => {
+    if (!blocoEditando) return;
+    
+    setBlocosGerados(prev => 
+      prev.map(bloco => 
+        bloco.id === blocoEditando.id ? blocoEditando : bloco
+      )
+    );
+    setBlocoVisualizando(blocoEditando);
+    setBlocoEditando(null);
+    setEditandoPergunta(null);
+    
+    showAlert({
+      title: '✅ Edições Salvas!',
+      message: 'As edições do bloco foram salvas com sucesso.',
+      type: 'success'
+    });
+  };
+
+  // Função para cancelar edição
+  const cancelarEdicao = () => {
+    setBlocoEditando(null);
+    setEditandoPergunta(null);
+  };
+
+  // Função para atualizar valor de pergunta
+  const atualizarValorPergunta = (perguntaId, campo, valor) => {
+    if (!blocoEditando) return;
+    
+    setBlocoEditando(prev => ({
+      ...prev,
+      perguntas: prev.perguntas.map(pergunta => 
+        pergunta.id === perguntaId 
+          ? { ...pergunta, value: { ...pergunta.value, [campo]: valor } }
+          : pergunta
+      )
+    }));
+  };
+
+  // Função para navegar entre blocos
+  const navegarBloco = (direcao) => {
+    if (!blocosGerados.length) return;
+    
+    const indiceAtual = blocosGerados.findIndex(b => b.id === blocoVisualizando?.id);
+    let novoIndice;
+    
+    if (direcao === 'anterior') {
+      novoIndice = indiceAtual > 0 ? indiceAtual - 1 : blocosGerados.length - 1;
+    } else {
+      novoIndice = indiceAtual < blocosGerados.length - 1 ? indiceAtual + 1 : 0;
+    }
+    
+    const novoBloco = blocosGerados[novoIndice];
+    visualizarBloco(novoBloco);
+  };
+
+
+  // Função para fazer download do ETP consolidado
+  const fazerDownload = async () => {
+    if (!documentoId) {
+      showAlert({
+        title: '❌ Erro',
+        message: 'ID do documento não encontrado.',
+        type: 'error'
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/documentos/download/${documentoId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erro ao fazer download');
+      }
+
+      // Obter o nome do arquivo do header Content-Disposition
+      const contentDisposition = response.headers.get('Content-Disposition');
+      const fileName = contentDisposition 
+        ? contentDisposition.split('filename=')[1]?.replace(/"/g, '')
+        : `ETP_${numeroETP}_${Date.now()}.docx`;
+
+      // Converter resposta para blob
+      const blob = await response.blob();
+      
+      // Criar URL temporária para download
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      showAlert({
+        title: '✅ Download Iniciado!',
+        message: `Download do ETP iniciado: ${fileName}`,
+        type: 'success'
+      });
+    } catch (error) {
+      console.error('Erro ao fazer download:', error);
+      showAlert({
+        title: '❌ Erro',
+        message: error.message || 'Erro ao fazer download do ETP',
+        type: 'error'
+      });
+    }
+  };
+
+  // Função para renderizar o resumo do DFD com botão de início
   const renderDFDResumo = () => {
-    if (!dfdResumo) return null;
+    if (!dfdResumo || blocosGerados.length > 0) return null;
     
     return (
       <Card className="mb-6 border-green-200 bg-green-50">
         <CardHeader>
           <CardTitle className="text-lg text-green-700 flex items-center gap-2">
             <CheckCircle className="h-5 w-5" />
-            Resumo do DFD Analisado
+            DFD Importado com Sucesso
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div>
+            <div>
               <p><strong>DFD nº:</strong> {dfdResumo.numero_dfd || 'Não informado'}</p>
               <p><strong>Órgão:</strong> {dfdResumo.orgao || 'Não informado'}</p>
               <p><strong>SGD:</strong> {dfdResumo.numero_sgd || 'Não informado'}</p>
               <p><strong>Tipo:</strong> {dfdResumo.tipo_objeto || 'Não informado'}</p>
-                </div>
+            </div>
             <div>
               <p><strong>Valor Estimado:</strong> {dfdResumo.valor_estimado || 'Não informado'}</p>
               <p><strong>Classificação:</strong> {dfdResumo.classificacao_orcamentaria || 'Não informado'}</p>
               <p><strong>Fonte:</strong> {dfdResumo.fonte || 'Não informado'}</p>
               <p><strong>Elemento:</strong> {dfdResumo.elemento_despesa || 'Não informado'}</p>
-              </div>
-              <div>
+            </div>
+            <div>
               <p><strong>Fiscal Titular:</strong> {dfdResumo.fiscal_titular || 'Não informado'}</p>
               <p><strong>Fiscal Suplente:</strong> {dfdResumo.fiscal_suplente || 'Não informado'}</p>
               <p><strong>Gestor Titular:</strong> {dfdResumo.gestor_titular || 'Não informado'}</p>
               <p><strong>Gestor Suplente:</strong> {dfdResumo.gestor_suplente || 'Não informado'}</p>
-              </div>
             </div>
-            
+          </div>
+          
           <div className="mt-4">
             <p><strong>Demandante:</strong></p>
             <p className="text-sm text-gray-600 mt-1">
               {dfdResumo.demandante_nome || 'Não informado'} - {dfdResumo.demandante_cargo || ''} 
               {dfdResumo.demandante_setor && ` (${dfdResumo.demandante_setor})`}
             </p>
-            </div>
-            
+          </div>
+          
           <div className="mt-4">
             <p><strong>Descrição do Objeto:</strong></p>
             <p className="text-sm text-gray-600 mt-1">{dfdResumo.descricao_objeto || 'Não informado'}</p>
-              </div>
-              
+          </div>
+          
           {dfdResumo.itens && dfdResumo.itens.length > 0 && (
             <div className="mt-4">
               <p><strong>Itens:</strong></p>
@@ -303,7 +411,7 @@ export default function CriarETPPage() {
                     <p><strong>Item {item.item}:</strong> {item.qtd} {item.unid}</p>
                     <p><strong>Especificação:</strong> {item.especificacao_item}</p>
                     {item.codigo_siga_item && <p><strong>Código SIGA:</strong> {item.codigo_siga_item}</p>}
-                </div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -318,9 +426,33 @@ export default function CriarETPPage() {
                     {responsavel.nome} - {responsavel.numero_funcional} (Ação: {responsavel.acao})
                   </p>
                 ))}
-          </div>
+              </div>
             </div>
           )}
+
+          {/* Botão para iniciar geração do Bloco 1 */}
+          <div className="mt-6 text-center">
+            <Button
+              onClick={gerarProximoBloco}
+              disabled={isGeneratingBloco || blocoAtual > 6}
+              className="bg-green-600 hover:bg-green-700 text-white px-8 py-3"
+              size="lg"
+            >
+              {isGeneratingBloco ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Gerando Bloco {blocoAtual}...
+                </>
+              ) : blocoAtual > 6 ? (
+                'Todos os Blocos Gerados'
+              ) : (
+                <>
+                  <Play className="w-4 h-4 mr-2" />
+                  Iniciar (gerar Bloco {blocoAtual})
+                </>
+              )}
+            </Button>
+          </div>
         </CardContent>
       </Card>
     );
@@ -328,108 +460,42 @@ export default function CriarETPPage() {
 
   // Função para renderizar os blocos gerados
   const renderBlocosGerados = () => {
-    if (!dfdResumo) return null;
-    
-    const blocosDisponiveis = [
-      { id: 1, titulo: 'Bloco 1 - Características Contratuais Fundamentais' },
-      { id: 2, titulo: 'Bloco 2 - Requisitos Técnicos e Regulamentares' },
-      { id: 3, titulo: 'Bloco 3 - Dimensionamento Quantitativo' },
-      { id: 4, titulo: 'Bloco 4 - Análise de Mercado e Viabilidade' },
-      { id: 5, titulo: 'Bloco 5 - Solução Técnica Detalhada' },
-      { id: 6, titulo: 'Bloco 6 - Resultados e Gestão' }
-    ];
+    if (!dfdResumo || blocosGerados.length === 0) return null;
     
     return (
       <div className="space-y-6">
-        <h3 className="text-xl font-semibold text-gray-700">📋 Gerar Blocos do ETP</h3>
-        
-        {/* Botões para gerar blocos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {blocosDisponiveis.map((bloco) => {
-            const blocoGerado = blocosGerados.find(b => b.id === bloco.id);
-            const estaGerando = isGeneratingBloco === bloco.id;
-            
-            return (
-              <Card key={bloco.id} className="p-4">
-                <div className="space-y-3">
-                  <h4 className="font-medium text-sm">{bloco.titulo}</h4>
-                  
-                  {blocoGerado ? (
-                    <div className="space-y-2">
-              <Button
-                        variant={blocoAtivo?.id === bloco.id ? "default" : "outline"}
-                        onClick={() => visualizarBloco(blocoGerado)}
-                        className="w-full text-xs"
-                        size="sm"
-                      >
-                        {blocoAtivo?.id === bloco.id ? 'Visualizando' : 'Visualizar'}
-              </Button>
-                    <Button
-                        variant="outline"
-                        onClick={() => gerarBloco(bloco.id)}
-                        className="w-full text-xs"
-                      size="sm"
-                    >
-                        Regenerar
-                    </Button>
-                  </div>
-                  ) : (
-                  <Button
-                      onClick={() => gerarBloco(bloco.id)}
-                      disabled={estaGerando}
-                      className="w-full text-xs"
-                      size="sm"
-                    >
-                      {estaGerando ? (
-                        <>
-                          <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                          Gerando...
-                      </>
-                    ) : (
-                        'Gerar Bloco'
-                    )}
-                  </Button>
-              )}
-            </div>
-              </Card>
-          );
-        })}
-      </div>
+        <h3 className="text-xl font-semibold text-gray-700">📋 Blocos Gerados</h3>
         
         {/* Navegação entre Blocos Gerados */}
-        {blocosGerados.length > 0 && (
-          <div className="flex flex-wrap gap-2 justify-center">
-            {blocosGerados.map((bloco) => (
+        <div className="flex flex-wrap gap-2 justify-center">
+          {blocosGerados.map((bloco) => (
             <Button
               key={bloco.id}
-              variant={blocoAtivo?.id === bloco.id ? "default" : "outline"}
-                onClick={() => visualizarBloco(bloco)}
-                className="text-sm"
+              variant={blocoVisualizando?.id === bloco.id ? "default" : "outline"}
+              onClick={() => visualizarBloco(bloco)}
+              className="text-sm"
             >
-                {bloco.titulo}
+              {bloco.titulo}
             </Button>
           ))}
         </div>
-        )}
 
-        {/* Conteúdo do Bloco Ativo */}
-        {blocoAtivo && (
+        {/* Conteúdo do Bloco Visualizando */}
+        {blocoVisualizando && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>{blocoAtivo.titulo}</span>
-                <div className="flex gap-2">
-                  {editandoBloco === blocoAtivo.id ? (
-                    <>
-                      <Button size="sm" onClick={() => salvarEdicao(blocoAtivo.id)}>
-                        Salvar
-                      </Button>
-                      <Button size="sm" variant="outline" onClick={cancelarEdicao}>
-                        Cancelar
-                      </Button>
-                    </>
-                  ) : (
-                    <Button size="sm" onClick={() => iniciarEdicao(blocoAtivo)}>
+                <span>{blocoVisualizando.titulo}</span>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span className="text-sm text-green-600">Gerado</span>
+                  {!blocoEditando && (
+                    <Button
+                      onClick={() => editarBloco(blocoVisualizando)}
+                      variant="outline"
+                      size="sm"
+                      className="ml-2"
+                    >
                       Editar
                     </Button>
                   )}
@@ -437,39 +503,159 @@ export default function CriarETPPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {editandoBloco === blocoAtivo.id ? (
-                <div className="space-y-4">
-                  {conteudoEditado && Object.entries(conteudoEditado).map(([campo, valor]) => (
-                    <div key={campo}>
-                      <Label className="text-sm font-medium text-gray-700">
-                        {campo.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                </Label>
-                      <Textarea
-                        value={valor || ''}
-                        onChange={(e) => setConteudoEditado(prev => ({
-                          ...prev,
-                          [campo]: e.target.value
-                        }))}
-                  className="mt-1"
-                        rows={3}
-                />
+              <div className="space-y-6">
+                {blocoVisualizando.perguntas && blocoVisualizando.perguntas.map((pergunta) => (
+                  <div key={pergunta.id} className="border-b pb-4">
+                    <div className="mb-3">
+                      <Label className="font-medium text-gray-800 text-sm">
+                        {pergunta.order}. {pergunta.label}
+                      </Label>
+                    </div>
+                    
+                    {pergunta.type === 'checkbox' ? (
+                      <div className="space-y-2">
+                        {blocoEditando ? (
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-4">
+                              {pergunta.opcoes.map((opcao) => (
+                                <div key={opcao} className="flex items-center gap-2">
+                                  <input
+                                    type="radio"
+                                    name={`pergunta_${pergunta.id}`}
+                                    id={`${pergunta.id}_${opcao}`}
+                                    value={opcao}
+                                    checked={(blocoEditando.perguntas.find(p => p.id === pergunta.id)?.value.checkbox || '') === opcao}
+                                    onChange={(e) => atualizarValorPergunta(pergunta.id, 'checkbox', e.target.value)}
+                                    className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                                  />
+                                  <label htmlFor={`${pergunta.id}_${opcao}`} className="text-sm text-gray-700 cursor-pointer">
+                                    {opcao}
+                                  </label>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-4">
+                              {pergunta.opcoes.map((opcao) => (
+                                <div key={opcao} className="flex items-center gap-2">
+                                  <div 
+                                    className={`w-4 h-4 rounded border-2 flex items-center justify-center ${
+                                      pergunta.value.checkbox === opcao 
+                                        ? 'bg-blue-600 border-blue-600' 
+                                        : 'border-gray-300'
+                                    }`}
+                                  >
+                                    {pergunta.value.checkbox === opcao && (
+                                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                                    )}
+                                  </div>
+                                  <span className="text-sm text-gray-700">{opcao}</span>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="mt-2 p-3 bg-gray-50 rounded text-sm text-gray-600">
+                              <strong>Resposta selecionada:</strong> {pergunta.value.checkbox || 'Não selecionado'}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {blocoEditando ? (
+                          <Input
+                            value={blocoEditando.perguntas.find(p => p.id === pergunta.id)?.value.text || ''}
+                            onChange={(e) => atualizarValorPergunta(pergunta.id, 'text', e.target.value)}
+                            placeholder="Digite sua resposta..."
+                            className="w-full"
+                          />
+                        ) : (
+                          <div className="p-3 bg-gray-50 rounded text-sm text-gray-700">
+                            {pergunta.value.text}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
-                  ))}
+              
+              {/* Botões de ação para edição */}
+              {blocoEditando && (
+                <div className="flex justify-end gap-2 mt-6 pt-4 border-t">
+                  <Button
+                    onClick={cancelarEdicao}
+                    variant="outline"
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    onClick={salvarEdicoesBloco}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    Salvar Edições
+                  </Button>
                 </div>
-              ) : (
-                <div className="space-y-3">
-                  {blocoAtivo.dados && Object.entries(blocoAtivo.dados).map(([campo, valor]) => (
-                    <div key={campo} className="border-b pb-2">
-                      <p className="font-medium text-gray-700">
-                        {campo.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:
-                      </p>
-                      <p className="text-gray-600 mt-1">{valor}</p>
-            </div>
-                  ))}
-          </div>
               )}
             </CardContent>
           </Card>
+        )}
+
+        {/* Navegação entre blocos */}
+        {blocosGerados.length > 1 && (
+          <div className="flex justify-center gap-4">
+            <Button
+              onClick={() => navegarBloco('anterior')}
+              variant="outline"
+              disabled={blocoEditando}
+            >
+              ← Bloco Anterior
+            </Button>
+            <Button
+              onClick={() => navegarBloco('proximo')}
+              variant="outline"
+              disabled={blocoEditando}
+            >
+              Próximo Bloco →
+            </Button>
+          </div>
+        )}
+
+        {/* Botão para gerar próximo bloco */}
+        {blocoAtual <= 7 && blocosGerados.length < 7 && (
+          <div className="text-center">
+            <Button
+              onClick={gerarProximoBloco}
+              disabled={isGeneratingBloco || blocoEditando}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
+            >
+              {isGeneratingBloco ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Gerando Bloco {blocoAtual}...
+                </>
+              ) : (
+                <>
+                  <ChevronRight className="w-4 h-4 mr-2" />
+                  Gerar Próximo Bloco ({blocoAtual})
+                </>
+              )}
+            </Button>
+          </div>
+        )}
+
+        {/* Mensagem quando todos os blocos estiverem gerados */}
+        {blocosGerados.length >= 7 && (
+          <div className="text-center p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center justify-center gap-2 text-green-700">
+              <CheckCircle className="w-5 h-5" />
+              <span className="font-medium">Todos os 7 blocos foram gerados!</span>
+            </div>
+            <p className="text-sm text-green-600 mt-1">
+              Agora você pode consolidar o ETP final na seção abaixo.
+            </p>
+          </div>
         )}
       </div>
     );
@@ -501,10 +687,10 @@ export default function CriarETPPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                📋 Criar ETP - Novo Fluxo Unificado
+                📋 Criar ETP - Fluxo Sequencial
               </h1>
               <p className="text-gray-600">
-                Importe um DFD, edite os campos e gere o ETP completo
+                Importe um DFD, gere os blocos sequencialmente e consolide o ETP final
               </p>
             </div>
             <Button
@@ -573,20 +759,21 @@ export default function CriarETPPage() {
           {/* Etapa 2: Resumo do DFD */}
           {dfdResumo && renderDFDResumo()}
           
+          
           {/* Etapa 3: Blocos Gerados */}
           {dfdResumo && renderBlocosGerados()}
           
-          {/* Etapa 4: Gerar ETP */}
-          {dfdResumo && blocosGerados.length > 0 && (
+          {/* Etapa 4: Consolidar ETP */}
+          {dfdResumo && blocosGerados.length >= 7 && (
             <Card className="mt-8">
-            <CardHeader>
+              <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Download className="w-5 h-5" />
-                  Etapa 4: Gerar ETP Final
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
+                  Consolidar ETP Final
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
                   <div>
                     <Label htmlFor="numero-etp" className="text-sm font-medium">
                       Número do ETP <span className="text-red-500">*</span>
@@ -598,22 +785,22 @@ export default function CriarETPPage() {
                       placeholder="Ex: 001/2025"
                       className="mt-1"
                     />
-                </div>
-                
+                  </div>
+                  
                   <div className="text-center">
                     <Button
-                      onClick={generateETP}
-                      disabled={isGeneratingETP || !numeroETP.trim()}
+                      onClick={consolidarETP}
+                      disabled={isConsolidando || !numeroETP.trim()}
                       className="bg-green-600 hover:bg-green-700 text-white px-8 py-3"
                       size="lg"
                     >
-                      {isGeneratingETP ? (
+                      {isConsolidando ? (
                         <>
                           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Gerando ETP...
+                          Consolidando ETP...
                         </>
                       ) : (
-                        'Gerar ETP Completo'
+                        'Consolidar ETP Final'
                       )}
                     </Button>
                     
@@ -622,11 +809,39 @@ export default function CriarETPPage() {
                         ⚠️ O número do ETP é obrigatório
                       </p>
                     )}
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Etapa 5: Download do ETP */}
+          {podeFazerDownload && etpConsolidado && (
+            <Card className="mt-8 border-green-200 bg-green-50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-green-700">
+                  <CheckCircle className="w-5 h-5" />
+                  ETP Consolidado com Sucesso!
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center space-y-4">
+                  <p className="text-gray-600">
+                    O ETP foi consolidado com sucesso e está pronto para download.
+                  </p>
+                  
+                  <Button
+                    onClick={fazerDownload}
+                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3"
+                    size="lg"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Fazer Download do ETP
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </ProtectedRoute>

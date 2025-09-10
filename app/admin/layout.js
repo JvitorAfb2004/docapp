@@ -36,11 +36,7 @@ export default function AdminLayout({ children }) {
       icon: Users,
       href: '/admin/usuarios'
     },
-    {
-      title: 'OpenAI',
-      icon: Key,
-      href: '/admin/openai'
-    },
+
     {
       title: 'Prompts',
       icon: MessageSquare,

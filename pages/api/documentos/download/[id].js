@@ -28,6 +28,10 @@ async function generateDocumentFromData(tipo, data) {
     });
 
     console.log(`\n--- Dados enviados para template ${tipo} ---`);
+    console.log('📋 Variáveis específicas:');
+    console.log(`numero_etp: "${data.numero_etp}"`);
+    console.log(`numero_sgd: "${data.numero_sgd}"`);
+    console.log('📋 Dados completos:');
     console.log(JSON.stringify(data, null, 2));
     console.log('--- Fim dos dados ---\n');
     
@@ -43,6 +47,11 @@ async function generateDocumentFromData(tipo, data) {
     });
 
     try {
+      console.log('🔧 Iniciando renderização do template...');
+      console.log('📋 Dados finais para renderização:');
+      console.log('numero_etp:', data.numero_etp);
+      console.log('numero_sgd:', data.numero_sgd);
+      
       doc.render(data);
       console.log('✅ Template renderizado com sucesso no download');
     } catch (renderError) {
@@ -156,7 +165,202 @@ export default async function handler(request, response) {
       console.log(`Status atual: ${documento.status}`);
 
       // Gerar documento DOCX a partir dos dados salvos
-      const result = await generateDocumentFromData(documento.tipo, documento.dadosProcessados);
+      let dadosParaTemplate;
+      
+      if (documento.tipo === 'ETP') {
+        // Para ETP, extrair dados do resumoDFD e blocos
+        const { resumoDFD, blocos, etpFinal } = documento.dadosProcessados;
+        
+        console.log('🔍 Debug ETP - Estrutura dos dados:');
+        console.log('resumoDFD:', resumoDFD ? 'existe' : 'não existe');
+        console.log('etpFinal:', etpFinal ? 'existe' : 'não existe');
+        console.log('blocos:', blocos ? `existe (${blocos.length} blocos)` : 'não existe');
+        
+        if (etpFinal) {
+          console.log('etpFinal.numeroETP:', etpFinal.numeroETP);
+        }
+        if (resumoDFD) {
+          console.log('resumoDFD.numero_sgd:', resumoDFD.numero_sgd);
+        }
+        
+        // Preparar dados no formato esperado pelo template ETP.docx
+        const numeroETP = etpFinal?.numeroETP || resumoDFD?.numero_etp || 'A definir';
+        const numeroSGD = resumoDFD?.numero_sgd || 'A definir';
+        
+        console.log('🔍 Valores extraídos:');
+        console.log('numeroETP:', numeroETP);
+        console.log('numeroSGD:', numeroSGD);
+        
+        // Criar objeto de dados simples e direto - foco nas variáveis principais
+        dadosParaTemplate = {
+          // Variáveis principais que estavam faltando
+          numero_etp: numeroETP,
+          numero_sgd: numeroSGD,
+          
+          // Dados básicos do DFD
+          numero_dfd: resumoDFD?.numero_dfd || 'A definir',
+          orgao: resumoDFD?.orgao || 'A definir',
+          tipo_objeto: resumoDFD?.tipo_objeto || 'A definir',
+          descricao_objeto: resumoDFD?.descricao_objeto || 'A definir',
+          valor_estimado: resumoDFD?.valor_estimado || 'A definir',
+          classificacao_orcamentaria: resumoDFD?.classificacao_orcamentaria || 'A definir',
+          fonte: resumoDFD?.fonte || 'A definir',
+          elemento_despesa: resumoDFD?.elemento_despesa || 'A definir',
+          
+          // Responsáveis
+          fiscal_titular: resumoDFD?.fiscal_titular || 'A definir',
+          fiscal_suplente: resumoDFD?.fiscal_suplente || 'A definir',
+          gestor_titular: resumoDFD?.gestor_titular || 'A definir',
+          gestor_suplente: resumoDFD?.gestor_suplente || 'A definir',
+          demandante_nome: resumoDFD?.demandante_nome || 'A definir',
+          demandante_cargo: resumoDFD?.demandante_cargo || 'A definir',
+          demandante_setor: resumoDFD?.demandante_setor || 'A definir',
+          
+          // Data e local
+          data_atual: resumoDFD?.data_atual || new Date().toLocaleDateString('pt-BR'),
+          ano_atual: resumoDFD?.ano_atual || new Date().getFullYear().toString(),
+          local: resumoDFD?.local || 'Palmas – TO',
+          
+          // Conteúdo consolidado do ETP
+          conteudo_etp: etpFinal?.consolidado || 'Conteúdo do ETP não disponível',
+          
+          // Campos obrigatórios básicos
+          descricao_necessidade: resumoDFD?.descricao_objeto || 'Necessidade não especificada no DFD',
+          previsao_pca_etp_sim: 'x',
+          previsao_pca_etp_nao: ' ',
+          previsao_pca_etp_justificativa: 'A contratação está prevista no Plano de Contratações Anual conforme planejamento estratégico institucional',
+          objeto_continuado_justificativa: 'O serviço requer continuidade para garantir a qualidade e funcionamento adequado das instalações',
+          bem_luxo_justificativa: 'O objeto não se caracteriza como bem de luxo, sendo equipamento essencial para as atividades do órgão',
+          transicao_contratual_numero: ' ',
+          transicao_contratual_prazo: ' ',
+          amostra_prova_conceito_justificativa: 'Amostra necessária para verificar a qualidade dos produtos e eficácia do serviço',
+          exigencia_marca_especifica_justificativa: 'Marca específica exigida para garantir compatibilidade e padronização',
+          pesquisa_solucoes_justificativa: 'Pesquisa realizada em bases de dados governamentais e consulta a fornecedores especializados',
+          tratamento_diferenciado_simplificado_justificativa: 'Aplicação do tratamento diferenciado conforme Lei Complementar 123/2006 para estimular participação de ME/EPP',
+          meios_pesquisa_valor_espefico: 'Pesquisa realizada em bases de dados governamentais, consulta a fornecedores e análise de contratações similares',
+          estimativa_valor: resumoDFD?.valor_estimado || 'Valor a ser definido',
+          prazo_garantia_dias: ' ',
+          prazo_garantia_meses: ' ',
+          prazo_garantia_anos: ' ',
+          justificativa_nao_parcelamento: 'O serviço deve ser executado de forma integrada para garantir eficácia e qualidade',
+          impactos_ambientais_sim: ' ',
+          impactos_ambientais_nao: 'x',
+          impactos_ambientais_justificativa: 'Não há previsão de impactos ambientais significativos',
+          medidas_mitigacao: 'Não aplicável',
+          viabilidade_tecnica_sim: 'x',
+          viabilidade_tecnica_nao: ' ',
+          viabilidade_tecnica_justificativa: 'A contratação apresenta viabilidade técnica comprovada através de análise de mercado e especificações técnicas',
+          posicionamento_conclusivo_sim: 'x',
+          posicionamento_conclusivo_nao: ' ',
+          posicionamento_conclusivo_justificativa: 'A contratação é tecnicamente viável, economicamente justificada e está em conformidade com a legislação vigente',
+          
+          // Campos de natureza da contratação
+          natureza_continuada: ' ',
+          natureza_com_monopolio: ' ',
+          natureza_sem_monopolio: 'x',
+          natureza_nao_continuada: ' ',
+          
+          // Campos de vigência
+          vigencia_contrato_30_dias: ' ',
+          vigencia_contrato_12_meses: 'x',
+          vigencia_contrato_5_anos: ' ',
+          vigencia_contrato_indeterminado: ' ',
+          
+          // Campos de prorrogação
+          prorrogacao_contrato_sim: ' ',
+          prorrogacao_contrato_nao: 'x',
+          prorrogacao_contratual_indeterminado: ' ',
+          
+          // Campos de objeto continuado
+          objeto_continuado_sim: 'x',
+          objeto_continuado_nao: ' ',
+          
+          // Campos de sim/não - mapear para 'x' ou ' '
+          criterios_sustentabilidade_sim: resumoDFD?.criterios_sustentabilidade_sim || ' ',
+          criterios_sustentabilidade_nao: resumoDFD?.criterios_sustentabilidade_nao || ' ',
+          criterios_sustentabilidade_justificativa: resumoDFD?.criterios_sustentabilidade_justificativa || ' ',
+          
+          normativos_especificos_sim: resumoDFD?.normativos_especificos_sim || ' ',
+          normativos_especificos_nao: resumoDFD?.normativos_especificos_nao || ' ',
+          normativos_especificos_justificativa: resumoDFD?.normativos_especificos_justificativa || ' ',
+          
+          necessidade_treinamento_sim: resumoDFD?.necessidade_treinamento_sim || ' ',
+          necessidade_treinamento_nao: resumoDFD?.necessidade_treinamento_nao || ' ',
+          
+          bem_luxo_sim: resumoDFD?.bem_luxo_sim || ' ',
+          bem_luxo_nao: resumoDFD?.bem_luxo_nao || ' ',
+          
+          transicao_contratual_sim: resumoDFD?.transicao_contratual_sim || ' ',
+          transicao_contratual_nao: resumoDFD?.transicao_contratual_nao || ' ',
+          
+          amostra_prova_conceito_sim: resumoDFD?.amostra_prova_conceito_sim || ' ',
+          amostra_prova_conceito_nao: resumoDFD?.amostra_prova_conceito_nao || ' ',
+          
+          exigencia_marca_especifica_sim: resumoDFD?.exigencia_marca_especifica_sim || ' ',
+          exigencia_marca_especifica_nao: resumoDFD?.exigencia_marca_especifica_nao || ' ',
+          
+          permitida_subcontratacao_sim: resumoDFD?.permitida_subcontratacao_sim || ' ',
+          permitida_subcontratacao_nao: resumoDFD?.permitida_subcontratacao_nao || ' ',
+          
+          solucao_dividida_itens_sim: resumoDFD?.solucao_dividida_itens_sim || ' ',
+          solucao_dividida_itens_nao: resumoDFD?.solucao_dividida_itens_nao || 'x',
+          
+          posicionamento_conclusivo_sim: resumoDFD?.posicionamento_conclusivo_sim || ' ',
+          posicionamento_conclusivo_nao: resumoDFD?.posicionamento_conclusivo_nao || ' ',
+          
+          // Campos de pesquisa de soluções
+          pesquisa_solucoes_similares: ' ',
+          pesquisa_solucoes_internet: ' ',
+          pesquisa_solucoes_aud_publica: ' ',
+          pesquisa_solucoes_outro: 'x',
+          
+          // Campos de meios de pesquisa de valor
+          meios_pesquisa_valor_site_oficial: ' ',
+          meios_pesquisa_valor_contratacao_similar: ' ',
+          meios_pesquisa_valor_tabela_aprovadas: ' ',
+          meios_pesquisa_valor_sitio_eletronico: ' ',
+          meios_pesquisa_valor_fornecedor: ' ',
+          meios_pesquisa_valor_outro: 'x',
+          
+          // Campos de obtenção de quantitativo
+          obtencao_quantitativo_contratos_anteriores: ' ',
+          obtencao_quantitativo_contratos_similares: ' ',
+          obtencao_quantitativo_outro: 'x',
+          
+          // Campos de prazo de garantia
+          prazo_garantia_nao_ha: ' ',
+          prazo_garantia_90_dias: ' ',
+          prazo_garantia_12_meses: ' ',
+          prazo_garantia_outro: 'x',
+          
+          // Campos de benefícios pretendidos
+          beneficios_pretendidos_manutencao: ' ',
+          beneficios_pretendidos_reducao: ' ',
+          beneficios_pretendidos_aproveitamento: ' ',
+          beneficios_pretendidos_ganho_eficiente: ' ',
+          beneficios_pretendidos_qualidade: ' ',
+          beneficios_pretendidos_politica_publica: ' ',
+          beneficios_pretendidos_outro: 'x',
+          
+          // Conteúdo dos blocos
+          bloco1_conteudo: resumoDFD?.bloco1_conteudo || 'A definir',
+          bloco2_conteudo: resumoDFD?.bloco2_conteudo || 'A definir',
+          bloco3_conteudo: resumoDFD?.bloco3_conteudo || 'A definir',
+          bloco4_conteudo: resumoDFD?.bloco4_conteudo || 'A definir',
+          bloco5_conteudo: resumoDFD?.bloco5_conteudo || 'A definir',
+          bloco6_conteudo: resumoDFD?.bloco6_conteudo || 'A definir',
+          bloco7_conteudo: resumoDFD?.bloco7_conteudo || 'A definir',
+          
+          // Itens e responsáveis
+          itens: resumoDFD?.itens || [],
+          responsaveis_acao_orcamentaria: resumoDFD?.responsaveis_acao_orcamentaria || []
+        };
+      } else {
+        // Para outros tipos, usar dados processados diretamente
+        dadosParaTemplate = documento.dadosProcessados;
+      }
+      
+      const result = await generateDocumentFromData(documento.tipo, dadosParaTemplate);
       
       if (!result.success) {
         console.error('Erro na geração:', result.error);
