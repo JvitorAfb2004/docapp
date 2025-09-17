@@ -45,6 +45,8 @@ export default async function handler(req, res) {
     }
 
     console.log(`🤖 Gerando Bloco ${numeroBloco} com prompt verbatim...`);
+    console.log(`📋 Prompt técnico extraído:`, blocoSection.promptTecnico);
+    console.log(`📋 Prompt de resposta extraído:`, blocoSection.promptResposta);
 
     // Preparar contexto completo
     let contextoCompleto = `DFD ANALISADO:\n${textoDFD}\n\n`;
@@ -105,7 +107,10 @@ export default async function handler(req, res) {
         const jsonString = jsonMatch[1] || jsonMatch[0];
         dadosBloco = JSON.parse(jsonString);
         console.log('✅ JSON parseado com sucesso para bloco', numeroBloco);
+        console.log('🔍 JSON parseado:', JSON.stringify(dadosBloco, null, 2));
       } else {
+        console.log('❌ JSON não encontrado na resposta da IA');
+        console.log('📄 Resposta completa da IA:', rawContent);
         throw new Error('JSON não encontrado na resposta');
       }
     } catch (parseError) {
@@ -122,6 +127,8 @@ export default async function handler(req, res) {
       titulo: blocoSection.titulo,
       perguntas: createPerguntasEstruturadas(dadosBloco, numeroBloco),
       conteudoGerado: rawContent,
+      conteudo: rawContent, // Para compatibilidade com o template
+      dados: dadosBloco, // Dados estruturados para o template
       tipo: 'bloco',
       dataGeracao: new Date().toISOString()
     };
@@ -152,32 +159,32 @@ function extractBlocoPrompt(promptsContent, numeroBloco) {
     2: {
       titulo: 'Bloco 2 - Requisitos Técnicos e Regulamentares',
       promptTecnico: extractSection(promptsContent, '## BLOCO 2 - REQUISITOS TÉCNICOS E REGULAMENTARES', '### PROMPT TÉCNICO:'),
-      promptResposta: extractSection(promptsContent, '### PROMPT DE RESPOSTA:', '---')
+      promptResposta: extractSection(promptsContent, '## BLOCO 2 - REQUISITOS TÉCNICOS E REGULAMENTARES', '### PROMPT DE RESPOSTA:', '---')
     },
     3: {
       titulo: 'Bloco 3 - Dimensionamento Quantitativo',
       promptTecnico: extractSection(promptsContent, '## BLOCO 3 - DIMENSIONAMENTO QUANTITATIVO', '### PROMPT TÉCNICO:'),
-      promptResposta: extractSection(promptsContent, '### PROMPT DE RESPOSTA:', '---')
+      promptResposta: extractSection(promptsContent, '## BLOCO 3 - DIMENSIONAMENTO QUANTITATIVO', '### PROMPT DE RESPOSTA:', '---')
     },
     4: {
       titulo: 'Bloco 4 - Análise de Mercado e Viabilidade',
       promptTecnico: extractSection(promptsContent, '## BLOCO 4 - ANÁLISE DE MERCADO E VIABILIDADE', '### PROMPT TÉCNICO:'),
-      promptResposta: extractSection(promptsContent, '### PROMPT DE RESPOSTA:', '---')
+      promptResposta: extractSection(promptsContent, '## BLOCO 4 - ANÁLISE DE MERCADO E VIABILIDADE', '### PROMPT DE RESPOSTA:', '---')
     },
     5: {
       titulo: 'Bloco 5 - Solução Técnica Detalhada',
       promptTecnico: extractSection(promptsContent, '## BLOCO 5 - SOLUÇÃO TÉCNICA DETALHADA', '### PROMPT TÉCNICO:'),
-      promptResposta: extractSection(promptsContent, '### PROMPT DE RESPOSTA:', '---')
+      promptResposta: extractSection(promptsContent, '## BLOCO 5 - SOLUÇÃO TÉCNICA DETALHADA', '### PROMPT DE RESPOSTA:', '---')
     },
     6: {
       titulo: 'Bloco 6 - Resultados e Gestão',
       promptTecnico: extractSection(promptsContent, '## BLOCO 6 - RESULTADOS E GESTÃO', '### PROMPT TÉCNICO:'),
-      promptResposta: extractSection(promptsContent, '### PROMPT DE RESPOSTA:', '---')
+      promptResposta: extractSection(promptsContent, '## BLOCO 6 - RESULTADOS E GESTÃO', '### PROMPT DE RESPOSTA:', '---')
     },
     7: {
       titulo: 'Bloco 7 - Aspectos Complementares e Finalizações',
       promptTecnico: extractSection(promptsContent, '## BLOCO 7 - ASPECTOS COMPLEMENTARES E FINALIZAÇÕES', '### PROMPT TÉCNICO:'),
-      promptResposta: extractSection(promptsContent, '### PROMPT DE RESPOSTA:', '---')
+      promptResposta: extractSection(promptsContent, '## BLOCO 7 - ASPECTOS COMPLEMENTARES E FINALIZAÇÕES', '### PROMPT DE RESPOSTA:', '---')
     }
   };
 
@@ -265,7 +272,318 @@ function createFallbackStructure(numeroBloco) {
 function createPerguntasEstruturadas(dadosBloco, numeroBloco) {
   const perguntas = [];
   
-  // Mapeamento das perguntas por bloco baseado no estudo de referência
+  console.log(`📋 Criando perguntas estruturadas para bloco ${numeroBloco}`);
+  console.log('📊 Dados do bloco recebidos:', JSON.stringify(dadosBloco, null, 2));
+  
+  // Para o Bloco 1, usar a nova estrutura se disponível
+  if (numeroBloco === 1 && dadosBloco.bloco_1_caracteristicas_contratuais) {
+    console.log('🔄 Processando Bloco 1 com nova estrutura');
+    const bloco1 = dadosBloco.bloco_1_caracteristicas_contratuais;
+    
+    if (bloco1.perguntas && Array.isArray(bloco1.perguntas)) {
+      bloco1.perguntas.forEach((pergunta, index) => {
+        const perguntaEstruturada = {
+          id: pergunta.id,
+          label: pergunta.pergunta,
+          type: pergunta.tipo_conteudo === 'texto' ? 'text' : 'checkbox',
+          order: index + 1,
+          opcoes: pergunta.opcoes || [],
+          variaveis_etp: pergunta.variaveis_etp || [],
+          dependencias: pergunta.dependencias || {},
+          value: {
+            text: pergunta.tipo_conteudo === 'texto' ? (pergunta.resposta_ia || '') : '',
+            checkbox: pergunta.tipo_conteudo !== 'texto' ? (pergunta.resposta_ia || '') : '',
+            dependencias: {}
+          }
+        };
+        
+        // Processar dependências se existirem
+        if (pergunta.dependencias) {
+          Object.keys(pergunta.dependencias).forEach(depKey => {
+            const dependencia = pergunta.dependencias[depKey];
+            perguntaEstruturada.value.dependencias[depKey] = {
+              tipo_conteudo: dependencia.tipo_conteudo,
+              campo_associado: dependencia.campo_associado,
+              variaveis_etp: dependencia.variaveis_etp,
+              descricao: dependencia.descricao,
+              valor: ''
+            };
+          });
+        }
+        
+        console.log(`   → Pergunta criada (nova estrutura):`, perguntaEstruturada);
+        perguntas.push(perguntaEstruturada);
+      });
+      
+      return perguntas.sort((a, b) => a.order - b.order);
+    }
+  }
+  
+  // Para o Bloco 2, usar a nova estrutura se disponível
+  if (numeroBloco === 2 && dadosBloco.bloco_2_requisitos_tecnicos) {
+    console.log('🔄 Processando Bloco 2 com nova estrutura');
+    const bloco2 = dadosBloco.bloco_2_requisitos_tecnicos;
+    
+    if (bloco2.perguntas && Array.isArray(bloco2.perguntas)) {
+      bloco2.perguntas.forEach((pergunta, index) => {
+        const perguntaEstruturada = {
+          id: pergunta.id,
+          label: pergunta.pergunta,
+          type: pergunta.tipo_conteudo === 'texto' ? 'text' : 'checkbox',
+          order: index + 1,
+          opcoes: pergunta.opcoes || [],
+          variaveis_etp: pergunta.variaveis_etp || [],
+          dependencias: pergunta.dependencias || {},
+          value: {
+            text: pergunta.tipo_conteudo === 'texto' ? (pergunta.resposta_ia || '') : '',
+            checkbox: pergunta.tipo_conteudo !== 'texto' ? (pergunta.resposta_ia || '') : '',
+            dependencias: {}
+          }
+        };
+        
+        // Processar dependências se existirem
+        if (pergunta.dependencias) {
+          Object.keys(pergunta.dependencias).forEach(depKey => {
+            const dependencia = pergunta.dependencias[depKey];
+            perguntaEstruturada.value.dependencias[depKey] = {
+              tipo_conteudo: dependencia.tipo_conteudo,
+              campo_associado: dependencia.campo_associado,
+              variaveis_etp: dependencia.variaveis_etp,
+              descricao: dependencia.descricao,
+              valor: ''
+            };
+          });
+        }
+        
+        console.log(`   → Pergunta criada (nova estrutura):`, perguntaEstruturada);
+        perguntas.push(perguntaEstruturada);
+      });
+      
+      return perguntas.sort((a, b) => a.order - b.order);
+    }
+  }
+  
+  // Para o Bloco 3, usar a nova estrutura se disponível
+  if (numeroBloco === 3 && dadosBloco.bloco_3_dimensionamento_quantitativo) {
+    console.log('🔄 Processando Bloco 3 com nova estrutura');
+    const bloco3 = dadosBloco.bloco_3_dimensionamento_quantitativo;
+    
+    if (bloco3.perguntas && Array.isArray(bloco3.perguntas)) {
+      bloco3.perguntas.forEach((pergunta, index) => {
+        const perguntaEstruturada = {
+          id: pergunta.id,
+          label: pergunta.pergunta,
+          type: pergunta.tipo_conteudo === 'texto' ? 'text' : 'checkbox',
+          order: index + 1,
+          opcoes: pergunta.opcoes || [],
+          variaveis_etp: pergunta.variaveis_etp || [],
+          dependencias: pergunta.dependencias || {},
+          value: {
+            text: pergunta.tipo_conteudo === 'texto' ? (pergunta.resposta_ia || '') : '',
+            checkbox: pergunta.tipo_conteudo !== 'texto' ? (pergunta.resposta_ia || '') : '',
+            dependencias: {}
+          }
+        };
+        
+        // Processar dependências se existirem
+        if (pergunta.dependencias) {
+          Object.keys(pergunta.dependencias).forEach(depKey => {
+            const dependencia = pergunta.dependencias[depKey];
+            perguntaEstruturada.value.dependencias[depKey] = {
+              tipo_conteudo: dependencia.tipo_conteudo,
+              campo_associado: dependencia.campo_associado,
+              variaveis_etp: dependencia.variaveis_etp,
+              descricao: dependencia.descricao,
+              valor: ''
+            };
+          });
+        }
+        
+        console.log(`   → Pergunta criada (nova estrutura):`, perguntaEstruturada);
+        perguntas.push(perguntaEstruturada);
+      });
+      
+      return perguntas.sort((a, b) => a.order - b.order);
+    }
+  }
+  
+  // Para o Bloco 4, usar a nova estrutura se disponível
+  if (numeroBloco === 4 && dadosBloco.bloco_4_analise_mercado) {
+    console.log('🔄 Processando Bloco 4 com nova estrutura');
+    const bloco4 = dadosBloco.bloco_4_analise_mercado;
+    
+    if (bloco4.perguntas && Array.isArray(bloco4.perguntas)) {
+      bloco4.perguntas.forEach((pergunta, index) => {
+        const perguntaEstruturada = {
+          id: pergunta.id,
+          label: pergunta.pergunta,
+          type: pergunta.tipo_conteudo === 'texto' ? 'text' : 'checkbox',
+          order: index + 1,
+          opcoes: pergunta.opcoes || [],
+          variaveis_etp: pergunta.variaveis_etp || [],
+          dependencias: pergunta.dependencias || {},
+          value: {
+            text: pergunta.tipo_conteudo === 'texto' ? (pergunta.resposta_ia || '') : '',
+            checkbox: pergunta.tipo_conteudo !== 'texto' ? (pergunta.resposta_ia || '') : '',
+            dependencias: {}
+          }
+        };
+        
+        // Processar dependências se existirem
+        if (pergunta.dependencias) {
+          Object.keys(pergunta.dependencias).forEach(depKey => {
+            const dependencia = pergunta.dependencias[depKey];
+            perguntaEstruturada.value.dependencias[depKey] = {
+              tipo_conteudo: dependencia.tipo_conteudo,
+              campo_associado: dependencia.campo_associado,
+              variaveis_etp: dependencia.variaveis_etp,
+              descricao: dependencia.descricao,
+              valor: ''
+            };
+          });
+        }
+        
+        console.log(`   → Pergunta criada (nova estrutura):`, perguntaEstruturada);
+        perguntas.push(perguntaEstruturada);
+      });
+      
+      return perguntas.sort((a, b) => a.order - b.order);
+    }
+  }
+  
+  // Para o Bloco 5, usar a nova estrutura se disponível
+  if (numeroBloco === 5 && dadosBloco.bloco_5_solucao_tecnica) {
+    console.log('🔄 Processando Bloco 5 com nova estrutura');
+    const bloco5 = dadosBloco.bloco_5_solucao_tecnica;
+    
+    if (bloco5.perguntas && Array.isArray(bloco5.perguntas)) {
+      bloco5.perguntas.forEach((pergunta, index) => {
+        const perguntaEstruturada = {
+          id: pergunta.id,
+          label: pergunta.pergunta,
+          type: pergunta.tipo_conteudo === 'texto' ? 'text' : 'checkbox',
+          order: index + 1,
+          opcoes: pergunta.opcoes || [],
+          variaveis_etp: pergunta.variaveis_etp || [],
+          dependencias: pergunta.dependencias || {},
+          value: {
+            text: pergunta.tipo_conteudo === 'texto' ? (pergunta.resposta_ia || '') : '',
+            checkbox: pergunta.tipo_conteudo !== 'texto' ? (pergunta.resposta_ia || '') : '',
+            dependencias: {}
+          }
+        };
+        
+        // Processar dependências se existirem
+        if (pergunta.dependencias) {
+          Object.keys(pergunta.dependencias).forEach(depKey => {
+            const dependencia = pergunta.dependencias[depKey];
+            perguntaEstruturada.value.dependencias[depKey] = {
+              tipo_conteudo: dependencia.tipo_conteudo,
+              campo_associado: dependencia.campo_associado,
+              variaveis_etp: dependencia.variaveis_etp,
+              descricao: dependencia.descricao,
+              valor: ''
+            };
+          });
+        }
+        
+        console.log(`   → Pergunta criada (nova estrutura):`, perguntaEstruturada);
+        perguntas.push(perguntaEstruturada);
+      });
+      
+      return perguntas.sort((a, b) => a.order - b.order);
+    }
+  }
+  
+  // Para o Bloco 6, usar a nova estrutura se disponível
+  if (numeroBloco === 6 && dadosBloco.bloco_6_resultados_e_gestao) {
+    console.log('🔄 Processando Bloco 6 com nova estrutura');
+    const bloco6 = dadosBloco.bloco_6_resultados_e_gestao;
+    
+    if (bloco6.perguntas && Array.isArray(bloco6.perguntas)) {
+      bloco6.perguntas.forEach((pergunta, index) => {
+        const perguntaEstruturada = {
+          id: pergunta.id,
+          label: pergunta.pergunta,
+          type: pergunta.tipo_conteudo === 'texto' ? 'text' : 'checkbox',
+          order: index + 1,
+          opcoes: pergunta.opcoes || [],
+          variaveis_etp: pergunta.variaveis_etp || [],
+          dependencias: pergunta.dependencias || {},
+          value: {
+            text: pergunta.tipo_conteudo === 'texto' ? (pergunta.resposta_ia || '') : '',
+            checkbox: pergunta.tipo_conteudo !== 'texto' ? (pergunta.resposta_ia || '') : '',
+            dependencias: {}
+          }
+        };
+        
+        // Processar dependências se existirem
+        if (pergunta.dependencias) {
+          Object.keys(pergunta.dependencias).forEach(depKey => {
+            const dependencia = pergunta.dependencias[depKey];
+            perguntaEstruturada.value.dependencias[depKey] = {
+              tipo_conteudo: dependencia.tipo_conteudo,
+              campo_associado: dependencia.campo_associado,
+              variaveis_etp: dependencia.variaveis_etp,
+              descricao: dependencia.descricao,
+              valor: ''
+            };
+          });
+        }
+        
+        console.log(`   → Pergunta criada (nova estrutura):`, perguntaEstruturada);
+        perguntas.push(perguntaEstruturada);
+      });
+      
+      return perguntas.sort((a, b) => a.order - b.order);
+    }
+  }
+  
+  // Para o Bloco 7, usar a nova estrutura se disponível
+  if (numeroBloco === 7 && dadosBloco.bloco_7_aspectos_complementares) {
+    console.log('🔄 Processando Bloco 7 com nova estrutura');
+    const bloco7 = dadosBloco.bloco_7_aspectos_complementares;
+    
+    if (bloco7.perguntas && Array.isArray(bloco7.perguntas)) {
+      bloco7.perguntas.forEach((pergunta, index) => {
+        const perguntaEstruturada = {
+          id: pergunta.id,
+          label: pergunta.pergunta,
+          type: pergunta.tipo_conteudo === 'texto' ? 'text' : 'checkbox',
+          order: index + 1,
+          opcoes: pergunta.opcoes || [],
+          variaveis_etp: pergunta.variaveis_etp || [],
+          dependencias: pergunta.dependencias || {},
+          value: {
+            text: pergunta.tipo_conteudo === 'texto' ? (pergunta.resposta_ia || '') : '',
+            checkbox: pergunta.tipo_conteudo !== 'texto' ? (pergunta.resposta_ia || '') : '',
+            dependencias: {}
+          }
+        };
+        
+        // Processar dependências se existirem
+        if (pergunta.dependencias) {
+          Object.keys(pergunta.dependencias).forEach(depKey => {
+            const dependencia = pergunta.dependencias[depKey];
+            perguntaEstruturada.value.dependencias[depKey] = {
+              tipo_conteudo: dependencia.tipo_conteudo,
+              campo_associado: dependencia.campo_associado,
+              variaveis_etp: dependencia.variaveis_etp,
+              descricao: dependencia.descricao,
+              valor: ''
+            };
+          });
+        }
+        
+        console.log(`   → Pergunta criada (nova estrutura):`, perguntaEstruturada);
+        perguntas.push(perguntaEstruturada);
+      });
+      
+      return perguntas.sort((a, b) => a.order - b.order);
+    }
+  }
+  
+  // Mapeamento das perguntas por bloco baseado no estudo de referência (estrutura antiga)
   const perguntasPorBloco = {
     1: [
       { campo: 'tipoObjeto', label: 'Qual o tipo de objeto da contratação?', type: 'checkbox', opcoes: ['Bem', 'Serviço'] },
@@ -329,15 +647,28 @@ function createPerguntasEstruturadas(dadosBloco, numeroBloco) {
   perguntasBloco.forEach((pergunta, index) => {
     const valor = dadosBloco[pergunta.campo] || '';
     
+    console.log(`📝 Processando pergunta: ${pergunta.campo}, valor: "${valor}", tipo: ${pergunta.type}`);
+    
     // Determinar valor correto para checkbox
     let valorCheckbox = '';
     if (pergunta.type === 'checkbox') {
-      if (pergunta.opcoes.includes(valor)) {
-        valorCheckbox = valor;
+      // Verificar se o valor contém alguma das opções
+      let opcaoEncontrada = pergunta.opcoes.find(opcao => 
+        valor.toLowerCase().includes(opcao.toLowerCase()) ||
+        opcao.toLowerCase().includes(valor.toLowerCase())
+      );
+      
+      if (opcaoEncontrada) {
+        valorCheckbox = opcaoEncontrada;
+      } else if (valor && valor !== 'Não informado no DFD') {
+        // Se há um valor mas não corresponde às opções, usar "Sim" por padrão
+        valorCheckbox = pergunta.opcoes.includes('Sim') ? 'Sim' : pergunta.opcoes[0];
       } else {
-        // Se o valor não está nas opções, usar "Não" como padrão
-        valorCheckbox = 'Não';
+        // Se não há valor ou é "Não informado no DFD", usar "Não"
+        valorCheckbox = pergunta.opcoes.includes('Não') ? 'Não' : pergunta.opcoes[0];
       }
+      
+      console.log(`   → Checkbox: "${valorCheckbox}" (opções: ${pergunta.opcoes.join(', ')})`);
     }
     
     const perguntaEstruturada = {
@@ -347,11 +678,12 @@ function createPerguntasEstruturadas(dadosBloco, numeroBloco) {
       order: index + 1,
       opcoes: pergunta.opcoes || [],
       value: {
-        text: pergunta.type === 'text' ? valor : '',
+        text: pergunta.type === 'text' ? (valor === 'Não informado no DFD' ? '' : valor) : '',
         checkbox: valorCheckbox
       }
     };
     
+    console.log(`   → Pergunta criada:`, perguntaEstruturada);
     perguntas.push(perguntaEstruturada);
   });
 

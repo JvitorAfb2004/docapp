@@ -1,0 +1,182 @@
+Ótimo. Dando continuidade, aqui estão as informações para o **Bloco 5 - Solução Técnica Detalhada**.
+
+-----
+
+### **Perguntas do Bloco 5**
+
+1.  **Pesquisa de preços**
+    Quais meios foram utilizados?
+      * ( ) Painel de Preços do Governo
+      * ( ) Contratações similares (últimos 6 meses)
+      * ( ) Cotação com fornecedores
+      * ( ) Tabelas oficiais (SINAPI, etc.)
+      * ( ) Outros - Especifique
+2.  **Descrição completa da contratação**
+    Detalhe TUDO que será contratado:
+      * Escopo completo dos serviços/produtos
+      * Frequência de execução
+      * Materiais/insumos inclusos
+      * Mão de obra especializada
+      * Equipamentos necessários
+3.  **Garantia**
+    Qual prazo de garantia?
+      * ( ) Não há
+      * ( ) 90 dias
+      * ( ) 12 meses
+      * ( ) Outro: dias/meses/anos
+4.  **Assistência técnica**
+    É necessária?
+      * ( ) Sim - Descreva escopo e condições
+      * ( ) Não se aplica
+5.  **Manutenção**
+    Há necessidade de manutenção?
+      * ( ) Sim - Detalhe tipo e periodicidade
+      * ( ) Não aplicável
+6.  **Parcelamento**
+    A solução será dividida em lotes?
+      * ( ) Sim - Justifique viabilidade técnica e econômica
+      * ( ) Não - Item único (justifique economia de escala)
+
+-----
+
+### **Variáveis e Regras de Preenchimento**
+
+  * **Pesquisa de preços:**
+
+      * **Variáveis no ETP:** `{meios_pesquisa_valor_site_oficial}`, `{meios_pesquisa_valor_contratacao_similar}`, `{meios_pesquisa_valor_tabela_aprovadas}`, `{meios_pesquisa_valor_sitio_eletronico}`, `{meios_pesquisa_valor_fornecedor}` e `{meios_pesquisa_valor_outro}`.
+      * **Regra:** Marcar com um "X" uma ou mais opções. Se a opção "Outro" for selecionada, preencher a variável `{meios_pesquisa_valor_espefico}`.
+
+  * **Descrição completa da contratação:**
+
+      * **Variável no ETP:** `{solucao_escolhida}`.
+      * **Regra:** Preencher com um texto detalhado, explicando o escopo completo, incluindo equipamentos, suporte, SLA e outras condições da contratação.
+
+  * **Garantia:**
+
+      * **Variáveis no ETP:** `{prazo_garantia_nao_ha}`, `{prazo_garantia_90_dias}`, `{prazo_garantia_12_meses}` e `{prazo_garantia_outro}`. Se "Outro" for escolhido, preencher `{prazo_garantia_dias}`, `{prazo_garantia_meses}` ou `{prazo_garantia_anos}`.
+      * **Regra:** Marcar com um "X" a opção correta.
+
+  * **Assistência técnica:**
+
+      * **Variáveis no ETP:** `{necessidade_assistencia_tecnica_sim}` e `{necessidade_assistencia_tecnica_nao}`. Se "Sim", preencher `{necessidade_assistencia_tecnica_justificativa}`.
+      * **Regra:** Marcar com um "X" a opção correta e justificar se necessário.
+
+  * **Manutenção:**
+
+      * **Variáveis no ETP:** `{necessidade_manutencao_sim}` e `{necessidade_manutencao_nao}`. Se "Sim", preencher `{necessidade_manutencao_justificativa}`.
+      * **Regra:** Marcar com um "X" a opção correta e detalhar o tipo e periodicidade se necessário.
+
+  * **Parcelamento:**
+
+      * **Variáveis no ETP:** `{solucao_dividida_itens_sim}` e `{solucao_dividida_itens_nao}`. Se "Não", preencher `{justificativa_nao_parcelamento}`.
+      * **Regra:** Marcar com um "X" a opção correta e justificar a decisão, especialmente se a resposta for "Não", explicando a economia de escala.
+
+-----
+
+### **JSON de Exemplo para a IA**
+
+```json
+{
+  "bloco_5_solucao_tecnica": {
+    "perguntas": [
+      {
+        "id": "pesquisa_precos",
+        "pergunta": "Quais meios foram utilizados na pesquisa de preços?",
+        "variaveis_etp": ["meios_pesquisa_valor_site_oficial", "meios_pesquisa_valor_contratacao_similar", "meios_pesquisa_valor_tabela_aprovadas", "meios_pesquisa_valor_sitio_eletronico", "meios_pesquisa_valor_fornecedor", "meios_pesquisa_valor_outro", "meios_pesquisa_valor_espefico"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Painel de Preços do Governo", "variavel_etp": "meios_pesquisa_valor_site_oficial"},
+          {"valor": "Contratações similares", "variavel_etp": "meios_pesquisa_valor_contratacao_similar"},
+          {"valor": "Tabelas oficiais (SINAPI, etc.)", "variavel_etp": "meios_pesquisa_valor_tabela_aprovadas"},
+          {"valor": "Sítios eletrônicos especializados", "variavel_etp": "meios_pesquisa_valor_sitio_eletronico"},
+          {"valor": "Cotação com fornecedores", "variavel_etp": "meios_pesquisa_valor_fornecedor"},
+          {"valor": "Outros", "variavel_etp": "meios_pesquisa_valor_outro", "dependencia": "especificacao_outros_meios"}
+        ],
+        "dependencias": {
+          "especificacao_outros_meios": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "meios_pesquisa_valor_espefico",
+            "descricao": "Especificar outros meios de pesquisa."
+          }
+        }
+      },
+      {
+        "id": "descricao_completa",
+        "pergunta": "Descrição completa da contratação",
+        "variaveis_etp": ["solucao_escolhida"],
+        "tipo_conteudo": "texto"
+      },
+      {
+        "id": "garantia",
+        "pergunta": "Qual o prazo de garantia do objeto?",
+        "variaveis_etp": ["prazo_garantia_nao_ha", "prazo_garantia_90_dias", "prazo_garantia_12_meses", "prazo_garantia_outro"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Não há", "variavel_etp": "prazo_garantia_nao_ha"},
+          {"valor": "90 dias", "variavel_etp": "prazo_garantia_90_dias"},
+          {"valor": "12 meses", "variavel_etp": "prazo_garantia_12_meses"},
+          {"valor": "Outro", "variavel_etp": "prazo_garantia_outro", "dependencia": "especificacao_garantia"}
+        ],
+        "dependencias": {
+          "especificacao_garantia": {
+            "tipo_conteudo": "texto",
+            "variaveis_etp": ["prazo_garantia_dias", "prazo_garantia_meses", "prazo_garantia_anos"],
+            "descricao": "Especificar o prazo em dias, meses ou anos."
+          }
+        }
+      },
+      {
+        "id": "assistencia_tecnica",
+        "pergunta": "Há necessidade de assistência técnica?",
+        "variaveis_etp": ["necessidade_assistencia_tecnica_sim", "necessidade_assistencia_tecnica_nao", "necessidade_assistencia_tecnica_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "necessidade_assistencia_tecnica_sim", "dependencia": "justificativa_assistencia"},
+          {"valor": "Não se aplica", "variavel_etp": "necessidade_assistencia_tecnica_nao"}
+        ],
+        "dependencias": {
+          "justificativa_assistencia": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "necessidade_assistencia_tecnica_justificativa",
+            "descricao": "Justificar a necessidade e descrever o escopo."
+          }
+        }
+      },
+      {
+        "id": "manutencao",
+        "pergunta": "Há necessidade de manutenção?",
+        "variaveis_etp": ["necessidade_manutencao_sim", "necessidade_manutencao_nao", "necessidade_manutencao_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "necessidade_manutencao_sim", "dependencia": "justificativa_manutencao"},
+          {"valor": "Não se aplica", "variavel_etp": "necessidade_manutencao_nao"}
+        ],
+        "dependencias": {
+          "justificativa_manutencao": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "necessidade_manutencao_justificativa",
+            "descricao": "Detalhar tipo e periodicidade da manutenção."
+          }
+        }
+      },
+      {
+        "id": "parcelamento",
+        "pergunta": "A solução será dividida em itens?",
+        "variaveis_etp": ["solucao_dividida_itens_sim", "solucao_dividida_itens_nao", "justificativa_nao_parcelamento"],
+        "tipo_conteudo": "marcar_x_e_justificativa",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "solucao_dividida_itens_sim", "dependencia": "justificativa_parcelamento"},
+          {"valor": "Não", "variavel_etp": "solucao_dividida_itens_nao", "dependencia": "justificativa_parcelamento"}
+        ],
+        "dependencias": {
+          "justificativa_parcelamento": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "justificativa_nao_parcelamento",
+            "descricao": "Justificar o parcelamento ou a não divisão em itens."
+          }
+        }
+      }
+    ]
+  }
+}
+```

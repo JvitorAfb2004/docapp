@@ -1,0 +1,143 @@
+-----
+
+### **Perguntas do Bloco 6**
+
+[cite\_start]Aqui estão as perguntas que a IA deve usar para coletar as informações necessárias para a seção de Resultados e Gestão, conforme o documento `Blocos de Perguntas DFD-ETP.pdf`[cite: 22, 171]:
+
+1.  **Benefícios pretendidos**
+    Quais resultados espera-se obter?
+      * ( ) Manutenção do funcionamento administrativo
+      * ( ) Redução de custos operacionais
+      * ( ) Aproveitamento de recursos humanos
+      * ( ) Redução de riscos do trabalho
+      * ( ) Ganho de eficiência operacional
+      * ( ) Melhoria na qualidade de produtos/serviços
+      * ( ) Realização de política pública específica
+      * ( ) Outro - Especifique
+2.  **Nota explicativa dos resultados**
+    [cite\_start]Forneça uma descrição DETALHADA dos resultados esperados com a contratação, explicando como os benefícios selecionados na pergunta anterior contribuirão para os objetivos institucionais[cite: 22, 183].
+3.  **Providências pendentes**
+    Há ações necessárias antes da contratação?
+      * ( ) Sim - Liste todas
+      * ( ) Não há pendências
+4.  **Gestão e fiscalização**
+    Confirme requisitos específicos:
+      * Competências necessárias para gestor
+      * Competências necessárias para fiscal
+      * Conhecimentos técnicos específicos
+      * Frequência de acompanhamento
+5.  **Contratações relacionadas**
+    Há interdependências?
+      * ( ) Sim - Especifique quais contratos/processos
+      * ( ) Não há correlações
+
+-----
+
+### **Variáveis e Regras de Preenchimento**
+
+  * **Benefícios pretendidos:**
+
+      * [cite\_start]**Variáveis no ETP:** `{beneficios_pretendidos_manutencao}`, `{beneficios_pretendidos_reducao_custos}`, `{beneficios_pretendidos_aproveitamento}`, `{beneficios_pretendidos_reducao_riscos}`, `{beneficios_pretendidos_ganho_eficiente}`, `{beneficios_pretendidos_qualidade}`, `{beneficios_pretendidos_politica_publica}` e `{beneficios_pretendidos_outro}`[cite: 398].
+      * **Regra:** Marcar com um "X" uma ou mais opções. [cite\_start]Se a opção "Outro" for selecionada, preencher a variável `{beneficios_pretendidos_beneficio}` com o benefício específico[cite: 398].
+
+  * **Nota explicativa dos resultados:**
+
+      * [cite\_start]**Variável no ETP:** `{beneficios_pretendidos_explicacao}`[cite: 398].
+      * **Regra:** Preencher com um texto detalhado, explicando como os benefícios selecionados contribuirão para os objetivos da instituição.
+
+  * **Providências pendentes:**
+
+      * [cite\_start]**Variáveis no ETP:** `{providencias_pendentes_sim}` e `{providencias_pendentes_nao}`[cite: 399].
+      * **Regra:** Marcar com um "X" uma das opções. [cite\_start]Se "Sim", listar as providências na variável `{providencias_pendentes_especificar}`[cite: 399].
+
+  * **Gestão e fiscalização:**
+
+      * [cite\_start]**Variáveis no ETP:** `{requisitos_gestao_contratual}` e `{requisitos_fiscalizacao}`[cite: 399].
+      * [cite\_start]**Regra:** Preencher com um texto detalhado que descreva as competências e conhecimentos necessários para a gestão e fiscalização do contrato[cite: 22, 190, 191, 192].
+
+  * **Contratações relacionadas:**
+
+      * [cite\_start]**Variáveis no ETP:** `{contratacoes_correlatas_sim}` e `{contratacoes_correlatas_nao}`[cite: 400].
+      * **Regra:** Marcar com um "X" uma das opções. [cite\_start]Se "Sim", especificar os contratos/processos na variável `{contratacoes_correlatas_justificativa}`[cite: 400].
+
+-----
+
+### **JSON de Exemplo para a IA**
+
+```json
+{
+  "bloco_6_resultados_e_gestao": {
+    "perguntas": [
+      {
+        "id": "beneficios_pretendidos",
+        "pergunta": "Quais os benefícios pretendidos na contratação?",
+        "variaveis_etp": ["beneficios_pretendidos_manutencao", "beneficios_pretendidos_reducao", "beneficios_pretendidos_aproveitamento", "beneficios_pretendidos_reducao", "beneficios_pretendidos_ganho_eficiente", "beneficios_pretendidos_qualidade", "beneficios_pretendidos_politica_publica", "beneficios_pretendidos_outro"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Manutenção do funcionamento administrativo", "variavel_etp": "beneficios_pretendidos_manutencao"},
+          {"valor": "Redução de custos", "variavel_etp": "beneficios_pretendidos_reducao"},
+          {"valor": "Aproveitamento de recursos humanos", "variavel_etp": "beneficios_pretendidos_aproveitamento"},
+          {"valor": "Redução dos riscos do trabalho", "variavel_etp": "beneficios_pretendidos_reducao"},
+          {"valor": "Ganho de eficiência", "variavel_etp": "beneficios_pretendidos_ganho_eficiente"},
+          {"valor": "Melhoria na qualidade de produtos e serviços", "variavel_etp": "beneficios_pretendidos_qualidade"},
+          {"valor": "Realização de política pública", "variavel_etp": "beneficios_pretendidos_politica_publica"},
+          {"valor": "Outro", "variavel_etp": "beneficios_pretendidos_outro", "dependencia": "justificativa_beneficio"}
+        ],
+        "dependencias": {
+          "justificativa_beneficio": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "beneficios_pretendidos_beneficio",
+            "descricao": "Indicar o benefício específico."
+          }
+        }
+      },
+      {
+        "id": "nota_explicativa_resultados",
+        "pergunta": "Nota explicativa dos resultados:",
+        "variaveis_etp": ["beneficios_pretendidos_explicacao"],
+        "tipo_conteudo": "texto"
+      },
+      {
+        "id": "providencias_pendentes",
+        "pergunta": "Há providências pendentes para o sucesso da contratação?",
+        "variaveis_etp": ["providencias_pendentes_sim", "providencias_pendentes_nao", "providencias_pendentes_especificar"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "providencias_pendentes_sim", "dependencia": "especificar_pendencias"},
+          {"valor": "Não", "variavel_etp": "providencias_pendentes_nao"}
+        ],
+        "dependencias": {
+          "especificar_pendencias": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "providencias_pendentes_especificar",
+            "descricao": "Listar todas as pendências."
+          }
+        }
+      },
+      {
+        "id": "gestao_fiscalizacao",
+        "pergunta": "Indicar os requisitos para a gestão e fiscalização contratual.",
+        "variaveis_etp": ["requisitos_gestao_contratual", "requisitos_fiscalizacao"],
+        "tipo_conteudo": "texto"
+      },
+      {
+        "id": "contratacoes_relacionadas",
+        "pergunta": "Há contratações correlatas ou interdependentes?",
+        "variaveis_etp": ["contratacoes_correlatas_sim", "contratacoes_correlatas_nao", "contratacoes_correlatas_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "contratacoes_correlatas_sim", "dependencia": "justificativa_correlatas"},
+          {"valor": "Não", "variavel_etp": "contratacoes_correlatas_nao"}
+        ],
+        "dependencias": {
+          "justificativa_correlatas": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "contratacoes_correlatas_justificativa",
+            "descricao": "Indicar os contratos correlatos ou interdependentes."
+          }
+        }
+      }
+    ]
+  }
+}
+```

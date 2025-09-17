@@ -1,0 +1,226 @@
+Com base nas suas instruções, preparei todas as informações necessárias para o Bloco 2. Você encontrará as perguntas do bloco, as variáveis correspondentes no documento, as regras para o preenchimento e um JSON de exemplo para a IA.
+
+-----
+
+### **Perguntas do Bloco 2**
+
+[cite\_start]Aqui estão as perguntas exatas que você precisa usar para a coleta de informações, conforme o documento `Blocos de Perguntas DFD-ETP.pdf`[cite: 237].
+
+1.  **Sustentabilidade**
+    [cite\_start]Há critérios ambientais ou de sustentabilidade? [cite: 239, 240]
+      * ( ) [cite\_start]Sim - Especifique quais [cite: 241]
+      * ( ) [cite\_start]Não - Confirme [cite: 242]
+2.  **Treinamento**
+    [cite\_start]Haverá necessidade de capacitação? [cite: 244]
+      * ( ) [cite\_start]Sim - Descreva o escopo [cite: 245]
+      * ( ) [cite\_start]Não - Confirme [cite: 246]
+3.  **Bem de luxo**
+    [cite\_start]O objeto se enquadra como bem de luxo (Decreto 10.818/2021)? [cite: 247, 248]
+      * ( ) [cite\_start]Sim - Justifique obrigatoriamente [cite: 249]
+      * ( ) [cite\_start]Não - Confirme enquadramento [cite: 250]
+4.  **Transição contratual**
+    [cite\_start]A contratada deve transferir conhecimento/tecnologia? [cite: 252]
+      * ( ) [cite\_start]Sim - Contrato atual nº com prazo final [cite: 253]
+      * ( ) [cite\_start]Não se aplica [cite: 254]
+5.  **Normativos específicos**
+    [cite\_start]Há normas técnicas aplicáveis? [cite: 256]
+      * ( ) [cite\_start]Sim - Liste todas (NBR, NR, resoluções, etc.) [cite: 257]
+      * ( ) [cite\_start]Não se aplica [cite: 258]
+6.  **Amostra/prova de conceito**
+    [cite\_start]Será exigida demonstração prévia? [cite: 259, 260]
+      * ( ) [cite\_start]Sim - Justifique necessidade e descreva escopo [cite: 261]
+      * ( ) [cite\_start]Não necessário [cite: 262]
+7.  **Marca específica**
+    [cite\_start]Há exigência de marca? [cite: 263, 264]
+      * ( ) [cite\_start]Sim - Justifique tecnicamente conforme legislação [cite: 265]
+      * ( ) [cite\_start]Não há restrição [cite: 266]
+8.  **Subcontratação**
+    [cite\_start]Será permitida terceirização de partes do serviço? [cite: 267, 268]
+      * ( ) [cite\_start]Sim - Com limitações até % ou em quais atividades [cite: 269]
+      * ( ) [cite\_start]Não permitida - Justifique [cite: 270]
+
+-----
+
+### **Variáveis e Regras de Preenchimento**
+
+[cite\_start]Para cada pergunta, aqui estão as variáveis do documento `ETP.docx` [cite: 151] que você deve preencher e as regras específicas para cada tipo de conteúdo.
+
+1.  **Sustentabilidade**
+
+      * **Variáveis no ETP:** `{criterios_sustentabilidade_sim}` e `{criterios_sustentabilidade_nao}`.
+      * [cite\_start]**Regra:** Marcar com um "X" a opção "Sim" ou "Não"[cite: 151]. [cite\_start]Se "Sim", preencher a variável `{criterios_sustentabilidade_justificativa}` com os critérios específicos[cite: 151].
+
+2.  **Treinamento**
+
+      * **Variáveis no ETP:** `{necessidade_treinamento_sim}` e `{necessidade_treinamento_nao}`.
+      * [cite\_start]**Regra:** Marcar com um "X" a opção "Sim" ou "Não"[cite: 151]. [cite\_start]Se "Sim", o escopo deve ser descrito em uma seção de detalhamento técnico do ETP, conforme o modelo[cite: 151].
+
+3.  **Bem de luxo**
+
+      * **Variáveis no ETP:** `{bem_luxo_sim}` e `{bem_luxo_nao}`.
+      * [cite\_start]**Regra:** Marcar com um "X" a opção "Sim" ou "Não"[cite: 151]. [cite\_start]Se "Sim", preencher a variável `{bem_luxo_justificativa}` com a justificativa obrigatória[cite: 151]. [cite\_start]Se "Não", o modelo já inclui o texto padrão de enquadramento[cite: 151].
+
+4.  **Transição contratual**
+
+      * **Variáveis no ETP:** `{transicao_contratual_sim}` e `{transicao_contratual_nao}`.
+      * [cite\_start]**Regra:** Marcar com um "X" a opção "Sim" ou "Não se aplica"[cite: 151]. [cite\_start]Se "Sim", preencher as variáveis `{transicao_contratual_numero}` e `{transicao_contratual_prazo}`[cite: 151].
+
+5.  **Normativos específicos**
+
+      * **Variáveis no ETP:** `{normativos_especificos_sim}` e `{normativos_especificos_nao}`.
+      * [cite\_start]**Regra:** Marcar com um "X" a opção "Sim" ou "Não"[cite: 151]. [cite\_start]Se "Sim", listar os normativos na variável `{normativos_especificos_justificativa}`[cite: 151].
+
+6.  **Amostra/prova de conceito**
+
+      * **Variáveis no ETP:** `{amostra_prova_conceito_sim}` e `{amostra_prova_conceito_nao}`.
+      * [cite\_start]**Regra:** Marcar com um "X" a opção "Sim" ou "Não"[cite: 151]. [cite\_start]Se "Sim", justificar a necessidade na variável `{amostra_prova_conceito_justificativa}`[cite: 151].
+
+7.  **Marca específica**
+
+      * **Variáveis no ETP:** `{exigencia_marca_especifica_sim}` e `{exigencia_marca_especifica_nao}`.
+      * [cite\_start]**Regra:** Marcar com um "X" a opção "Sim" ou "Não"[cite: 151]. [cite\_start]Se "Sim", justificar tecnicamente na variável `{exigencia_marca_especifica_justificativa}`[cite: 151].
+
+8.  **Subcontratação**
+
+      * **Variáveis no ETP:** `{permitida_subcontratacao_sim}` e `{permitida_subcontratacao_nao}`.
+      * [cite\_start]**Regra:** Marcar com um "X" a opção "Sim" ou "Não"[cite: 151]. [cite\_start]Se "Sim", especificar as limitações na variável `{permitida_subcontratacao_limitado}`[cite: 151].
+
+-----
+
+### **JSON de Exemplo para a IA**
+
+Este JSON organiza as perguntas do Bloco 2 e suas respectivas variáveis, permitindo que a IA forneça uma resposta estruturada e fácil de ser interpretada pelo seu código.
+
+```json
+{
+  "bloco_2_requisitos_tecnicos": {
+    "perguntas": [
+      {
+        "id": "sustentabilidade",
+        "pergunta": "Há critérios ou práticas de sustentabilidade?",
+        "variaveis_etp": ["criterios_sustentabilidade_sim", "criterios_sustentabilidade_nao", "criterios_sustentabilidade_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "criterios_sustentabilidade_sim", "dependencia": "justificativa_sustentabilidade"},
+          {"valor": "Não", "variavel_etp": "criterios_sustentabilidade_nao"}
+        ],
+        "dependencias": {
+          "justificativa_sustentabilidade": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "criterios_sustentabilidade_justificativa",
+            "descricao": "Especificar os critérios de sustentabilidade."
+          }
+        }
+      },
+      {
+        "id": "treinamento",
+        "pergunta": "Há necessidade de treinamento?",
+        "variaveis_etp": ["necessidade_treinamento_sim", "necessidade_treinamento_nao"],
+        "tipo_conteudo": "marcar_x"
+      },
+      {
+        "id": "bem_luxo",
+        "pergunta": "Os bens a serem adquiridos se enquadram como bem de luxo?",
+        "variaveis_etp": ["bem_luxo_sim", "bem_luxo_nao", "bem_luxo_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "bem_luxo_sim", "dependencia": "justificativa_bem_luxo"},
+          {"valor": "Não", "variavel_etp": "bem_luxo_nao"}
+        ],
+        "dependencias": {
+          "justificativa_bem_luxo": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "bem_luxo_justificativa",
+            "descricao": "Justificar a contratação do bem de luxo."
+          }
+        }
+      },
+      {
+        "id": "transicao_contratual",
+        "pergunta": "A contratada deverá promover transição contratual com transferência de conhecimento, tecnologia e técnicas empregadas?",
+        "variaveis_etp": ["transicao_contratual_sim", "transicao_contratual_nao", "transicao_contratual_numero", "transicao_contratual_prazo"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "transicao_contratual_sim", "dependencia": "detalhes_transicao"},
+          {"valor": "Não se aplica", "variavel_etp": "transicao_contratual_nao"}
+        ],
+        "dependencias": {
+          "detalhes_transicao": {
+            "tipo_conteudo": "texto",
+            "variaveis_etp": ["transicao_contratual_numero", "transicao_contratual_prazo"],
+            "descricao": "Fornecer número do contrato e prazo final."
+          }
+        }
+      },
+      {
+        "id": "normativos_especificos",
+        "pergunta": "Há normativos específicos que disciplinam os serviços ou produtos a serem contratados?",
+        "variaveis_etp": ["normativos_especificos_sim", "normativos_especificos_nao", "normativos_especificos_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "normativos_especificos_sim", "dependencia": "justificativa_normativos"},
+          {"valor": "Não", "variavel_etp": "normativos_especificos_nao"}
+        ],
+        "dependencias": {
+          "justificativa_normativos": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "normativos_especificos_justificativa",
+            "descricao": "Listar os normativos técnicos e regulatórios."
+          }
+        }
+      },
+      {
+        "id": "amostra_prova_conceito",
+        "pergunta": "Será exigida amostra ou prova de conceito?",
+        "variaveis_etp": ["amostra_prova_conceito_sim", "amostra_prova_conceito_nao", "amostra_prova_conceito_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "amostra_prova_conceito_sim", "dependencia": "justificativa_amostra"},
+          {"valor": "Não necessário", "variavel_etp": "amostra_prova_conceito_nao"}
+        ],
+        "dependencias": {
+          "justificativa_amostra": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "amostra_prova_conceito_justificativa",
+            "descricao": "Justificar a necessidade e descrever."
+          }
+        }
+      },
+      {
+        "id": "exigencia_marca_especifica",
+        "pergunta": "Consta exigência de marca específica?",
+        "variaveis_etp": ["exigencia_marca_especifica_sim", "exigencia_marca_especifica_nao", "exigencia_marca_especifica_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "exigencia_marca_especifica_sim", "dependencia": "justificativa_marca"},
+          {"valor": "Não", "variavel_etp": "exigencia_marca_especifica_nao"}
+        ],
+        "dependencias": {
+          "justificativa_marca": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "exigencia_marca_especifica_justificativa",
+            "descricao": "Justificar a exigência de marca."
+          }
+        }
+      },
+      {
+        "id": "permitida_subcontratacao",
+        "pergunta": "Será permitida subcontratação?",
+        "variaveis_etp": ["permitida_subcontratacao_sim", "permitida_subcontratacao_nao", "permitida_subcontratacao_limitado"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "permitida_subcontratacao_sim", "dependencia": "limite_subcontratacao"},
+          {"valor": "Não", "variavel_etp": "permitida_subcontratacao_nao"}
+        ],
+        "dependencias": {
+          "limite_subcontratacao": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "permitida_subcontratacao_limitado",
+            "descricao": "Especificar o limite de subcontratação."
+          }
+        }
+      }
+    ]
+  }
+}
+```

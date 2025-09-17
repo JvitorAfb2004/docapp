@@ -1,0 +1,151 @@
+ORIENTAÇÕES PARA DETALHAMENTO TÉCNICO DO ETP
+OBJETIVO
+Este documento orienta como produzir ETPs com densidade técnica adequada, evitando textos
+superficiais e garantindo fundamentação robusta.
+SEÇÃO I - DESCRIÇÃO DA NECESSIDADE DA CONTRATAÇÃO
+ESTRUTURA OBRIGATÓRIA (4 parágrafos mínimo):
+Parágrafo 1 - Contexto Institucional:
+Missão e atividades do órgão relacionadas à demanda
+Importância estratégica da necessidade
+Vinculação com objetivos institucionais
+Parágrafo 2 - Descrição Técnica Detalhada:
+Especificações técnicas completas
+Características operacionais necessárias
+Volumes, frequências, dimensões
+Parágrafo 3 - Ausência de Capacidade Interna:
+Por que não pode ser executado internamente
+Ausência de pessoal qualificado
+Falta de equipamentos/infraestrutura
+Complexidade técnica
+Parágrafo 4 - Benefícios e Usuários:
+Quem será beneficiado
+Impactos positivos esperados
+Melhoria nos serviços públicos
+SEÇÃO II - DEMONSTRAÇÃO DA PREVISÃO NO PCA
+TEXTO PADRÃO COMPLETO:
+"A contratação em tela tem adequação orçamentária e compatibilidade com o Plano Plurianual (PPA),
+com a Lei Orçamentária Anual (LOA), com a Lei de Diretrizes Orçamentárias (LDO) e está alinhada ao
+planejamento estratégico institucional.
+A despesa está amparada por dotação orçamentária própria, regularmente consignada na funcional
+programática indicada no quadro abaixo, em conformidade com os princípios da legalidade e eficiência
+da administração pública.
+O planejamento da contratação observa as diretrizes orçamentárias estabelecidas, garantindo o
+cumprimento das metas físicas e financeiras previstas no programa temático correspondente."
+SEÇÃO V - LEVANTAMENTO DE MERCADO
+JUSTIFICATIVA TÉCNICA (3 parágrafos mínimo):
+Parágrafo 1 - Análise da Solução:
+Por que esta solução é tecnicamente adequada
+Conformidade com normas técnicas
+Especificações que atendem à necessidade
+Parágrafo 2 - Comparação de Alternativas:
+Outras soluções avaliadas
+Motivos da escolha desta solução
+Vantagens técnicas diferenciais
+Parágrafo 3 - Aspectos Operacionais:
+Como a solução será implementada
+Requisitos técnicos de execução
+Compatibilidade com infraestrutura existente
+JUSTIFICATIVA ECONÔMICA (3 parágrafos mínimo):
+Parágrafo 1 - Análise Custo-Benefício:
+Comparação: fazer internamente vs contratar
+Custos evitados com a contratação
+Economia de escala obtida
+Parágrafo 2 - Eficiência Econômica:
+Otimização de recursos públicos
+Previsibilidade orçamentária
+Redução de custos operacionais
+Parágrafo 3 - Impacto Financeiro:
+Relação custo x resultados esperados
+Economias de longo prazo
+Justificativa do investimento
+SEÇÃO VII - DESCRIÇÃO DA SOLUÇÃO
+ESTRUTURA DETALHADA (4 parágrafos mínimo):
+Parágrafo 1 - Escopo Geral:
+Descrição completa do que será contratado
+Abrangência dos serviços/produtos
+Delimitação clara do objeto
+Parágrafo 2 - Especificações Técnicas:
+Características técnicas detalhadas
+Padrões de qualidade exigidos
+Normas técnicas aplicáveis
+Parágrafo 3 - Condições de Execução:
+Como será executado
+Prazos e cronograma
+Local de execução
+Recursos necessários
+Parágrafo 4 - Entregáveis e Resultados:
+O que será entregue
+Critérios de aceitação
+Documentação incluída
+Garantias e responsabilidades
+SEÇÃO IX - RESULTADOS PRETENDIDOS
+NOTA EXPLICATIVA DETALHADA (2 parágrafos mínimo):
+Parágrafo 1 - Resultados Diretos:
+Benefícios imediatos da contratação
+Melhorias operacionais específicas
+Impactos mensuráveis
+Parágrafo 2 - Resultados Indiretos:
+Benefícios de médio/longo prazo
+Impacto na qualidade dos serviços públicos
+Contribuição para objetivos estratégicos
+SEÇÃO X - PROVIDÊNCIAS PELA ADMINISTRAÇÃO
+REQUISITOS PARA GESTÃO (2 parágrafos):
+Parágrafo 1 - Competências do Gestor:
+Conhecimentos técnicos necessários
+Experiência em gestão contratual
+Responsabilidades específicas
+Parágrafo 2 - Atividades de Gestão:
+Acompanhamento administrativo
+Controle financeiro
+Coordenação com fornecedor
+REQUISITOS PARA FISCALIZAÇÃO (2 parágrafos):
+Parágrafo 1 - Competências do Fiscal:
+Conhecimentos técnicos específicos
+Capacitação em fiscalização
+Qualificações necessárias
+Parágrafo 2 - Atividades de Fiscalização:
+Acompanhamento técnico
+Verificação de conformidade
+Controle de qualidade
+SEÇÃO XIII - POSICIONAMENTO CONCLUSIVO
+ESTRUTURA OBRIGATÓRIA (3 parágrafos mínimo):
+Parágrafo 1 - Viabilidade Técnica:
+Adequação técnica da solução
+Atendimento às especificações
+Conformidade normativa
+Parágrafo 2 - Viabilidade Econômica:
+Adequação do valor estimado
+Eficiência do investimento
+Sustentabilidade financeira
+Parágrafo 3 - Síntese Conclusiva:
+Consolidação dos argumentos
+Recomendação para prosseguimento
+Referência ao Termo de Referência
+CRITÉRIOS DE QUALIDADE
+DENSIDADE TEXTUAL:
+Mínimo: 8-10 páginas para ETP completo
+Seções críticas: I, V, VII, XIII devem ter 3-4 parágrafos cada
+Parágrafos: 4-6 linhas cada, com desenvolvimento técnico
+LINGUAGEM TÉCNICA:
+Uso de terminologia específica da área
+Referências a normas e regulamentos
+Justificativas fundamentadas
+FUNDAMENTAÇÃO LEGAL:
+Citação de dispositivos legais pertinentes
+Conformidade com Lei 14.133/2021
+Observância aos princípios administrativos
+EXEMPLOS DE LINGUAGEM TÉCNICA
+❌ LINGUAGEM SUPERFICIAL:
+"O serviço é necessário para atender às demandas do órgão."
+✅ LINGUAGEM TÉCNICA ADEQUADA:
+"A presente contratação justifica-se pela necessidade de garantir a continuidade operacional dos serviços
+de [área específica], em conformidade com os padrões técnicos estabelecidos pela [norma/regulamento],
+atendendo a [público específico] e contribuindo para [objetivo institucional específico]."
+VALIDAÇÃO DE QUALIDADE
+Cada seção deve responder:
+✅ O QUÊ? Descrição completa e técnica
+✅ POR QUÊ? Justificativas fundamentadas
+✅ COMO? Metodologia e execução
+✅ QUANTO? Dimensionamento e valores
+✅ QUANDO? Cronograma e prazos
+✅ ONDE? Local e condições de execução

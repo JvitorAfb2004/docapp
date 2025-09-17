@@ -57,7 +57,7 @@ export default async function handler(req, res) {
     // Carregar os prompts necessários
     const promptUnificadoPath = path.join(process.cwd(), 'documentos', 'prompt-unificado-dfd-etp.txt');
     const blocoPerguntasPath = path.join(process.cwd(), 'documentos', 'bloco-de-perguntas_dfd_para_etp.txt');
-    const orientacoesPath = path.join(process.cwd(), 'documentos', 'orientacoes para o detalhamento.txt');
+    const orientacoesPath = path.join(process.cwd(), 'documentos', 'orientacoes-detalhamento.txt');
     
     const promptUnificado = fs.readFileSync(promptUnificadoPath, 'utf8');
     const blocoPerguntas = fs.readFileSync(blocoPerguntasPath, 'utf8');

@@ -5,6 +5,12 @@ Apresente UM BLOCO por vez ao usuário
 Aguarde todas as respostas antes de prosseguir ao próximo
 Use as perguntas EXATAMENTE como escritas
 Explique brevemente a importância técnica/legal de cada bloco
+
+OBSERVAÇÕES IMPORTANTES
+Total de perguntas: 41 organizadas em 7 blocos temáticos
+Tempo estimado: 20-30 minutos para coleta completa
+Objetivo: Coletar 100% das informações necessárias para ETP completo
+Uso obrigatório: Todas as perguntas devem ser respondidas antes de criar o ETP
 BLOCO 1 - CARACTERÍSTICAS CONTRATUAIS FUNDAMENTAIS
 "Vamos definir os aspectos contratuais básicos, essenciais para enquadramento legal:"
 1. Tipo de objeto

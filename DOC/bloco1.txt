@@ -1,0 +1,191 @@
+BLOCO 1:
+
+A IA DEVE TRAZER O JSON NESSE FORMATO:
+{
+  "bloco_1_caracteristicas_contratuais": {
+    "perguntas": [
+      {
+        "id": "tipo_objeto",
+        "pergunta": "Qual o tipo de objeto?",
+        "variaveis_etp": ["tipo_objeto_bem", "tipo_objeto_servico"],
+        "tipo_conteudo": "marcar_x",
+        "opcoes": [
+          {"valor": "Bem", "variavel_etp": "tipo_objeto_bem"},
+          {"valor": "Serviço", "variavel_etp": "tipo_objeto_servico"}
+        ]
+      },
+      {
+        "id": "vigencia_contrato",
+        "pergunta": "Qual a vigência do contrato?",
+        "variaveis_etp": ["vigencia_contrato_30_dias", "vigencia_contrato_12_meses", "vigencia_contrato_5_anos", "vigencia_contrato_outro", "vigencia_contrato_qtd_dias", "vigencia_contrato_qtd_meses", "vigencia_contrato_qtd_anos"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "30 dias", "variavel_etp": "vigencia_contrato_30_dias"},
+          {"valor": "12 meses", "variavel_etp": "vigencia_contrato_12_meses"},
+          {"valor": "5 anos", "variavel_etp": "vigencia_contrato_5_anos"},
+          {"valor": "Outro", "variavel_etp": "vigencia_contrato_outro", "dependencia": "justificativa_vigencia"}
+        ],
+        "dependencias": {
+          "justificativa_vigencia": {
+            "tipo_conteudo": "marcar_x_e_texto",
+            "campo_associado": "vigencia_contrato_outro",
+            "variaveis_etp": ["vigencia_contrato_qtd_dias", "vigencia_contrato_qtd_meses", "vigencia_contrato_qtd_anos"],
+            "descricao": "Especificar a duração em dias, meses ou anos."
+          }
+        }
+      },
+      {
+        "id": "prorrogacao",
+        "pergunta": "Poderá haver prorrogação?",
+        "variaveis_etp": ["prorrogacao_contrato_sim", "prorrogacao_contrato_nao", "prorrogacao_contrato_indeterminado"],
+        "tipo_conteudo": "marcar_x_e_justificativa",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "prorrogacao_contrato_sim", "dependencia": "justificativa_prorrogacao"},
+          {"valor": "Não", "variavel_etp": "prorrogacao_contrato_nao", "dependencia": "justificativa_prorrogacao"},
+          {"valor": "Não se aplica", "variavel_etp": "prorrogacao_contrato_indeterminado"}
+        ],
+        "dependencias": {
+          "justificativa_prorrogacao": {
+            "tipo_conteudo": "texto",
+            "campo_associado": "prorrogacao_contrato_sim_ou_nao",
+            "variavel_etp": "prorrogacao_contrato_justificativa",
+            "descricao": "Justificar o motivo da prorrogação ou não."
+          }
+        }
+      },
+      {
+        "id": "natureza_contratacao",
+        "pergunta": "Qual a natureza da contratação?",
+        "variaveis_etp": ["natureza_continuada_sem_monopolio", "natureza_com_monopolio", "natureza_nao_continuada"],
+        "tipo_conteudo": "marcar_x",
+        "opcoes": [
+          {"valor": "Continuada sem monopólio", "variavel_etp": "natureza_continuada"},
+          {"valor": "Continuada com monopólio", "variavel_etp": "natureza_com_monopolio"},
+          {"valor": "Não continuada", "variavel_etp": "natureza_nao_continuada"}
+        ]
+      },
+      {
+        "id": "objeto_continuado",
+        "pergunta": "O objeto da contratação trata-se de fornecimento ou serviço continuado?",
+        "variaveis_etp": ["objeto_continuado_sim", "objeto_continuado_nao"],
+        "tipo_conteudo": "marcar_x_e_justificativa",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "objeto_continuado_sim", "dependencia": "justificativa_continuado"},
+          {"valor": "Não", "variavel_etp": "objeto_continuado_nao", "dependencia": "justificativa_continuado"}
+        ],
+        "dependencias": {
+          "justificativa_continuado": {
+            "tipo_conteudo": "texto",
+            "campo_associado": "objeto_continuado_sim_ou_nao",
+            "variavel_etp": "objeto_continuado_justificativa",
+            "descricao": "Justificar conforme art. 106 da Lei nº 14.133/2021 ou explicar a natureza."
+          }
+        }
+      },
+      {
+        "id": "local_entrega_servico",
+        "pergunta": "Local de entrega do bem ou de prestação do serviço:",
+        "variaveis_etp": ["local_entrega_servico"],
+        "tipo_conteudo": "texto"
+      },
+      {
+        "id": "protocolo_pncp",
+        "pergunta": "Número do protocolo de envio do PCA ao PNCP:",
+        "variaveis_etp": ["protocolo_pncp"],
+        "tipo_conteudo": "texto"
+      }
+    ]
+  }
+}
+
+Certo. Com base no documento "Blocos de Perguntas DFD-ETP.pdf", as regras para o preenchimento do **Bloco 1 - Características Contratuais Fundamentais** são as seguintes:
+
+---
+
+### **Regras de Preenchimento do Bloco 1**
+
+1.  **Tipo de objeto**
+    * **Tipo de conteúdo:** Marcar com um "X" a opção correta.
+    * [cite_start]**Regra:** Escolher entre **Bem** ou **Serviço**[cite: 1, 12, 13].
+
+2.  **Vigência do contrato**
+    * **Tipo de conteúdo:** Marcar com um "X" a opção correta.
+    * [cite_start]**Regra:** Escolher entre **30 dias**, **12 meses**, **60 meses** ou **Outro**[cite: 1, 16, 17, 18, 19].
+    * [cite_start]**Condicional:** Se a opção **Outro** for marcada, você deve especificar a duração exata em dias, meses ou anos em um campo de texto[cite: 1, 19].
+
+3.  **Prorrogação**
+    * **Tipo de conteúdo:** Marcar com um "X" a opção correta.
+    * [cite_start]**Regra:** Escolher entre **Sim**, **Não** ou **Não se aplica**[cite: 1, 22, 23, 24].
+    * **Condicional:**
+        * [cite_start]Se a resposta for **Sim**, você deve justificar o motivo e por quanto tempo o contrato poderá ser prorrogado em um campo de texto[cite: 1, 22].
+        * [cite_start]Se a resposta for **Não**, você deve justificar o motivo da não prorrogação em um campo de texto[cite: 1, 23].
+
+4.  **Natureza da contratação**
+    * **Tipo de conteúdo:** Marcar com um "X" a opção correta.
+    * [cite_start]**Regra:** Escolher entre **Continuada sem monopólio**, **Continuada com monopólio** ou **Não continuada**[cite: 1, 26, 27, 28].
+
+5.  **Fornecimento/serviço continuado**
+    * **Tipo de conteúdo:** Marcar com um "X" a opção correta.
+    * [cite_start]**Regra:** Escolher entre **Sim** ou **Não**[cite: 2, 30, 31, 32].
+    * **Condicional:**
+        * Se a resposta for **Sim**, você deve justificar com base no art. [cite_start]106 da Lei 14.133/2021[cite: 2, 31].
+        * [cite_start]Se a resposta for **Não**, você deve explicar a natureza da contratação[cite: 2, 32].
+
+6.  **Endereço completo de execução**
+    * **Tipo de conteúdo:** Texto livre.
+    * [cite_start]**Regra:** Fornecer o endereço detalhado, incluindo CEP e referências do local[cite: 2, 34].
+
+7.  **Número do protocolo PNCP**
+    * **Tipo de conteúdo:** Número ou texto.
+    * [cite_start]**Regra:** Fornecer o número do protocolo de envio do Plano de Contratações Anual (PCA) ao PNCP, se disponível[cite: 2, 36].
+[cite_start]Para iniciar o Bloco 1, vou te apresentar as perguntas do "Bloco 1 - Características Contratuais Fundamentais"[cite: 8].
+
+[cite_start]Vamos definir os aspectos contratuais básicos, essenciais para o enquadramento legal: [cite: 9]
+
+1.  [cite_start]**Tipo de objeto:** [cite: 10]
+    [cite_start]O objeto da contratação é: [cite: 11]
+    * ( ) [cite_start]Bem [cite: 12]
+    * ( ) [cite_start]Serviço [cite: 13]
+
+2.  [cite_start]**Vigência do contrato:** [cite: 14]
+    [cite_start]Qual será a duração? [cite: 15]
+    * ( ) [cite_start]30 dias (pronta entrega) [cite: 16]
+    * ( ) [cite_start]12 meses (padrão para serviços anuais) [cite: 17]
+    * ( ) [cite_start]60 meses (máximo para serviços continuados) [cite: 18]
+    * ( ) [cite_start]Outro: [especificar em dias/meses/anos] [cite: 19]
+
+3.  [cite_start]**Prorrogação:** [cite: 20]
+    [cite_start]Será possível prorrogar o contrato? [cite: 21]
+    * ( ) [cite_start]Sim - Por quê e por quanto tempo? [cite: 22]
+    * ( ) [cite_start]Não - Justifique [cite: 23]
+    * ( ) [cite_start]Não se aplica (prazo indeterminado) [cite: 24]
+
+4.  [cite_start]**Natureza da contratação:** [cite: 25]
+    * ( ) [cite_start]Continuada sem monopólio (competitiva) [cite: 26]
+    * ( ) [cite_start]Continuada com monopólio (única fonte) [cite: 27]
+    * ( ) [cite_start]Não continuada (pontual/específica) [cite: 28]
+
+5.  [cite_start]**Fornecimento/serviço continuado:** [cite: 29]
+    [cite_start]O objeto é de fornecimento ou prestação continuada? [cite: 30]
+    * ( ) Sim - Justifique conforme art. [cite_start]106 da Lei 14.133/2021 [cite: 31]
+    * ( ) [cite_start]Não - Explique a natureza [cite: 32]
+
+6.  [cite_start]**Endereço completo de execução:** [cite: 33]
+    [cite_start]Forneça endereço detalhado com CEP, referências e especificidades do local. [cite: 34]
+
+7.  [cite_start]**Número do protocolo PNCP:** [cite: 35]
+    Qual o número do protocolo de envio do PCA ao PNCP? (Se disponível) [cite_start][cite: 36]
+
+---
+
+### **Preenchimento das variáveis no documento ETP.docx**
+
+Com base nas respostas para as perguntas acima, você deverá preencher as seguintes variáveis no documento `ETP.docx` na Seção III - Requisitos de Contratação:
+
+* `{tipo_objeto_bem}` ou `{tipo_objeto_servico}`
+* `{vigencia_contrato_30_dias}`, `{vigencia_contrato_12_meses }`, `{vigencia_contrato_5_anos}` ou `{vigencia_contrato_outro}`
+* `{prorrogacao_contrato_sim}` ou `{prorrogacao_contrato_nao}`
+* `{natureza_continuada_sem_monopolio}`, `{natureza_com_monopolio}` ou `{natureza_nao_continuada}`
+* `{objeto_continuado_sim}` ou `{objeto_continuado_nao}`
+* `{local_entrega_servico}`
+* `{protocolo_pncp}`

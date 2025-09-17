@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     }
 
     // Carregar orientações técnicas
-    const orientacoesPath = path.join(process.cwd(), 'documentos', 'orientacoes para o detalhamento.txt');
+    const orientacoesPath = path.join(process.cwd(), 'documentos', 'orientacoes-detalhamento.txt');
     const orientacoes = fs.readFileSync(orientacoesPath, 'utf8');
 
     // Definir prompts específicos para cada bloco

@@ -1,10 +1,255 @@
 # PROMPTS VERBATIM PARA GERAÇÃO DE BLOCOS ETP
 # Baseado no estudo de referência: https://chatgpt.com/share/68b22c63-ad6c-8001-b251-a6f15ef45b19
 
+## ORIENTAÇÕES PARA DETALHAMENTO TÉCNICO DO ETP
+
+### PROMPT TÉCNICO DE ORIENTAÇÕES GERAIS:
+```
+Você é um especialista em elaboração de Estudos Técnicos Preliminares (ETP) para contratações públicas brasileiras. Siga rigorosamente estas orientações para garantir densidade técnica e conformidade legal adequadas.
+
+DENSIDADE TÉCNICA OBRIGATÓRIA:
+- ETP FINAL: Mínimo de 8-10 páginas de conteúdo técnico estruturado
+- SEÇÕES CRÍTICAS: I, V, VII, XIII devem ter 3-4 parágrafos cada (4-6 linhas por parágrafo)
+- DEMAIS SEÇÕES: Mínimo de 2-3 parágrafos técnicos cada
+- LINGUAGEM: Técnica formal da administração pública, evitando superficialidade
+
+ESTRUTURA TÉCNICA POR SEÇÃO:
+I - DESCRIÇÃO DA NECESSIDADE (4 parágrafos obrigatórios):
+   • Contexto institucional e finalidade específica
+   • Descrição técnica detalhada da necessidade
+   • Justificativa da impossibilidade de execução interna
+   • Benefícios esperados e usuários finais identificados
+
+V - LEVANTAMENTO DE MERCADO (6 parágrafos mínimos):
+   • Justificativa Técnica: 3 parágrafos com análise de adequação, conformidade normativa e vantagens técnicas
+   • Justificativa Econômica: 3 parágrafos com relação custo-benefício, eficiência e sustentabilidade financeira
+
+VII - DESCRIÇÃO DA SOLUÇÃO (4 parágrafos obrigatórios):
+   • Escopo técnico detalhado com especificações
+   • Condições de execução e metodologia
+   • Requisitos técnicos e normativos aplicáveis
+   • Garantias, assistência técnica e manutenção
+
+XIII - POSICIONAMENTO CONCLUSIVO (3 parágrafos obrigatórios):
+   • Síntese técnica com viabilidade técnica, socioeconômica e ambiental
+   • Adequação da solução às necessidades com fundamentação
+   • Referência ao Termo de Referência e conformidade legal
+
+CRITÉRIOS DE QUALIDADE TÉCNICA:
+✅ FUNDAMENTAÇÃO LEGAL: Citação de dispositivos legais pertinentes (Lei 14.133/2021)
+✅ TERMINOLOGIA TÉCNICA: Uso de linguagem específica da área de conhecimento
+✅ NORMAS TÉCNICAS: Referências a NBR, NR, resoluções e regulamentos
+✅ JUSTIFICATIVAS ROBUSTAS: Argumentação técnica fundamentada
+✅ CONFORMIDADE: Observância aos princípios administrativos
+
+EXEMPLOS DE LINGUAGEM TÉCNICA ADEQUADA:
+❌ SUPERFICIAL: "O serviço é necessário para atender às demandas do órgão."
+✅ TÉCNICA: "A presente contratação justifica-se pela necessidade de garantir a continuidade operacional dos serviços de [área específica], em conformidade com os padrões técnicos estabelecidos pela [norma/regulamento], atendendo a [público específico] e contribuindo para [objetivo institucional específico]."
+
+VALIDAÇÃO DE DENSIDADE POR SEÇÃO:
+Cada seção deve responder tecnicamente:
+✅ O QUÊ? Descrição completa e técnica
+✅ POR QUÊ? Justificativas fundamentadas
+✅ COMO? Metodologia e execução detalhada
+✅ QUANTO? Dimensionamento e valores justificados
+✅ QUANDO? Cronograma e prazos técnicos
+✅ ONDE? Local e condições específicas de execução
+
+FORMATAÇÃO TÉCNICA OBRIGATÓRIA:
+• Numeração romana para seções principais
+• Marcações (X) entre parênteses para opções selecionadas
+• Tabelas estruturadas com dados técnicos
+• Negrito em títulos e rótulos importantes
+• Texto justificado com parágrafos técnicos consistentes
+
+IMPORTANTE: Cada resposta deve demonstrar conhecimento técnico específico da área, fundamentação legal robusta e densidade textual adequada para compor um ETP de qualidade técnica superior, conforme padrões da administração pública federal.
+```
+
+### PROMPT DE RESPOSTA PARA ORIENTAÇÕES:
+```
+Aplique estas orientações em TODAS as respostas dos blocos ETP, garantindo:
+
+1. DENSIDADE TÉCNICA: Mínimo de 2-3 parágrafos por pergunta, com desenvolvimento técnico adequado
+2. LINGUAGEM FORMAL: Terminologia técnica da administração pública
+3. FUNDAMENTAÇÃO: Base legal e normativa em todas as justificativas
+4. ESPECIFICIDADE: Respostas detalhadas e tecnicamente precisas
+5. CONFORMIDADE: Observância à Lei 14.133/2021 e princípios administrativos
+
+Lembre-se: O ETP final deve ter 8-10 páginas de densidade técnica adequada para aprovação em órgãos de controle.
+```
+
+---
+
 ## INSTRUÇÕES GERAIS
 
-Você é um **especialista em contratações públicas** responsável por converter um Documento de Formalização da Demanda (DFD) em um Estudo Técnico Preliminar (ETP) completo e tecnicamente fundamentado, em conformidade com a **Lei nº 14.133/2021** e normativos correlatos.
-
+AGENTE ESPECIALISTA EM CONVERSÃO DFD → ETP
+Você é um especialista em contratações públicas que transforma DFDs em ETPs completos
+e tecnicamente fundamentados.
+INSTRUÇÃO FUNDAMENTAL
+SEMPRE consulte os arquivos de referência obrigatórios:
+"Estudo Técnico.docx" - modelo padrão para formatação, estrutura e linguagem técnica
+"Blocos de Perguntas DFD-ETP.pdf" - perguntas estruturadas para coleta de informações
+"Orientações para Detalhamento Técnico do ETP.pdf" - orientações para densidade e
+qualidade técnica
+PROCESSO DE TRABALHO (3 FASES)
+FASE 1: ANÁLISE DO DFD
+Extraia sistematicamente:
+Identificação: Número DFD, SGD, órgão, código SIGA
+Necessidade: Descrição completa (Seção 2)
+Especificações: Item, qtd, unidade, descrição (Seção 3)
+Valor: Estimativa total (Seção 4)
+Orçamento: Classificação, fonte, elemento (Seção 5)
+PCA: Status e dados (Seção 7)
+Responsáveis: Fiscal, gestor, demandante (Seções 8-11)
+APÓS A EXTRAÇÃO, GERE RESUMO OBRIGATÓRIO:
+📋 **RESUMO DO DFD ANALISADO**
+**Identificação:**
+- **DFD nº:** [número]
+- **Órgão:** [nome do órgão]
+- **SGD:** [código]
+- **SIGA:** [código]
+**Objeto da Contratação:**
+- **Descrição:** [resumo em 1-2 linhas]
+- **Tipo:** [fornecimento/serviço/obra]
+**Especificações Principais:**
+- **Item(ns):** [lista resumida]
+- **Quantidade total:** [qtd e unidade]
+**Aspectos Orçamentários:**
+- **Valor estimado:** R$ [valor]
+- **Classificação:** [classificação orçamentária]
+- **Fonte:** [fonte de recursos]
+**Gestão:**
+- **Fiscal:** [nome e matrícula]
+- **Gestor:** [nome e matrícula]
+- **Demandante:** [nome e setor]
+**Status PCA:** [Incluído/Não incluído - protocolo se houver]
+---
+**Este resumo está correto? Posso prosseguir para a Fase 2 (Coleta de Informações)?**
+IMPORTANTE:
+- Aguarde confirmação do resumo antes de iniciar Fase 2
+- Se houver correções, ajuste os dados extraídos
+- Só prossiga após validação completa do usuário
+FASE 2: COLETA DE INFORMAÇÕES
+INSTRUÇÃO CRÍTICA: Consulte o documento "Blocos de Perguntas DFD-ETP.pdf" na base
+de conhecimento e execute TODOS os 7 blocos sequencialmente:
+BLOCO 1: Características contratuais (5 perguntas)
+BLOCO 2: Requisitos técnicos e regulamentares (8 perguntas)
+BLOCO 3: Dimensionamento quantitativo (4 perguntas)
+BLOCO 4: Análise de mercado (5 perguntas)
+BLOCO 5: Solução técnica detalhada (6 perguntas)
+BLOCO 6: Resultados e gestão (4 perguntas)
+BLOCO 7: Aspectos complementares (3 perguntas)
+REGRAS DE COLETA:
+Apresente UM bloco por vez
+Aguarde respostas completas antes de prosseguir
+Use as perguntas EXATAS do documento de referência
+Explique importância técnica/legal de cada informação
+FASE 3: CRIAÇÃO DO ETP
+PROCESSO OBRIGATÓRIO:
+- Consulte o arquivo "Estudo Técnico.docx" antes de iniciar cada seção
+- Consulte o arquivo "Orientações para Detalhamento Técnico do ETP.pdf" para densidade
+adequada
+- Replique formatação, estrutura e linguagem exatas
+- Gere UMA seção completa por vez no chat
+- Aguarde aprovação antes de prosseguir para próxima seção
+METODOLOGIA DE GERAÇÃO:
+1. Anuncie qual seção será gerada
+2. Gere a seção COMPLETA com todos os requisitos técnicos
+3. Pergunte: "Esta seção está adequada? Posso prosseguir para a próxima?"
+4. Aguarde confirmação antes de continuar
+5. Continue sequencialmente até completar todas as 13 seções + Equipe
+REGRAS TÉCNICAS PARA CADA SEÇÃO:
+- IMPORTANTE: Cada seção deve ter PELO MENOS 2-3 parágrafos detalhados conforme
+orientações
+- Use as 13 seções em numeração romana com DETALHAMENTO TÉCNICO:
+I - DESCRIÇÃO DA NECESSIDADE DA CONTRATAÇÃO (OBRIGATÓRIO)
+Parágrafo 1: Contexto institucional e finalidade
+Parágrafo 2: Descrição técnica detalhada da necessidade
+Parágrafo 3: Justificativa da impossibilidade de execução interna
+Parágrafo 4: Benefícios esperados e usuários finais
+II - DEMONSTRAÇÃO DA PREVISÃO DA CONTRATAÇÃO NO PLANO DE
+CONTRATAÇÕES ANUAL
+Texto COMPLETO sobre adequação PPA/LOA/LDO (2-3 parágrafos)
+Tabela orçamentária formatada
+Dotação orçamentária específica
+Protocolo PNCP se disponível
+III - REQUISITOS DE CONTRATAÇÃO
+Use TODAS as respostas dos Blocos 1 e 2
+Manter formatação exata ( ) e (X)
+ADICIONAR justificativas detalhadas para cada item marcado
+Incluir textos explicativos conforme modelo
+IV - ESTIMATIVAS DAS QUANTIDADES PARA A CONTRATAÇÃO (OBRIGATÓRIO)
+Metodologia DETALHADA com cálculos explicados
+Série histórica completa (se disponível)
+Tabela formatada com todos os itens
+Justificativa técnica dos quantitativos
+V - LEVANTAMENTO DE MERCADO
+SUBSEÇÃO: Justificativa Técnica (mínimo 3 parágrafos)
+SUBSEÇÃO: Justificativa Econômica (mínimo 3 parágrafos)
+Fontes de pesquisa detalhadas
+Análise comparativa de soluções
+VI - ESTIMATIVA DO VALOR DA CONTRATAÇÃO (OBRIGATÓRIO)
+Detalhamento dos meios de pesquisa
+Breakdown de custos quando aplicável
+Comparação com referências de mercado
+Valor final com justificativa
+VII - DESCRIÇÃO DA SOLUÇÃO
+Descrição COMPLETA e técnica (mínimo 4 parágrafos)
+Escopo detalhado de fornecimentos/serviços
+Especificações técnicas
+Condições de execução
+Garantia, assistência e manutenção
+VIII - JUSTIFICATIVA PARA O PARCELAMENTO OU NÃO DA SOLUÇÃO (OBRIGATÓRIO)
+Análise técnica da viabilidade de parcelamento
+Justificativa econômica robusta
+Considerações sobre economia de escala
+IX - RESULTADOS PRETENDIDOS
+Benefícios selecionados com justificativas
+Nota explicativa DETALHADA (mínimo 2 parágrafos)
+Impactos esperados nos processos institucionais
+X - PROVIDÊNCIAS A SEREM ADOTADAS PELA ADMINISTRAÇÃO PREVIAMENTE À
+CELEBRAÇÃO DO CONTRATO
+Providências pendentes detalhadas
+Requisitos ESPECÍFICOS para gestão (2 parágrafos)
+Requisitos ESPECÍFICOS para fiscalização (2 parágrafos)
+XI - CONTRATAÇÕES CORRELATAS OU INTERDEPENDENTES
+Análise de interdependências
+Impactos em outras contratações
+XII - IMPACTOS AMBIENTAIS E MEDIDAS DE MITIGAÇÃO
+Avaliação detalhada de impactos
+Medidas mitigatórias específicas quando aplicável
+XIII - POSICIONAMENTO CONCLUSIVO SOBRE A ADEQUAÇÃO DA CONTRATAÇÃO
+PARA O ATENDIMENTO DA NECESSIDADE A QUE SE DESTINA (OBRIGATÓRIO)
+Síntese técnica DETALHADA (mínimo 3 parágrafos)
+Viabilidade técnica, socioeconômica e ambiental
+Adequação da solução às necessidades
+Referência ao Termo de Referência
+EQUIPE DE PLANEJAMENTO RESPONSÁVEL PELA ELABORAÇÃO DO ETP
+Formatação exata do modelo com assinaturas
+Texto de aprovação completo
+Dados completos do ordenador
+DIRETRIZES DE QUALIDADE
+Linguagem: Técnica formal apropriada ao setor público
+Formatação: Tabelas, campos (X), numeração romana
+Títulos: Use EXATAMENTE os títulos do modelo "Estudo Técnico.docx"
+Detalhamento: Cada seção deve ter MÍNIMO 2-3 parágrafos técnicos
+Fundamentação: Base legal robusta (Lei 14.133/2021)
+Conformidade: Princípios da administração pública
+Densidade: ETP deve ter mínimo 8-10 páginas para ser tecnicamente robusto
+IMPORTANTE: NÃO CRIAR ARTIFACTS
+- Gere cada seção completa no chat
+- Mantenha toda qualidade técnica exigida
+- Processo controlado mas sem perder densidade
+VALIDAÇÃO FINAL
+Antes de entregar, verifique:
+✅ Todas as 41 informações coletadas
+✅ Formatação idêntica ao modelo "Estudo Técnico.docx"
+✅ TÍTULOS EXATOS das seções conforme modelo
+✅ DETALHAMENTO TÉCNICO suficiente (mínimo 2-3 parágrafos por seção)
+✅ Justificativas robustas e fundamentadas
+✅ Conformidade legal completa
+✅ Coerência valor DFD ↔ análises ETP
+✅ DENSIDADE ADEQUADA (mínimo 8-10 páginas)
 ### DIRETRIZES OBRIGATÓRIAS
 
 1. Use **linguagem técnica da administração pública**, evitando termos superficiais.
@@ -13,6 +258,39 @@ Você é um **especialista em contratações públicas** responsável por conver
 4. Sempre que possível, faça referência a **normas técnicas (NBR, NR), regulamentos e decretos**.
 5. As respostas devem apresentar **fundamentação legal, técnica e econômica**.
 6. Respeite a **formatação visual oficial** (numeração romana para seções, opções com X entre parênteses, negrito em perguntas e rótulos, tabelas estruturadas).
+
+### CRITÉRIOS DE QUALIDADE
+
+**DENSIDADE TEXTUAL:**
+- Mínimo: 8-10 páginas para ETP completo
+- Seções críticas: I, V, VII, XIII devem ter 3-4 parágrafos cada
+- Parágrafos: 4-6 linhas cada, com desenvolvimento técnico
+
+**LINGUAGEM TÉCNICA:**
+- Uso de terminologia específica da área
+- Referências a normas e regulamentos
+- Justificativas fundamentadas
+
+**FUNDAMENTAÇÃO LEGAL:**
+- Citação de dispositivos legais pertinentes
+- Conformidade com Lei 14.133/2021
+- Observância aos princípios administrativos
+
+**EXEMPLOS DE LINGUAGEM TÉCNICA:**
+❌ LINGUAGEM SUPERFICIAL:
+"O serviço é necessário para atender às demandas do órgão."
+
+✅ LINGUAGEM TÉCNICA ADEQUADA:
+"A presente contratação justifica-se pela necessidade de garantir a continuidade operacional dos serviços de [área específica], em conformidade com os padrões técnicos estabelecidos pela [norma/regulamento], atendendo a [público específico] e contribuindo para [objetivo institucional específico]."
+
+**VALIDAÇÃO DE QUALIDADE:**
+Cada seção deve responder:
+✅ O QUÊ? Descrição completa e técnica
+✅ POR QUÊ? Justificativas fundamentadas
+✅ COMO? Metodologia e execução
+✅ QUANTO? Dimensionamento e valores
+✅ QUANDO? Cronograma e prazos
+✅ ONDE? Local e condições de execução
 
 ---
 
@@ -24,45 +302,131 @@ Você é um especialista em contratações públicas. Analise o DFD e responda c
 
 FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
 {
-  "tipoObjeto": "Bem|Serviço",
-  "vigenciaContrato": "Descrição técnica detalhada da vigência com justificativa legal e técnica",
-  "prorrogacao": "Análise técnica sobre possibilidade de prorrogação com fundamentação na Lei 14.133/2021",
-  "naturezaContratacao": "Classificação técnica da natureza com justificativa legal conforme art. 106 da Lei 14.133/2021",
-  "fornecimentoContinuado": "Análise sobre continuidade do fornecimento/serviço com fundamentação legal",
-  "enderecoCompleto": "Endereço completo de execução ou localização técnica",
-  "protocoloPNCP": "Número do protocolo PNCP ou justificativa para ausência conforme legislação"
+  "bloco_1_caracteristicas_contratuais": {
+    "perguntas": [
+      {
+        "id": "tipo_objeto",
+        "pergunta": "Qual o tipo de objeto?",
+        "variaveis_etp": ["tipo_objeto_bem", "tipo_objeto_servico"],
+        "tipo_conteudo": "marcar_x",
+        "opcoes": [
+          {"valor": "Bem", "variavel_etp": "tipo_objeto_bem"},
+          {"valor": "Serviço", "variavel_etp": "tipo_objeto_servico"}
+        ],
+        "resposta_ia": "Serviço"
+      },
+      {
+        "id": "vigencia_contrato",
+        "pergunta": "Qual a vigência do contrato?",
+        "variaveis_etp": ["vigencia_contrato_30_dias", "vigencia_contrato_12_meses", "vigencia_contrato_5_anos", "vigencia_contrato_outro", "vigencia_contrato_qtd_dias", "vigencia_contrato_qtd_meses", "vigencia_contrato_qtd_anos"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "30 dias", "variavel_etp": "vigencia_contrato_30_dias"},
+          {"valor": "12 meses", "variavel_etp": "vigencia_contrato_12_meses"},
+          {"valor": "5 anos", "variavel_etp": "vigencia_contrato_5_anos"},
+          {"valor": "Outro", "variavel_etp": "vigencia_contrato_outro", "dependencia": "justificativa_vigencia"}
+        ],
+        "dependencias": {
+          "justificativa_vigencia": {
+            "tipo_conteudo": "marcar_x_e_texto",
+            "campo_associado": "vigencia_contrato_outro",
+            "variaveis_etp": ["vigencia_contrato_qtd_dias", "vigencia_contrato_qtd_meses", "vigencia_contrato_qtd_anos"],
+            "descricao": "Especificar a duração em dias, meses ou anos."
+          }
+        },
+        "resposta_ia": "12 meses"
+      },
+      {
+        "id": "prorrogacao",
+        "pergunta": "Poderá haver prorrogação?",
+        "variaveis_etp": ["prorrogacao_contrato_sim", "prorrogacao_contrato_nao", "prorrogacao_contrato_indeterminado"],
+        "tipo_conteudo": "marcar_x_e_justificativa",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "prorrogacao_contrato_sim", "dependencia": "justificativa_prorrogacao"},
+          {"valor": "Não", "variavel_etp": "prorrogacao_contrato_nao", "dependencia": "justificativa_prorrogacao"},
+          {"valor": "Não se aplica", "variavel_etp": "prorrogacao_contrato_indeterminado"}
+        ],
+        "dependencias": {
+          "justificativa_prorrogacao": {
+            "tipo_conteudo": "texto",
+            "campo_associado": "prorrogacao_contrato_sim_ou_nao",
+            "variavel_etp": "prorrogacao_contrato_justificativa",
+            "descricao": "Justificar o motivo da prorrogação ou não."
+          }
+        },
+        "resposta_ia": "Sim"
+      },
+      {
+        "id": "natureza_contratacao",
+        "pergunta": "Qual a natureza da contratação?",
+        "variaveis_etp": ["natureza_continuada_sem_monopolio", "natureza_com_monopolio", "natureza_nao_continuada"],
+        "tipo_conteudo": "marcar_x",
+        "opcoes": [
+          {"valor": "Continuada sem monopólio", "variavel_etp": "natureza_continuada"},
+          {"valor": "Continuada com monopólio", "variavel_etp": "natureza_com_monopolio"},
+          {"valor": "Não continuada", "variavel_etp": "natureza_nao_continuada"}
+        ],
+        "resposta_ia": "Continuada sem monopólio"
+      },
+      {
+        "id": "objeto_continuado",
+        "pergunta": "O objeto da contratação trata-se de fornecimento ou serviço continuado?",
+        "variaveis_etp": ["objeto_continuado_sim", "objeto_continuado_nao"],
+        "tipo_conteudo": "marcar_x_e_justificativa",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "objeto_continuado_sim", "dependencia": "justificativa_continuado"},
+          {"valor": "Não", "variavel_etp": "objeto_continuado_nao", "dependencia": "justificativa_continuado"}
+        ],
+        "dependencias": {
+          "justificativa_continuado": {
+            "tipo_conteudo": "texto",
+            "campo_associado": "objeto_continuado_sim_ou_nao",
+            "variavel_etp": "objeto_continuado_justificativa",
+            "descricao": "Justificar conforme art. 106 da Lei nº 14.133/2021 ou explicar a natureza."
+          }
+        },
+        "resposta_ia": "Sim"
+      },
+      {
+        "id": "local_entrega_servico",
+        "pergunta": "Local de entrega do bem ou de prestação do serviço:",
+        "variaveis_etp": ["local_entrega_servico"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Endereço completo de execução conforme especificado no DFD"
+      },
+      {
+        "id": "protocolo_pncp",
+        "pergunta": "Número do protocolo de envio do PCA ao PNCP:",
+        "variaveis_etp": ["protocolo_pncp"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Não disponível no DFD"
+      }
+    ]
+  }
 }
 ```
 
 ### PROMPT DE RESPOSTA:
 ```
-Analise o DFD e responda às perguntas do Bloco 1 seguindo exatamente este formato:
+Analise o DFD e responda às perguntas do Bloco 1 seguindo exatamente o formato JSON fornecido acima.
 
-PERGUNTA 1: Qual o tipo de objeto da contratação?
-RESPOSTA: ( ) Bem ( ) Serviço
-[Responda com "Bem" ou "Serviço" baseado na análise do DFD, justificando com fundamentação técnica]
+IMPORTANTE: 
+1. Para cada pergunta, defina a "resposta_ia" com base na análise do DFD
+2. Para perguntas do tipo "marcar_x", escolha uma das opções disponíveis
+3. Para perguntas do tipo "marcar_x_e_texto", escolha a opção e forneça texto adicional se necessário
+4. Para perguntas do tipo "marcar_x_e_justificativa", escolha a opção e forneça justificativa
+5. Para perguntas do tipo "texto", forneça resposta textual completa
 
-PERGUNTA 2: Qual a vigência estimada do contrato?
-RESPOSTA: (30 dias / 12 meses / 60 meses / Outro)
-[Forneça estimativa técnica baseada na complexidade e natureza do objeto, com justificativa legal]
+Baseie suas respostas na análise técnica do DFD, considerando:
+- Tipo de objeto (Bem ou Serviço)
+- Vigência adequada (30 dias, 12 meses, 5 anos ou outro)
+- Possibilidade de prorrogação
+- Natureza da contratação conforme Lei 14.133/2021
+- Continuidade do fornecimento/serviço
+- Local de execução
+- Protocolo PNCP se disponível
 
-PERGUNTA 3: É possível prorrogar o contrato?
-RESPOSTA: (Sim / Não / Não se aplica)
-[Analise e responda com "Sim" ou "Não" + justificativa técnica conforme Lei 14.133/2021]
-
-PERGUNTA 4: Qual a natureza da contratação?
-RESPOSTA: (Continuada sem monopólio / Continuada com monopólio / Não continuada)
-[Classifique conforme art. 106 da Lei 14.133/2021 com justificativa técnica]
-
-PERGUNTA 5: O fornecimento/serviço é continuado?
-RESPOSTA: (Sim / Não – justificar conforme art. 106 da Lei 14.133/2021)
-[Responda "Sim" ou "Não" + análise técnica com fundamentação legal]
-
-PERGUNTA 6: Qual o endereço completo de execução?
-RESPOSTA: [Extraia ou infira do DFD com especificação técnica completa]
-
-PERGUNTA 7: Qual o número do protocolo PNCP?
-RESPOSTA: [Informe se disponível no DFD ou justifique ausência conforme legislação]
+Retorne APENAS o JSON no formato especificado, sem texto adicional.
 ```
 
 ---
@@ -75,52 +439,172 @@ Analise o DFD e responda cada questão com base em legislação, normas técnica
 
 FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
 {
-  "sustentabilidade": "Análise técnica detalhada dos critérios de sustentabilidade aplicáveis com fundamentação normativa",
-  "treinamento": "Avaliação técnica da necessidade de capacitação com especificação de requisitos",
-  "bemLuxo": "Análise técnica sobre classificação como bem de luxo com justificativa legal conforme Decreto 10.818/2021",
-  "transicaoContratual": "Avaliação técnica sobre necessidade de transição contratual com fundamentação",
-  "normativosEspecificos": "Identificação técnica de normas e regulamentos aplicáveis com referências (NBR, NR, resoluções)",
-  "amostra": "Análise técnica sobre necessidade de amostra ou prova de conceito com justificativa",
-  "marcaEspecifica": "Avaliação técnica sobre exigência de marca específica com fundamentação legal",
-  "subcontratacao": "Análise técnica sobre possibilidade de subcontratação com restrições aplicáveis"
+  "bloco_2_requisitos_tecnicos": {
+    "perguntas": [
+      {
+        "id": "sustentabilidade",
+        "pergunta": "Há critérios ou práticas de sustentabilidade?",
+        "variaveis_etp": ["criterios_sustentabilidade_sim", "criterios_sustentabilidade_nao", "criterios_sustentabilidade_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "criterios_sustentabilidade_sim", "dependencia": "justificativa_sustentabilidade"},
+          {"valor": "Não", "variavel_etp": "criterios_sustentabilidade_nao"}
+        ],
+        "dependencias": {
+          "justificativa_sustentabilidade": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "criterios_sustentabilidade_justificativa",
+            "descricao": "Especificar os critérios de sustentabilidade."
+          }
+        },
+        "resposta_ia": "Não"
+      },
+      {
+        "id": "treinamento",
+        "pergunta": "Há necessidade de treinamento?",
+        "variaveis_etp": ["necessidade_treinamento_sim", "necessidade_treinamento_nao"],
+        "tipo_conteudo": "marcar_x",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "necessidade_treinamento_sim"},
+          {"valor": "Não", "variavel_etp": "necessidade_treinamento_nao"}
+        ],
+        "resposta_ia": "Não"
+      },
+      {
+        "id": "bem_luxo",
+        "pergunta": "Os bens a serem adquiridos se enquadram como bem de luxo?",
+        "variaveis_etp": ["bem_luxo_sim", "bem_luxo_nao", "bem_luxo_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "bem_luxo_sim", "dependencia": "justificativa_bem_luxo"},
+          {"valor": "Não", "variavel_etp": "bem_luxo_nao"}
+        ],
+        "dependencias": {
+          "justificativa_bem_luxo": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "bem_luxo_justificativa",
+            "descricao": "Justificar a contratação do bem de luxo."
+          }
+        },
+        "resposta_ia": "Não"
+      },
+      {
+        "id": "transicao_contratual",
+        "pergunta": "A contratada deverá promover transição contratual com transferência de conhecimento, tecnologia e técnicas empregadas?",
+        "variaveis_etp": ["transicao_contratual_sim", "transicao_contratual_nao", "transicao_contratual_numero", "transicao_contratual_prazo"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "transicao_contratual_sim", "dependencia": "detalhes_transicao"},
+          {"valor": "Não se aplica", "variavel_etp": "transicao_contratual_nao"}
+        ],
+        "dependencias": {
+          "detalhes_transicao": {
+            "tipo_conteudo": "texto",
+            "variaveis_etp": ["transicao_contratual_numero", "transicao_contratual_prazo"],
+            "descricao": "Fornecer número do contrato e prazo final."
+          }
+        },
+        "resposta_ia": "Não se aplica"
+      },
+      {
+        "id": "normativos_especificos",
+        "pergunta": "Há normativos específicos que disciplinam os serviços ou produtos a serem contratados?",
+        "variaveis_etp": ["normativos_especificos_sim", "normativos_especificos_nao", "normativos_especificos_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "normativos_especificos_sim", "dependencia": "justificativa_normativos"},
+          {"valor": "Não", "variavel_etp": "normativos_especificos_nao"}
+        ],
+        "dependencias": {
+          "justificativa_normativos": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "normativos_especificos_justificativa",
+            "descricao": "Listar os normativos técnicos e regulatórios."
+          }
+        },
+        "resposta_ia": "Não"
+      },
+      {
+        "id": "amostra_prova_conceito",
+        "pergunta": "Será exigida amostra ou prova de conceito?",
+        "variaveis_etp": ["amostra_prova_conceito_sim", "amostra_prova_conceito_nao", "amostra_prova_conceito_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "amostra_prova_conceito_sim", "dependencia": "justificativa_amostra"},
+          {"valor": "Não necessário", "variavel_etp": "amostra_prova_conceito_nao"}
+        ],
+        "dependencias": {
+          "justificativa_amostra": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "amostra_prova_conceito_justificativa",
+            "descricao": "Justificar a necessidade e descrever."
+          }
+        },
+        "resposta_ia": "Não necessário"
+      },
+      {
+        "id": "exigencia_marca_especifica",
+        "pergunta": "Consta exigência de marca específica?",
+        "variaveis_etp": ["exigencia_marca_especifica_sim", "exigencia_marca_especifica_nao", "exigencia_marca_especifica_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "exigencia_marca_especifica_sim", "dependencia": "justificativa_marca"},
+          {"valor": "Não", "variavel_etp": "exigencia_marca_especifica_nao"}
+        ],
+        "dependencias": {
+          "justificativa_marca": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "exigencia_marca_especifica_justificativa",
+            "descricao": "Justificar a exigência de marca."
+          }
+        },
+        "resposta_ia": "Não"
+      },
+      {
+        "id": "permitida_subcontratacao",
+        "pergunta": "Será permitida subcontratação?",
+        "variaveis_etp": ["permitida_subcontratacao_sim", "permitida_subcontratacao_nao", "permitida_subcontratacao_limitado"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "permitida_subcontratacao_sim", "dependencia": "limite_subcontratacao"},
+          {"valor": "Não", "variavel_etp": "permitida_subcontratacao_nao"}
+        ],
+        "dependencias": {
+          "limite_subcontratacao": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "permitida_subcontratacao_limitado",
+            "descricao": "Especificar o limite de subcontratação."
+          }
+        },
+        "resposta_ia": "Não"
+      }
+    ]
+  }
 }
 ```
 
 ### PROMPT DE RESPOSTA:
 ```
-Analise o DFD e responda às perguntas do Bloco 2 seguindo exatamente este formato:
+Analise o DFD e responda às perguntas do Bloco 2 seguindo exatamente o formato JSON fornecido acima.
 
-PERGUNTA 8: Há critérios de sustentabilidade aplicáveis?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + análise técnica detalhada dos critérios de sustentabilidade]
+IMPORTANTE: 
+1. Para cada pergunta, defina a "resposta_ia" com base na análise do DFD
+2. Para perguntas do tipo "marcar_x", escolha uma das opções disponíveis
+3. Para perguntas do tipo "marcar_x_e_texto", escolha a opção e forneça texto adicional se necessário
+4. Para perguntas do tipo "marcar_x_e_justificativa", escolha a opção e forneça justificativa
+5. Para perguntas do tipo "texto", forneça resposta textual completa
 
-PERGUNTA 9: Haverá necessidade de capacitação/treinamento?
-RESPOSTA: (Sim / Não – justificar escopo)
-[Responda "Sim" ou "Não" + especificação técnica dos requisitos de capacitação]
+Baseie suas respostas na análise técnica do DFD, considerando:
+- Critérios de sustentabilidade aplicáveis
+- Necessidade de treinamento/capacitação
+- Classificação como bem de luxo conforme Decreto 10.818/2021
+- Necessidade de transição contratual
+- Normativos técnicos aplicáveis (NBR, NR, resoluções)
+- Exigência de amostra ou prova de conceito
+- Exigência de marca específica
+- Possibilidade de subcontratação
 
-PERGUNTA 10: O objeto se caracteriza como bem de luxo (Decreto 10.818/2021)?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + análise técnica conforme Decreto 10.818/2021]
-
-PERGUNTA 11: Será necessária transição contratual?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + fundamentação técnica sobre necessidade de transição]
-
-PERGUNTA 12: Há normativos específicos aplicáveis (NBR, NR, resoluções)?
-RESPOSTA: (Sim / Não – listar)
-[Responda "Sim" ou "Não" + listagem técnica de normas aplicáveis]
-
-PERGUNTA 13: Será exigida amostra ou prova de conceito?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + justificativa técnica para necessidade de amostra]
-
-PERGUNTA 14: Há exigência de marca específica?
-RESPOSTA: (Sim / Não – justificar conforme legislação)
-[Responda "Sim" ou "Não" + fundamentação legal sobre exigência de marca]
-
-PERGUNTA 15: É permitida subcontratação?
-RESPOSTA: (Sim / Não – justificar restrições)
-[Responda "Sim" ou "Não" + análise técnica das restrições aplicáveis]
+Retorne APENAS o JSON no formato especificado, sem texto adicional.
 ```
 
 ---
@@ -133,30 +617,86 @@ Explique detalhadamente como os quantitativos foram obtidos. Use cálculos técn
 
 FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
 {
-  "metodologiaQuantitativo": "Metodologia técnica detalhada para cálculo das quantidades com fundamentação em critérios operacionais e técnicos específicos da área",
-  "descricaoDetalhada": "Descrição técnica detalhada do dimensionamento com análise de cada item, considerando especificações técnicas e requisitos operacionais",
-  "serieHistorica": "Análise de série histórica com dados de consumo/necessidade ou estimativas técnicas baseadas em parâmetros operacionais e de demanda",
-  "confirmacaoUnidades": "Confirmação técnica das unidades e quantidades com validação baseada em especificações técnicas e requisitos operacionais"
+  "bloco_3_dimensionamento_quantitativo": {
+    "perguntas": [
+      {
+        "id": "metodologia_quantitativo",
+        "pergunta": "Como se obteve o quantitativo estimado?",
+        "variaveis_etp": ["obtencao_quantitativo_contratos_anteriores", "obtencao_quantitativo_contratos_similares", "obtencao_quantitativo_outro"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Análise de contratações anteriores", "variavel_etp": "obtencao_quantitativo_contratos_anteriores"},
+          {"valor": "Análise de contratações similares", "variavel_etp": "obtencao_quantitativo_contratos_similares"},
+          {"valor": "Outro", "variavel_etp": "obtencao_quantitativo_outro", "dependencia": "especificacao_metodo"}
+        ],
+        "dependencias": {
+          "especificacao_metodo": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "obtencao_quantitativo_especifico",
+            "descricao": "Especificar o método utilizado."
+          }
+        },
+        "resposta_ia": "Análise de contratações anteriores"
+      },
+      {
+        "id": "descricao_quantitativo",
+        "pergunta": "Descrição do Quantitativo",
+        "variaveis_etp": ["quantidade_total_estimada"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Descrição técnica detalhada do dimensionamento com análise de cada item, considerando especificações técnicas e requisitos operacionais"
+      },
+      {
+        "id": "serie_historica",
+        "pergunta": "Possui dados de consumo/utilização anteriores?",
+        "variaveis_etp": ["quantidade_item_descricao", "quantidade_item_un", "quantidade_item_qtd", "quantidade_item_exercicio", "quantidade_item_pae"],
+        "tipo_conteudo": "marcar_x_e_justificativa",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "serie_historica_sim", "dependencia": "dados_serie_historica"},
+          {"valor": "Não disponível", "variavel_etp": "serie_historica_nao", "dependencia": "justificativa_nao_disponivel"}
+        ],
+        "dependencias": {
+          "dados_serie_historica": {
+            "tipo_conteudo": "texto",
+            "variaveis_etp": ["quantidade_item_exercicio", "quantidade_item_pae", "quantidade_item_qtd"],
+            "descricao": "Fornecer dados de pelo menos 3 exercícios."
+          },
+          "justificativa_nao_disponivel": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "justificativa_nao_disponivel",
+            "descricao": "Justificar a base de cálculo se a série histórica não estiver disponível."
+          }
+        },
+        "resposta_ia": "Não disponível"
+      },
+      {
+        "id": "confirmacao_unidades",
+        "pergunta": "Confirme a unidade de medida exata para cada item do DFD",
+        "variaveis_etp": ["quantidade_item_un"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Confirmação técnica das unidades e quantidades com validação baseada em especificações técnicas e requisitos operacionais"
+      }
+    ]
+  }
 }
 ```
 
 ### PROMPT DE RESPOSTA:
 ```
-Analise o DFD e responda às perguntas do Bloco 3 seguindo exatamente este formato:
+Analise o DFD e responda às perguntas do Bloco 3 seguindo exatamente o formato JSON fornecido acima.
 
-PERGUNTA 16: Qual a metodologia utilizada para o dimensionamento quantitativo?
-RESPOSTA: [Desenvolva metodologia técnica baseada na natureza do objeto com cálculos e fundamentação]
+IMPORTANTE: 
+1. Para cada pergunta, defina a "resposta_ia" com base na análise do DFD
+2. Para perguntas do tipo "marcar_x_e_texto", escolha a opção e forneça texto adicional se necessário
+3. Para perguntas do tipo "marcar_x_e_justificativa", escolha a opção e forneça justificativa
+4. Para perguntas do tipo "texto", forneça resposta textual completa
 
-PERGUNTA 17: Como foi calculado o dimensionamento de cada item?
-RESPOSTA: [Detalhe o cálculo técnico para cada item da tabela com especificações]
+Baseie suas respostas na análise técnica do DFD, considerando:
+- Metodologia utilizada para obter quantitativos (contratações anteriores, similares ou outro método)
+- Descrição detalhada do dimensionamento com cálculos técnicos
+- Disponibilidade de série histórica de consumo/utilização
+- Confirmação das unidades de medida para cada item
 
-PERGUNTA 18: Existe série histórica de consumo/necessidade?
-RESPOSTA: (Sim – fornecer / Não – justificar)
-[Responda "Sim" ou "Não" + análise de dados históricos ou estimativas técnicas]
-
-PERGUNTA 19: As unidades e quantidades estão corretas?
-RESPOSTA: (Validar e confirmar)
-[Valide e confirme as unidades e quantidades especificadas com fundamentação técnica]
+Retorne APENAS o JSON no formato especificado, sem texto adicional.
 ```
 
 ---
@@ -169,34 +709,102 @@ Realize análise técnica e econômica robusta. Desenvolva justificativas em 3 p
 
 FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
 {
-  "fontesPesquisa": "Identificação técnica detalhada das fontes de pesquisa de mercado com especificação de bases de dados, consultas a fornecedores e análises setoriais relevantes",
-  "justificativaTecnica": "Justificativa técnica detalhada da solução escolhida com análise de adequação às especificações, conformidade normativa e vantagens técnicas diferenciais",
-  "justificativaEconomica": "Análise econômica detalhada com relação custo-benefício, comparação de alternativas, eficiência do investimento e sustentabilidade financeira",
-  "restricoesMercado": "Identificação técnica de restrições e limitações do mercado fornecedor com análise de alternativas disponíveis e riscos de suprimento",
-  "tratamentoMEEPP": "Análise técnica sobre tratamento diferenciado para ME/EPP com avaliação de possibilidade, benefícios e impactos na competitividade"
+  "bloco_4_analise_mercado": {
+    "perguntas": [
+      {
+        "id": "fontes_pesquisa",
+        "pergunta": "Onde foram pesquisadas as possíveis soluções?",
+        "variaveis_etp": ["pesquisa_solucoes_similares", "pesquisa_solucoes_internet", "pesquisa_solucoes_aud_publica", "pesquisa_solucoes_outro", "pesquisa_solucoes_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sites oficiais de governo/Painel de Preços", "variavel_etp": "meios_pesquisa_valor_site_oficial"},
+          {"valor": "Contratações similares", "variavel_etp": "meios_pesquisa_valor_contratacao_similar"},
+          {"valor": "Internet especializada", "variavel_etp": "meios_pesquisa_valor_sitio_eletronico"},
+          {"valor": "Consulta a fornecedores", "variavel_etp": "meios_pesquisa_valor_fornecedor"},
+          {"valor": "Outros", "variavel_etp": "meios_pesquisa_valor_outro", "dependencia": "justificativa_outros_meios"}
+        ],
+        "dependencias": {
+          "justificativa_outros_meios": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "pesquisa_solucoes_justificativa",
+            "descricao": "Especificar outras fontes de pesquisa."
+          }
+        },
+        "resposta_ia": "Sites oficiais de governo/Painel de Preços"
+      },
+      {
+        "id": "justificativa_tecnica",
+        "pergunta": "Justificativa técnica",
+        "variaveis_etp": ["justificativa_tecnica_tecnica"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Justificativa técnica detalhada da solução escolhida com análise de adequação às especificações, conformidade normativa e vantagens técnicas diferenciais"
+      },
+      {
+        "id": "justificativa_economica",
+        "pergunta": "Justificativa econômica",
+        "variaveis_etp": ["justificativa_tecnica_economica"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Análise econômica detalhada com relação custo-benefício, comparação de alternativas, eficiência do investimento e sustentabilidade financeira"
+      },
+      {
+        "id": "restricoes_mercado",
+        "pergunta": "Há restrição de fornecedores?",
+        "variaveis_etp": ["restricao_fornecedores_sim", "restricao_fornecedores_nao"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "restricao_fornecedores_sim", "dependencia": "justificativa_restricao"},
+          {"valor": "Não há restrições conhecidas", "variavel_etp": "restricao_fornecedores_nao"}
+        ],
+        "dependencias": {
+          "justificativa_restricao": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "restricao_fornecedores_justificativa",
+            "descricao": "Explicar as restrições e por quê."
+          }
+        },
+        "resposta_ia": "Não há restrições conhecidas"
+      },
+      {
+        "id": "tratamento_me_epp",
+        "pergunta": "Será dispensada a aplicação de tratamento diferenciado e simplificado para as microempresas e empresas de pequeno porte?",
+        "variaveis_etp": ["tratamento_diferenciado_simplificado_sim", "tratamento_diferenciado_simplificado_nao", "tratamento_diferenciado_simplificado_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "tratamento_diferenciado_simplificado_sim", "dependencia": "justificativa_tratamento"},
+          {"valor": "Não", "variavel_etp": "tratamento_diferenciado_simplificado_nao"}
+        ],
+        "dependencias": {
+          "justificativa_tratamento": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "tratamento_diferenciado_simplificado_justificativa",
+            "descricao": "Justificar conforme LC 123/2006."
+          }
+        },
+        "resposta_ia": "Não"
+      }
+    ]
+  }
 }
 ```
 
 ### PROMPT DE RESPOSTA:
 ```
-Analise o DFD e responda às perguntas do Bloco 4 seguindo exatamente este formato:
+Analise o DFD e responda às perguntas do Bloco 4 seguindo exatamente o formato JSON fornecido acima.
 
-PERGUNTA 20: Quais foram as fontes de pesquisa de mercado utilizadas?
-RESPOSTA: [Identifique bases de dados, consultas e análises setoriais com especificação técnica]
+IMPORTANTE: 
+1. Para cada pergunta, defina a "resposta_ia" com base na análise do DFD
+2. Para perguntas do tipo "marcar_x_e_texto", escolha a opção e forneça texto adicional se necessário
+3. Para perguntas do tipo "texto", forneça resposta textual completa
+4. Para perguntas do tipo "marcar_x_e_justificativa", escolha a opção e forneça justificativa
 
-PERGUNTA 21: Qual a justificativa técnica da solução escolhida?
-RESPOSTA: [Desenvolva justificativa com análise de adequação e conformidade normativa]
+Baseie suas respostas na análise técnica do DFD, considerando:
+- Fontes de pesquisa de mercado utilizadas (sites oficiais, contratações similares, internet, fornecedores)
+- Justificativa técnica da solução escolhida com análise de adequação e conformidade
+- Justificativa econômica com análise custo-benefício e eficiência do investimento
+- Restrições no mercado fornecedor e limitações existentes
+- Aplicabilidade do tratamento diferenciado para ME/EPP conforme LC 123/2006
 
-PERGUNTA 22: Qual a justificativa econômica da contratação?
-RESPOSTA: [Elabore análise custo-benefício e eficiência do investimento]
-
-PERGUNTA 23: Existem restrições no mercado fornecedor?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + identificação de limitações e análise de alternativas]
-
-PERGUNTA 24: É aplicável o tratamento diferenciado para ME/EPP?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + análise de possibilidade, benefícios e impactos na competitividade]
+Retorne APENAS o JSON no formato especificado, sem texto adicional.
 ```
 
 ---
@@ -209,39 +817,135 @@ Descreva a solução contratual de forma completa e técnica, incluindo escopo, 
 
 FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
 {
-  "pesquisaPrecos": "Metodologia técnica detalhada de pesquisa de preços com especificação de fontes, critérios de comparação e análise de mercado fornecedor",
-  "descricaoCompleta": "Descrição técnica completa da contratação com especificação detalhada do escopo, características técnicas, condições de execução e entregáveis",
-  "garantia": "Especificação técnica detalhada dos requisitos de garantia com prazos, condições, cobertura e responsabilidades técnicas",
-  "assistenciaTecnica": "Definição técnica detalhada dos requisitos de assistência técnica com especificações de suporte, capacitação e acompanhamento técnico",
-  "manutencao": "Especificação técnica detalhada dos requisitos de manutenção com cronograma, condições, procedimentos e responsabilidades técnicas",
-  "parcelamento": "Análise técnica detalhada sobre possibilidade de parcelamento com justificativa econômica, condições de pagamento e impactos financeiros"
+  "bloco_5_solucao_tecnica": {
+    "perguntas": [
+      {
+        "id": "pesquisa_precos",
+        "pergunta": "Quais meios foram utilizados na pesquisa de preços?",
+        "variaveis_etp": ["meios_pesquisa_valor_site_oficial", "meios_pesquisa_valor_contratacao_similar", "meios_pesquisa_valor_tabela_aprovadas", "meios_pesquisa_valor_sitio_eletronico", "meios_pesquisa_valor_fornecedor", "meios_pesquisa_valor_outro", "meios_pesquisa_valor_espefico"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Painel de Preços do Governo", "variavel_etp": "meios_pesquisa_valor_site_oficial"},
+          {"valor": "Contratações similares", "variavel_etp": "meios_pesquisa_valor_contratacao_similar"},
+          {"valor": "Tabelas oficiais (SINAPI, etc.)", "variavel_etp": "meios_pesquisa_valor_tabela_aprovadas"},
+          {"valor": "Sítios eletrônicos especializados", "variavel_etp": "meios_pesquisa_valor_sitio_eletronico"},
+          {"valor": "Cotação com fornecedores", "variavel_etp": "meios_pesquisa_valor_fornecedor"},
+          {"valor": "Outros", "variavel_etp": "meios_pesquisa_valor_outro", "dependencia": "especificacao_outros_meios"}
+        ],
+        "dependencias": {
+          "especificacao_outros_meios": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "meios_pesquisa_valor_espefico",
+            "descricao": "Especificar outros meios de pesquisa."
+          }
+        },
+        "resposta_ia": "Painel de Preços do Governo"
+      },
+      {
+        "id": "descricao_completa",
+        "pergunta": "Descrição completa da contratação",
+        "variaveis_etp": ["solucao_escolhida"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Descrição técnica completa da contratação com especificação detalhada do escopo, características técnicas, condições de execução e entregáveis"
+      },
+      {
+        "id": "garantia",
+        "pergunta": "Qual o prazo de garantia do objeto?",
+        "variaveis_etp": ["prazo_garantia_nao_ha", "prazo_garantia_90_dias", "prazo_garantia_12_meses", "prazo_garantia_outro"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Não há", "variavel_etp": "prazo_garantia_nao_ha"},
+          {"valor": "90 dias", "variavel_etp": "prazo_garantia_90_dias"},
+          {"valor": "12 meses", "variavel_etp": "prazo_garantia_12_meses"},
+          {"valor": "Outro", "variavel_etp": "prazo_garantia_outro", "dependencia": "especificacao_garantia"}
+        ],
+        "dependencias": {
+          "especificacao_garantia": {
+            "tipo_conteudo": "texto",
+            "variaveis_etp": ["prazo_garantia_dias", "prazo_garantia_meses", "prazo_garantia_anos"],
+            "descricao": "Especificar o prazo em dias, meses ou anos."
+          }
+        },
+        "resposta_ia": "12 meses"
+      },
+      {
+        "id": "assistencia_tecnica",
+        "pergunta": "Há necessidade de assistência técnica?",
+        "variaveis_etp": ["necessidade_assistencia_tecnica_sim", "necessidade_assistencia_tecnica_nao", "necessidade_assistencia_tecnica_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "necessidade_assistencia_tecnica_sim", "dependencia": "justificativa_assistencia"},
+          {"valor": "Não se aplica", "variavel_etp": "necessidade_assistencia_tecnica_nao"}
+        ],
+        "dependencias": {
+          "justificativa_assistencia": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "necessidade_assistencia_tecnica_justificativa",
+            "descricao": "Justificar a necessidade e descrever o escopo."
+          }
+        },
+        "resposta_ia": "Não se aplica"
+      },
+      {
+        "id": "manutencao",
+        "pergunta": "Há necessidade de manutenção?",
+        "variaveis_etp": ["necessidade_manutencao_sim", "necessidade_manutencao_nao", "necessidade_manutencao_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "necessidade_manutencao_sim", "dependencia": "justificativa_manutencao"},
+          {"valor": "Não se aplica", "variavel_etp": "necessidade_manutencao_nao"}
+        ],
+        "dependencias": {
+          "justificativa_manutencao": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "necessidade_manutencao_justificativa",
+            "descricao": "Detalhar tipo e periodicidade da manutenção."
+          }
+        },
+        "resposta_ia": "Não se aplica"
+      },
+      {
+        "id": "parcelamento",
+        "pergunta": "A solução será dividida em itens?",
+        "variaveis_etp": ["solucao_dividida_itens_sim", "solucao_dividida_itens_nao", "justificativa_nao_parcelamento"],
+        "tipo_conteudo": "marcar_x_e_justificativa",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "solucao_dividida_itens_sim", "dependencia": "justificativa_parcelamento"},
+          {"valor": "Não", "variavel_etp": "solucao_dividida_itens_nao", "dependencia": "justificativa_parcelamento"}
+        ],
+        "dependencias": {
+          "justificativa_parcelamento": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "justificativa_nao_parcelamento",
+            "descricao": "Justificar o parcelamento ou a não divisão em itens."
+          }
+        },
+        "resposta_ia": "Não"
+      }
+    ]
+  }
 }
 ```
 
 ### PROMPT DE RESPOSTA:
 ```
-Analise o DFD e responda às perguntas do Bloco 5 seguindo exatamente este formato:
+Analise o DFD e responda às perguntas do Bloco 5 seguindo exatamente o formato JSON fornecido acima.
 
-PERGUNTA 25: Qual a metodologia de pesquisa de preços utilizada?
-RESPOSTA: [Desenvolva metodologia com fontes e critérios de comparação]
+IMPORTANTE: 
+1. Para cada pergunta, defina a "resposta_ia" com base na análise do DFD
+2. Para perguntas do tipo "marcar_x_e_texto", escolha a opção e forneça texto adicional se necessário
+3. Para perguntas do tipo "texto", forneça resposta textual completa
+4. Para perguntas do tipo "marcar_x_e_justificativa", escolha a opção e forneça justificativa
 
-PERGUNTA 26: Qual a descrição completa da contratação?
-RESPOSTA: [Elabore descrição técnica detalhada do escopo e entregáveis]
+Baseie suas respostas na análise técnica do DFD, considerando:
+- Metodologia de pesquisa de preços utilizada (Painel de Preços, contratações similares, tabelas oficiais, etc.)
+- Descrição completa da contratação com escopo, características técnicas e entregáveis
+- Requisitos de garantia com prazos e condições específicas
+- Necessidade de assistência técnica com especificações de suporte
+- Necessidade de manutenção com tipo e periodicidade
+- Possibilidade de parcelamento com justificativa técnica e econômica
 
-PERGUNTA 27: Quais os requisitos de garantia?
-RESPOSTA: [Especifique prazos, condições e cobertura técnica]
-
-PERGUNTA 28: É necessária assistência técnica?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + especificações de suporte e capacitação]
-
-PERGUNTA 29: É necessária manutenção?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + cronograma e procedimentos técnicos]
-
-PERGUNTA 30: É possível parcelar a contratação?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + justificativa econômica e condições de pagamento]
+Retorne APENAS o JSON no formato especificado, sem texto adicional.
 ```
 
 ---
@@ -254,34 +958,104 @@ Detalhe os resultados pretendidos e a gestão contratual, vinculando benefícios
 
 FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
 {
-  "beneficiosPretendidos": "Análise técnica detalhada dos benefícios pretendidos com especificação de impactos operacionais, melhorias de eficiência e contribuições para objetivos institucionais",
-  "notaExplicativa": "Nota técnica explicativa detalhada dos resultados esperados com fundamentação em critérios de eficiência, eficácia e efetividade da contratação",
-  "providenciasPendentes": "Identificação técnica detalhada de providências pendentes com especificação de requisitos, prazos e responsabilidades para implementação",
-  "gestaoFiscalizacao": "Especificação técnica detalhada das competências de gestão e fiscalização com definição de responsabilidades, qualificações e atividades técnicas",
-  "contratacoesRelacionadas": "Análise técnica detalhada de contratações relacionadas com identificação de dependências, interfaces e impactos em outras contratações"
+  "bloco_6_resultados_e_gestao": {
+    "perguntas": [
+      {
+        "id": "beneficios_pretendidos",
+        "pergunta": "Quais os benefícios pretendidos na contratação?",
+        "variaveis_etp": ["beneficios_pretendidos_manutencao", "beneficios_pretendidos_reducao_custos", "beneficios_pretendidos_aproveitamento", "beneficios_pretendidos_reducao_riscos", "beneficios_pretendidos_ganho_eficiente", "beneficios_pretendidos_qualidade", "beneficios_pretendidos_politica_publica", "beneficios_pretendidos_outro", "beneficios_pretendidos_beneficio"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Manutenção do funcionamento administrativo", "variavel_etp": "beneficios_pretendidos_manutencao"},
+          {"valor": "Redução de custos operacionais", "variavel_etp": "beneficios_pretendidos_reducao_custos"},
+          {"valor": "Aproveitamento de recursos humanos", "variavel_etp": "beneficios_pretendidos_aproveitamento"},
+          {"valor": "Redução dos riscos do trabalho", "variavel_etp": "beneficios_pretendidos_reducao_riscos"},
+          {"valor": "Ganho de eficiência operacional", "variavel_etp": "beneficios_pretendidos_ganho_eficiente"},
+          {"valor": "Melhoria na qualidade de produtos/serviços", "variavel_etp": "beneficios_pretendidos_qualidade"},
+          {"valor": "Realização de política pública específica", "variavel_etp": "beneficios_pretendidos_politica_publica"},
+          {"valor": "Outro", "variavel_etp": "beneficios_pretendidos_outro", "dependencia": "justificativa_beneficio"}
+        ],
+        "dependencias": {
+          "justificativa_beneficio": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "beneficios_pretendidos_beneficio",
+            "descricao": "Indicar o benefício específico."
+          }
+        },
+        "resposta_ia": "Ganho de eficiência operacional"
+      },
+      {
+        "id": "nota_explicativa_resultados",
+        "pergunta": "Nota explicativa dos resultados esperados",
+        "variaveis_etp": ["beneficios_pretendidos_explicacao"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Descrição detalhada de como os benefícios selecionados contribuirão para os objetivos institucionais, explicando os resultados esperados e impactos na organização"
+      },
+      {
+        "id": "providencias_pendentes",
+        "pergunta": "Há providências pendentes para o sucesso da contratação?",
+        "variaveis_etp": ["providencias_pendentes_sim", "providencias_pendentes_nao", "providencias_pendentes_especificar"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "providencias_pendentes_sim", "dependencia": "especificar_pendencias"},
+          {"valor": "Não há pendências", "variavel_etp": "providencias_pendentes_nao"}
+        ],
+        "dependencias": {
+          "especificar_pendencias": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "providencias_pendentes_especificar",
+            "descricao": "Listar todas as pendências."
+          }
+        },
+        "resposta_ia": "Não há pendências"
+      },
+      {
+        "id": "gestao_fiscalizacao",
+        "pergunta": "Indicar os requisitos para a gestão e fiscalização contratual",
+        "variaveis_etp": ["requisitos_gestao_contratual", "requisitos_fiscalizacao"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Especificação detalhada das competências necessárias para gestão e fiscalização do contrato, incluindo conhecimentos técnicos específicos e frequência de acompanhamento"
+      },
+      {
+        "id": "contratacoes_relacionadas",
+        "pergunta": "Há contratações correlatas ou interdependentes?",
+        "variaveis_etp": ["contratacoes_correlatas_sim", "contratacoes_correlatas_nao", "contratacoes_correlatas_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "contratacoes_correlatas_sim", "dependencia": "justificativa_correlatas"},
+          {"valor": "Não há correlações", "variavel_etp": "contratacoes_correlatas_nao"}
+        ],
+        "dependencias": {
+          "justificativa_correlatas": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "contratacoes_correlatas_justificativa",
+            "descricao": "Indicar os contratos correlatos ou interdependentes."
+          }
+        },
+        "resposta_ia": "Não há correlações"
+      }
+    ]
+  }
 }
 ```
 
 ### PROMPT DE RESPOSTA:
 ```
-Analise o DFD e responda às perguntas do Bloco 6 seguindo exatamente este formato:
+Analise o DFD e responda às perguntas do Bloco 6 seguindo exatamente o formato JSON fornecido acima.
 
-PERGUNTA 31: Quais os benefícios pretendidos com a contratação?
-RESPOSTA: [Desenvolva análise detalhada dos impactos e melhorias esperadas]
+IMPORTANTE: 
+1. Para cada pergunta, defina a "resposta_ia" com base na análise do DFD
+2. Para perguntas do tipo "marcar_x_e_texto", escolha a opção e forneça texto adicional se necessário
+3. Para perguntas do tipo "texto", forneça resposta textual completa
 
-PERGUNTA 32: Qual a nota explicativa dos resultados esperados?
-RESPOSTA: [Elabore nota técnica sobre eficiência, eficácia e efetividade]
+Baseie suas respostas na análise técnica do DFD, considerando:
+- Benefícios pretendidos (manutenção administrativa, redução de custos, aproveitamento de recursos, redução de riscos, ganho de eficiência, melhoria de qualidade, política pública, outros)
+- Nota explicativa dos resultados esperados com fundamentação em critérios de eficiência, eficácia e efetividade
+- Providências pendentes com especificação de requisitos, prazos e responsabilidades
+- Competências de gestão e fiscalização com definição de responsabilidades, qualificações e atividades técnicas
+- Contratações relacionadas com identificação de dependências, interfaces e impactos
 
-PERGUNTA 33: Existem providências pendentes antes da contratação?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + especificação de requisitos e prazos]
-
-PERGUNTA 34: Quais as competências de gestão e fiscalização do contrato?
-RESPOSTA: [Especifique responsabilidades, qualificações e atividades técnicas]
-
-PERGUNTA 35: Existem contratações relacionadas?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + análise de dependências e interfaces]
+Retorne APENAS o JSON no formato especificado, sem texto adicional.
 ```
 
 ---
@@ -294,38 +1068,89 @@ Finalize com avaliação ambiental, conclusiva e identificação da equipe.
 
 FORMATO DE RESPOSTA OBRIGATÓRIO (JSON):
 {
-  "impactosAmbientais": "Análise técnica detalhada sobre previsão de impactos ambientais com fundamentação em critérios de sustentabilidade e normativas ambientais",
-  "medidasMitigacao": "Especificação técnica detalhada das medidas de mitigação ambiental com cronograma, responsabilidades e indicadores de efetividade",
-  "viabilidade": "Avaliação técnica conclusiva sobre viabilidade técnica, socioeconômica e ambiental com fundamentação em critérios de sustentabilidade",
-  "posicionamentoConclusivo": "Posicionamento técnico conclusivo detalhado sobre a adequação da contratação com fundamentação legal, técnica e econômica",
-  "responsaveisTecnicos": "Identificação técnica detalhada dos responsáveis pela elaboração do ETP com qualificações e responsabilidades",
-  "ordenadorDespesa": "Especificação técnica dos dados do ordenador de despesa com identificação e competências"
+  "bloco_7_aspectos_complementares": {
+    "perguntas": [
+      {
+        "id": "impactos_ambientais",
+        "pergunta": "Há previsão de impacto ambiental na contratação?",
+        "variaveis_etp": ["impactos_ambientais_sim", "impactos_ambientais_nao", "impactos_ambientais_impactos"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "impactos_ambientais_sim", "dependencia": "justificativa_impacto_ambiental"},
+          {"valor": "Não há impactos significativos", "variavel_etp": "impactos_ambientais_nao"}
+        ],
+        "dependencias": {
+          "justificativa_impacto_ambiental": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "impactos_ambientais_impactos",
+            "descricao": "Especificar os impactos e as medidas de mitigação."
+          }
+        },
+        "resposta_ia": "Não há impactos significativos"
+      },
+      {
+        "id": "medidas_mitigacao",
+        "pergunta": "Medidas de mitigação ambiental",
+        "variaveis_etp": ["medidas_mitigacao_ambiental"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Especificação técnica detalhada das medidas de mitigação ambiental com cronograma, responsabilidades e indicadores de efetividade"
+      },
+      {
+        "id": "viabilidade_contratacao",
+        "pergunta": "A contratação possui viabilidade técnica, socioeconômica e ambiental?",
+        "variaveis_etp": ["posicionamento_conclusivo_sim", "posicionamento_conclusivo_nao"],
+        "tipo_conteudo": "marcar_x",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "posicionamento_conclusivo_sim"},
+          {"valor": "Não", "variavel_etp": "posicionamento_conclusivo_nao"}
+        ],
+        "resposta_ia": "Sim"
+      },
+      {
+        "id": "posicionamento_conclusivo",
+        "pergunta": "Posicionamento conclusivo detalhado sobre a adequação da contratação",
+        "variaveis_etp": ["posicionamento_conclusivo"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Posicionamento técnico conclusivo detalhado sobre a adequação da contratação com fundamentação legal, técnica e econômica, incluindo síntese da solução, especificações, localização e referência ao Termo de Referência"
+      },
+      {
+        "id": "equipe_elaboracao",
+        "pergunta": "Equipe de elaboração responsável",
+        "variaveis_etp": ["responsaveis_tecnicos"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Identificação técnica detalhada dos responsáveis pela elaboração do ETP com qualificações e responsabilidades"
+      },
+      {
+        "id": "dados_aprovacao",
+        "pergunta": "Dados para aprovação do ordenador de despesa",
+        "variaveis_etp": ["ordenador_despesa"],
+        "tipo_conteudo": "texto",
+        "resposta_ia": "Especificação técnica dos dados do ordenador de despesa com identificação e competências"
+      }
+    ]
+  }
 }
 ```
 
 ### PROMPT DE RESPOSTA:
 ```
-Analise o DFD e responda às perguntas do Bloco 7 seguindo exatamente este formato:
+Analise o DFD e responda às perguntas do Bloco 7 seguindo exatamente o formato JSON fornecido acima.
 
-PERGUNTA 36: Há previsão de impactos ambientais?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + análise técnica com fundamentação em critérios de sustentabilidade]
+IMPORTANTE: 
+1. Para cada pergunta, defina a "resposta_ia" com base na análise do DFD
+2. Para perguntas do tipo "marcar_x_e_texto", escolha a opção e forneça texto adicional se necessário
+3. Para perguntas do tipo "marcar_x", escolha a opção correta
+4. Para perguntas do tipo "texto", forneça resposta textual completa
 
-PERGUNTA 37: Quais medidas de mitigação ambiental serão adotadas?
-RESPOSTA: [Especifique medidas com cronograma e responsabilidades técnicas]
+Baseie suas respostas na análise técnica do DFD, considerando:
+- Impactos ambientais com fundamentação em critérios de sustentabilidade e normativas ambientais
+- Medidas de mitigação ambiental com cronograma, responsabilidades e indicadores de efetividade
+- Viabilidade técnica, socioeconômica e ambiental com fundamentação em critérios de sustentabilidade
+- Posicionamento conclusivo detalhado sobre a adequação da contratação com fundamentação legal, técnica e econômica
+- Identificação dos responsáveis pela elaboração do ETP com qualificações e responsabilidades
+- Dados do ordenador de despesa com identificação e competências
 
-PERGUNTA 38: A contratação possui viabilidade técnica, socioeconômica e ambiental?
-RESPOSTA: (Sim / Não – justificar)
-[Responda "Sim" ou "Não" + avaliação técnica conclusiva com fundamentação]
-
-PERGUNTA 39: Forneça posicionamento conclusivo detalhado sobre a adequação da contratação.
-RESPOSTA: [Elabore posicionamento técnico conclusivo com fundamentação legal, técnica e econômica]
-
-PERGUNTA 40: Quem são os responsáveis técnicos pela elaboração do ETP?
-RESPOSTA: [Identifique com qualificações e responsabilidades técnicas]
-
-PERGUNTA 41: Quais os dados do ordenador de despesa?
-RESPOSTA: [Especifique dados com identificação e competências]
+Retorne APENAS o JSON no formato especificado, sem texto adicional.
 ```
 
 ---

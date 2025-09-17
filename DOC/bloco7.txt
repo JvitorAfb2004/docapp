@@ -1,0 +1,119 @@
+-----
+
+### **Perguntas do Bloco 7**
+
+Aqui estão as perguntas que a IA deve usar para coletar as últimas informações para a conclusão do ETP, conforme o documento `Blocos de Perguntas DFD-ETP.pdf`:
+
+1.  **Impactos ambientais**
+    Há previsão de impactos?
+      * ( ) Sim - Especifique impactos e medidas mitigatórias
+      * ( ) Não há impactos significativos
+2.  **Medidas de mitigação ambiental**
+    Se respondeu "Sim" na pergunta anterior, detalhe as medidas de mitigação, logística reversa, baixo consumo de energia e outros recursos que serão adotadas.
+3.  **Viabilidade da contratação**
+    A contratação possui viabilidade técnica, socioeconômica e ambiental?
+      * ( ) Sim - Justifique resumidamente
+      * ( ) Não - Explique os impedimentos
+4.  **Posicionamento conclusivo**
+    Forneça um posicionamento técnico DETALHADO sobre a adequação da contratação para atendimento da necessidade, incluindo síntese da solução, especificações, localização e referência ao Termo de Referência.
+5.  **Equipe de elaboração**
+    Quem são os responsáveis técnicos?
+      * Nome completo e cargo de cada elaborador
+      * Qualificações específicas para o ETP
+6.  **Dados para aprovação**
+    Confirme:
+      * Dados atualizados do ordenador de despesa
+      * Cargo completo e titulações
+      * Data prevista para aprovação
+
+-----
+
+### **Variáveis e Regras de Preenchimento**
+
+  * **Impactos ambientais:**
+
+      * **Variáveis no ETP:** `{impactos_ambientais_sim}` e `{impactos_ambientais_nao}`. Se "Sim", preencher `{impactos_ambientais_impactos}`.
+      * **Regra:** Marcar com um "X" a opção correta e detalhar os impactos se houver.
+
+  * **Medidas de mitigação ambiental:**
+
+      * **Variável no ETP:** Esta informação será incorporada na Seção XII do ETP, no texto de detalhamento, com base na resposta à pergunta 1.
+      * **Regra:** Preencher com um texto detalhado descrevendo as medidas, caso a resposta para a pergunta 1 tenha sido "Sim".
+
+  * **Viabilidade da contratação:**
+
+      * **Variáveis no ETP:** `{posicionamento_conclusivo_sim}` e `{posicionamento_conclusivo_nao}`.
+      * **Regra:** Marcar com um "X" a opção correta. A justificativa será utilizada no texto da Seção XIII, junto com a resposta da próxima pergunta.
+
+  * **Posicionamento conclusivo:**
+
+      * **Variável no ETP:** `{posicionamento_conclusivo}`.
+      * **Regra:** Preencher com um texto detalhado, abordando a viabilidade técnica, socioeconômica e ambiental, e referenciando a adequação da solução e do Termo de Referência.
+
+  * **Equipe de elaboração:**
+
+      * **Variáveis no ETP:** Esta informação será inserida no final do documento, na seção de assinatura da equipe.
+      * **Regra:** Listar o nome completo, cargo e qualificações de cada responsável técnico.
+
+  * **Dados para aprovação:**
+
+      * **Variável no ETP:** Esta informação será inserida no final do documento, na seção de aprovação do ordenador de despesa.
+      * **Regra:** Preencher com o nome, cargo completo, titulações e a data prevista para aprovação.
+
+-----
+
+### **JSON de Exemplo para a IA**
+
+```json
+{
+  "bloco_7_aspectos_complementares": {
+    "perguntas": [
+      {
+        "id": "impactos_ambientais",
+        "pergunta": "Há previsão de impacto ambiental na contratação?",
+        "variaveis_etp": ["impactos_ambientais_sim", "impactos_ambientais_nao"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "impactos_ambientais_sim", "dependencia": "justificativa_impacto_ambiental"},
+          {"valor": "Não", "variavel_etp": "impactos_ambientais_nao"}
+        ],
+        "dependencias": {
+          "justificativa_impacto_ambiental": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "impactos_ambientais_impactos",
+            "descricao": "Especificar os impactos e as medidas de mitigação."
+          }
+        }
+      },
+      {
+        "id": "viabilidade_contratacao",
+        "pergunta": "A contratação possui viabilidade técnica, socioeconômica e ambiental?",
+        "variaveis_etp": ["posicionamento_conclusivo_sim", "posicionamento_conclusivo_nao"],
+        "tipo_conteudo": "marcar_x",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "posicionamento_conclusivo_sim"},
+          {"valor": "Não", "variavel_etp": "posicionamento_conclusivo_nao"}
+        ]
+      },
+      {
+        "id": "posicionamento_conclusivo",
+        "pergunta": "Posicionamento Conclusivo",
+        "variaveis_etp": ["posicionamento_conclusivo"],
+        "tipo_conteudo": "texto"
+      },
+      {
+        "id": "equipe_elaboracao",
+        "pergunta": "Equipe de elaboração",
+        "variaveis_etp": [],
+        "tipo_conteudo": "texto"
+      },
+      {
+        "id": "dados_aprovacao",
+        "pergunta": "Dados para aprovação",
+        "variaveis_etp": [],
+        "tipo_conteudo": "texto"
+      }
+    ]
+  }
+}
+```

@@ -142,6 +142,9 @@ export default function CriarETPPage() {
 
       // Definir o bloco gerado como visualizando
       setBlocoVisualizando(result.bloco);
+      
+      console.log('📋 Bloco gerado recebido:', result.bloco);
+      console.log('📝 Perguntas do bloco:', result.bloco.perguntas);
 
       showAlert({
         title: '✅ Bloco Gerado!',
@@ -232,50 +235,75 @@ export default function CriarETPPage() {
     setEditandoPergunta(null);
   };
 
-  // Função para editar um bloco
-  const editarBloco = (bloco) => {
-    setBlocoEditando(bloco);
-    setBlocoVisualizando(bloco);
-    setEditandoPergunta(null);
-  };
-
-  // Função para salvar edições do bloco
-  const salvarEdicoesBloco = () => {
-    if (!blocoEditando) return;
-    
-    setBlocosGerados(prev => 
-      prev.map(bloco => 
-        bloco.id === blocoEditando.id ? blocoEditando : bloco
-      )
-    );
-    setBlocoVisualizando(blocoEditando);
-    setBlocoEditando(null);
-    setEditandoPergunta(null);
-    
-    showAlert({
-      title: '✅ Edições Salvas!',
-      message: 'As edições do bloco foram salvas com sucesso.',
-      type: 'success'
-    });
-  };
-
-  // Função para cancelar edição
-  const cancelarEdicao = () => {
-    setBlocoEditando(null);
-    setEditandoPergunta(null);
-  };
 
   // Função para atualizar valor de pergunta
   const atualizarValorPergunta = (perguntaId, campo, valor) => {
-    if (!blocoEditando) return;
+    if (!blocoVisualizando) return;
     
-    setBlocoEditando(prev => ({
+    setBlocoVisualizando(prev => ({
       ...prev,
-      perguntas: prev.perguntas.map(pergunta => 
-        pergunta.id === perguntaId 
-          ? { ...pergunta, value: { ...pergunta.value, [campo]: valor } }
-          : pergunta
-      )
+      perguntas: prev.perguntas.map(pergunta => {
+        if (pergunta.id === perguntaId) {
+          if (campo === 'dependencia') {
+            // Atualizar dependências
+            return {
+              ...pergunta,
+              value: {
+                ...pergunta.value,
+                dependencias: {
+                  ...pergunta.value.dependencias,
+                  ...valor
+                }
+              }
+            };
+          } else {
+            // Atualizar campo normal
+            return {
+              ...pergunta,
+              value: {
+                ...pergunta.value,
+                [campo]: valor
+              }
+            };
+          }
+        }
+        return pergunta;
+      })
+    }));
+    
+    // Também atualizar no array de blocos gerados
+    setBlocosGerados(prev => prev.map(bloco => {
+      if (bloco.id === blocoVisualizando.id) {
+        return {
+          ...bloco,
+          perguntas: bloco.perguntas.map(pergunta => {
+            if (pergunta.id === perguntaId) {
+              if (campo === 'dependencia') {
+                return {
+                  ...pergunta,
+                  value: {
+                    ...pergunta.value,
+                    dependencias: {
+                      ...pergunta.value.dependencias,
+                      ...valor
+                    }
+                  }
+                };
+              } else {
+                return {
+                  ...pergunta,
+                  value: {
+                    ...pergunta.value,
+                    [campo]: valor
+                  }
+                };
+              }
+            }
+            return pergunta;
+          })
+        };
+      }
+      return bloco;
     }));
   };
 
@@ -458,6 +486,137 @@ export default function CriarETPPage() {
     );
   };
 
+  // Função para renderizar uma pergunta individual
+  const renderPergunta = (pergunta) => {
+    const currentValue = pergunta.value;
+    
+    // Se é uma pergunta de texto simples
+    if (pergunta.type === 'text') {
+      return (
+        <div className="space-y-2">
+          <textarea
+            value={currentValue.text || ''}
+            onChange={(e) => atualizarValorPergunta(pergunta.id, 'text', e.target.value)}
+            placeholder="Digite sua resposta..."
+            className="w-full min-h-[100px] p-3 border border-gray-300 rounded-md resize-vertical focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            rows={4}
+          />
+        </div>
+      );
+    }
+    
+    // Se é uma pergunta com opções (checkbox/radio)
+    if (pergunta.type === 'checkbox' && pergunta.opcoes && pergunta.opcoes.length > 0) {
+      return (
+        <div className="space-y-2">
+          <div className="space-y-2">
+            <div className="flex items-center gap-4 flex-wrap">
+              {pergunta.opcoes.map((opcao) => (
+                <div key={opcao.valor || opcao} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name={`pergunta_${pergunta.id}`}
+                    id={`${pergunta.id}_${opcao.valor || opcao}`}
+                    value={opcao.valor || opcao}
+                    checked={currentValue.checkbox === (opcao.valor || opcao)}
+                    onChange={(e) => {
+                      atualizarValorPergunta(pergunta.id, 'checkbox', e.target.value);
+                      // Se a opção tem dependência, limpar campos dependentes
+                      if (opcao.dependencia && currentValue.dependencias) {
+                        const depKey = opcao.dependencia;
+                        if (currentValue.dependencias[depKey]) {
+                          atualizarValorPergunta(pergunta.id, 'dependencia', { [depKey]: '' });
+                        }
+                      }
+                    }}
+                    className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                  />
+                  <label htmlFor={`${pergunta.id}_${opcao.valor || opcao}`} className="text-sm text-gray-700 cursor-pointer">
+                    {opcao.valor || opcao}
+                  </label>
+                </div>
+              ))}
+            </div>
+            
+            {/* Renderizar campos dependentes */}
+            {pergunta.dependencias && Object.keys(pergunta.dependencias).map(depKey => {
+              const dependencia = pergunta.dependencias[depKey];
+              const opcaoSelecionada = pergunta.opcoes.find(op => op.dependencia === depKey);
+              const mostrarDependencia = opcaoSelecionada && currentValue.checkbox === opcaoSelecionada.valor;
+              
+              if (!mostrarDependencia) return null;
+              
+              return (
+                <div key={depKey} className="mt-4 p-3 bg-blue-50 rounded border border-blue-200">
+                  <Label className="text-sm font-medium text-blue-800 mb-2 block">
+                    {dependencia.descricao}
+                  </Label>
+                  
+                  {dependencia.tipo_conteudo === 'texto' ? (
+                    <textarea
+                      value={currentValue.dependencias?.[depKey]?.valor || ''}
+                      onChange={(e) => atualizarValorPergunta(pergunta.id, 'dependencia', { 
+                        [depKey]: e.target.value 
+                      })}
+                      placeholder="Digite a justificativa..."
+                      className="w-full min-h-[80px] p-3 border border-gray-300 rounded-md resize-vertical focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      rows={3}
+                    />
+                  ) : dependencia.tipo_conteudo === 'marcar_x_e_texto' ? (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-4 flex-wrap">
+                        {dependencia.variaveis_etp.map((variavel) => (
+                          <div key={variavel} className="flex items-center gap-2">
+                            <input
+                              type="radio"
+                              name={`dependencia_${pergunta.id}_${depKey}`}
+                              id={`${pergunta.id}_${depKey}_${variavel}`}
+                              value={variavel}
+                              checked={currentValue.dependencias?.[depKey]?.valor === variavel}
+                              onChange={(e) => atualizarValorPergunta(pergunta.id, 'dependencia', { 
+                                [depKey]: e.target.value 
+                              })}
+                              className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            />
+                            <label htmlFor={`${pergunta.id}_${depKey}_${variavel}`} className="text-sm text-gray-700 cursor-pointer">
+                              {variavel.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                      <textarea
+                        value={currentValue.dependencias?.[depKey]?.texto || ''}
+                        onChange={(e) => atualizarValorPergunta(pergunta.id, 'dependencia', { 
+                          [depKey]: { ...currentValue.dependencias?.[depKey], texto: e.target.value }
+                        })}
+                        placeholder="Especificar quantidade..."
+                        className="w-full mt-2 min-h-[60px] p-3 border border-gray-300 rounded-md resize-vertical focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        rows={2}
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+    
+    // Fallback para estrutura antiga
+    return (
+      <div className="space-y-2">
+        <textarea
+          value={currentValue.text || ''}
+          onChange={(e) => atualizarValorPergunta(pergunta.id, 'text', e.target.value)}
+          placeholder="Digite sua resposta..."
+          className="w-full min-h-[100px] p-3 border border-gray-300 rounded-md resize-vertical focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          rows={4}
+        />
+      </div>
+    );
+  };
+
   // Função para renderizar os blocos gerados
   const renderBlocosGerados = () => {
     if (!dfdResumo || blocosGerados.length === 0) return null;
@@ -489,16 +648,6 @@ export default function CriarETPPage() {
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
                   <span className="text-sm text-green-600">Gerado</span>
-                  {!blocoEditando && (
-                    <Button
-                      onClick={() => editarBloco(blocoVisualizando)}
-                      variant="outline"
-                      size="sm"
-                      className="ml-2"
-                    >
-                      Editar
-                    </Button>
-                  )}
                 </div>
               </CardTitle>
             </CardHeader>
@@ -512,92 +661,12 @@ export default function CriarETPPage() {
                       </Label>
                     </div>
                     
-                    {pergunta.type === 'checkbox' ? (
-                      <div className="space-y-2">
-                        {blocoEditando ? (
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-4">
-                              {pergunta.opcoes.map((opcao) => (
-                                <div key={opcao} className="flex items-center gap-2">
-                                  <input
-                                    type="radio"
-                                    name={`pergunta_${pergunta.id}`}
-                                    id={`${pergunta.id}_${opcao}`}
-                                    value={opcao}
-                                    checked={(blocoEditando.perguntas.find(p => p.id === pergunta.id)?.value.checkbox || '') === opcao}
-                                    onChange={(e) => atualizarValorPergunta(pergunta.id, 'checkbox', e.target.value)}
-                                    className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                                  />
-                                  <label htmlFor={`${pergunta.id}_${opcao}`} className="text-sm text-gray-700 cursor-pointer">
-                                    {opcao}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-4">
-                              {pergunta.opcoes.map((opcao) => (
-                                <div key={opcao} className="flex items-center gap-2">
-                                  <div 
-                                    className={`w-4 h-4 rounded border-2 flex items-center justify-center ${
-                                      pergunta.value.checkbox === opcao 
-                                        ? 'bg-blue-600 border-blue-600' 
-                                        : 'border-gray-300'
-                                    }`}
-                                  >
-                                    {pergunta.value.checkbox === opcao && (
-                                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                                    )}
-                                  </div>
-                                  <span className="text-sm text-gray-700">{opcao}</span>
-                                </div>
-                              ))}
-                            </div>
-                            <div className="mt-2 p-3 bg-gray-50 rounded text-sm text-gray-600">
-                              <strong>Resposta selecionada:</strong> {pergunta.value.checkbox || 'Não selecionado'}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        {blocoEditando ? (
-                          <Input
-                            value={blocoEditando.perguntas.find(p => p.id === pergunta.id)?.value.text || ''}
-                            onChange={(e) => atualizarValorPergunta(pergunta.id, 'text', e.target.value)}
-                            placeholder="Digite sua resposta..."
-                            className="w-full"
-                          />
-                        ) : (
-                          <div className="p-3 bg-gray-50 rounded text-sm text-gray-700">
-                            {pergunta.value.text}
-                          </div>
-                        )}
-                      </div>
-                    )}
+                    {renderPergunta(pergunta)}
                   </div>
                 ))}
               </div>
               
               {/* Botões de ação para edição */}
-              {blocoEditando && (
-                <div className="flex justify-end gap-2 mt-6 pt-4 border-t">
-                  <Button
-                    onClick={cancelarEdicao}
-                    variant="outline"
-                  >
-                    Cancelar
-                  </Button>
-                  <Button
-                    onClick={salvarEdicoesBloco}
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    Salvar Edições
-                  </Button>
-                </div>
-              )}
             </CardContent>
           </Card>
         )}

@@ -1,0 +1,136 @@
+Certo. Para dar continuidade, aqui estão os detalhes para o **Bloco 4 - Análise de Mercado e Viabilidade**.
+
+-----
+
+### **Perguntas do Bloco 4**
+
+1.  **Fontes de pesquisa**
+    Onde foram pesquisadas as soluções?
+      * ( ) Sites oficiais de governo/Painel de Preços
+      * ( ) Contratações similares
+      * ( ) Internet especializada
+      * ( ) Consulta a fornecedores
+      * ( ) Outros - Especifique
+2.  **Justificativa técnica**
+    Forneça análise técnica COMPLETA:
+      * Por que esta solução atende à necessidade?
+      * Quais alternativas foram avaliadas?
+      * Aspectos técnicos diferenciais
+      * Conformidade com normas
+3.  **Justificativa econômica**
+    Forneça análise econômica DETALHADA:
+      * Comparação de custos (próprio vs terceirizado)
+      * Custo-benefício da solução
+      * Economia gerada ou justificativa de valor
+      * Previsibilidade orçamentária
+4.  **Restrições de mercado**
+    Há limitações de fornecedores?
+      * ( ) Sim - Explique quais e por quê
+      * ( ) Não há restrições conhecidas
+5.  **Tratamento ME/EPP**
+    Será dispensado tratamento diferenciado?
+      * ( ) Sim - Justifique conforme LC 123/2006
+      * ( ) Não - Aplicará tratamento normal
+
+-----
+
+### **Variáveis e Regras de Preenchimento**
+
+  * **Fontes de pesquisa:**
+
+      * [cite\_start]**Variáveis no ETP:** `{pesquisa_solucoes_similares}`, `{pesquisa_solucoes_internet}`, `{pesquisa_solucoes_aud_publica}` e `{pesquisa_solucoes_outro}`[cite: 226].
+      * **Regra:** Marcar com um "X" uma ou mais opções. [cite\_start]Se a opção "Outro" for selecionada, preencher a variável `{pesquisa_solucoes_justificativa}`[cite: 226].
+
+  * **Justificativa técnica e Justificativa econômica:**
+
+      * [cite\_start]**Variáveis no ETP:** `{justificativa_tecnica_tecnica}` e `{justificativa_tecnica_economica}`[cite: 226].
+      * **Regra:** Preencher as variáveis com textos detalhados. [cite\_start]A justificativa técnica deve explicar por que a solução é a mais adequada, quais alternativas foram avaliadas e os aspectos técnicos diferenciais[cite: 96, 97, 98, 99]. [cite\_start]A justificativa econômica deve conter uma análise de custos, o custo-benefício e a economia gerada[cite: 102, 103, 104].
+
+  * **Restrições de mercado:**
+
+      * [cite\_start]**Variáveis no ETP:** `{restricao_fornecedores_sim}` e `{restricao_fornecedores_nao}`[cite: 226].
+      * **Regra:** Marcar com um "X" uma das opções. [cite\_start]Se "Sim", explicar quais e por que existem as restrições na seção de detalhamento[cite: 109].
+
+  * **Tratamento ME/EPP:**
+
+      * [cite\_start]**Variáveis no ETP:** `{tratamento_diferenciado_simplificado_sim}` e `{tratamento_diferenciado_simplificado_nao}`[cite: 226].
+      * **Regra:** Marcar com um "X" uma das opções. [cite\_start]Se "Sim", justificar o tratamento diferenciado na variável `{tratamento_diferenciado_simplificado_justificativa}`[cite: 113, 226]. Se "Não", não é necessário justificar.
+
+-----
+
+### **JSON de Exemplo para a IA**
+
+```json
+{
+  "bloco_4_analise_mercado": {
+    "perguntas": [
+      {
+        "id": "fontes_pesquisa",
+        "pergunta": "Onde foram pesquisadas as possíveis soluções?",
+        "variaveis_etp": ["pesquisa_solucoes_similares", "pesquisa_solucoes_internet", "pesquisa_solucoes_aud_publica", "pesquisa_solucoes_outro", "pesquisa_solucoes_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sites oficiais de governo/Painel de Preços", "variavel_etp": "meios_pesquisa_valor_site_oficial"},
+          {"valor": "Contratações similares", "variavel_etp": "meios_pesquisa_valor_contratacao_similar"},
+          {"valor": "Internet especializada", "variavel_etp": "meios_pesquisa_valor_sitio_eletronico"},
+          {"valor": "Consulta a fornecedores", "variavel_etp": "meios_pesquisa_valor_fornecedor"},
+          {"valor": "Outros", "variavel_etp": "meios_pesquisa_valor_outro", "dependencia": "justificativa_outros_meios"}
+        ],
+        "dependencias": {
+          "justificativa_outros_meios": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "pesquisa_solucoes_justificativa",
+            "descricao": "Especificar outras fontes de pesquisa."
+          }
+        }
+      },
+      {
+        "id": "justificativa_tecnica",
+        "pergunta": "Justificativa técnica",
+        "variaveis_etp": ["justificativa_tecnica_tecnica"],
+        "tipo_conteudo": "texto"
+      },
+      {
+        "id": "justificativa_economica",
+        "pergunta": "Justificativa econômica",
+        "variaveis_etp": ["justificativa_tecnica_economica"],
+        "tipo_conteudo": "texto"
+      },
+      {
+        "id": "restricoes_mercado",
+        "pergunta": "Há restrição de fornecedores?",
+        "variaveis_etp": ["restricao_fornecedores_sim", "restricao_fornecedores_nao"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "restricao_fornecedores_sim", "dependencia": "justificativa_restricao"},
+          {"valor": "Não há restrições conhecidas", "variavel_etp": "restricao_fornecedores_nao"}
+        ],
+        "dependencias": {
+          "justificativa_restricao": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "restricao_fornecedores_justificativa",
+            "descricao": "Explicar as restrições e por quê."
+          }
+        }
+      },
+      {
+        "id": "tratamento_me_epp",
+        "pergunta": "Será dispensada a aplicação de tratamento diferenciado e simplificado para as microempresas e empresas de pequeno porte?",
+        "variaveis_etp": ["tratamento_diferenciado_simplificado_sim", "tratamento_diferenciado_simplificado_nao", "tratamento_diferenciado_simplificado_justificativa"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Sim", "variavel_etp": "tratamento_diferenciado_simplificado_sim", "dependencia": "justificativa_tratamento"},
+          {"valor": "Não", "variavel_etp": "tratamento_diferenciado_simplificado_nao"}
+        ],
+        "dependencias": {
+          "justificativa_tratamento": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "tratamento_diferenciado_simplificado_justificativa",
+            "descricao": "Justificar conforme LC 123/2006."
+          }
+        }
+      }
+    ]
+  }
+}
+```

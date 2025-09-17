@@ -1,0 +1,118 @@
+Perfeito. Seguindo as instruções, aqui estão os detalhes para o **Bloco 3 - Dimensionamento Quantitativo**.
+
+-----
+
+### **Perguntas do Bloco 3**
+
+[cite\_start]A seguir, as perguntas que a IA deve usar para coletar as informações necessárias para esta seção, conforme o documento `Blocos de Perguntas DFD-ETP.pdf`[cite: 591, 593].
+
+1.  **Metodologia do quantitativo**
+    [cite\_start]Como chegou aos números? [cite: 664]
+      * ( ) [cite\_start]Análise de contratações anteriores deste órgão [cite: 665]
+      * ( ) [cite\_start]Análise de contratações similares (outros órgãos) [cite: 666]
+      * ( ) [cite\_start]Outro método - Especifique [cite: 667]
+2.  **Descrição detalhada**
+    [cite\_start]Explique passo a passo o cálculo das quantidades (frequência, área, volume, tempo, etc.). [cite: 669]
+3.  **Série histórica**
+    [cite\_start]Possui dados de consumo/utilização anteriores? [cite: 671]
+      * ( ) [cite\_start]Sim - Forneça dados de pelo menos 3 exercícios [cite: 672]
+      * ( ) [cite\_start]Não disponível - Justifique base de cálculo [cite: 673]
+4.  **Confirmação de unidades**
+    [cite\_start]Confirme a unidade de medida exata para cada item do DFD. [cite: 675]
+
+-----
+
+### **Variáveis e Regras de Preenchimento**
+
+Aqui estão as variáveis do documento `ETP.docx` que seu código deve preencher e as regras específicas para cada uma.
+
+1.  **Metodologia do quantitativo**
+      * **Variáveis no ETP:** `{obtencao_quantitativo_contratos_anteriores}`, `{obtencao_quantitativo_contratos_similares}` e `{obtencao_quantitativo_outro}`.
+      * [cite\_start]**Regra:** Marcar com um "X" a opção correta[cite: 12]. [cite\_start]Se a opção for "Outro", preencher a variável `{obtencao_quantitativo_especifico}` com a descrição do método[cite: 12, 667].
+2.  **Descrição detalhada**
+      * [cite\_start]**Variáveis no ETP:** `{quantidade_total_estimada}`[cite: 12]. [cite\_start]Para a lista de itens, use a estrutura `{itens}` com as variáveis `{quantidade_item_descricao}`, `{quantidade_item_un}`, `{quantidade_item_qtd}`[cite: 12, 18].
+      * **Regra:** Preencher com um texto detalhado que explique o cálculo e a quantidade total.
+3.  **Série histórica**
+      * **Variáveis no ETP:** `{quantidade_item_exercicio}`, `{quantidade_item_pae}`, `{quantidade_item_qtd}`.
+      * [cite\_start]**Regra:** Se houver dados históricos, preencha as variáveis da tabela de série histórica[cite: 12, 672]. Se não, preencha a justificativa na seção de texto.
+4.  **Confirmação de unidades**
+      * [cite\_start]**Variáveis no ETP:** `{quantidade_item_un}`[cite: 12].
+      * [cite\_start]**Regra:** Preencher a variável com a unidade de medida correta, como "serviço", "unidade", etc[cite: 16, 675].
+
+-----
+
+### **JSON de Exemplo para a IA**
+
+Este JSON contém a estrutura completa para o Bloco 3, que a IA deve seguir para fornecer as informações.
+
+```json
+{
+  "bloco_3_dimensionamento_quantitativo": {
+    "perguntas": [
+      {
+        "id": "metodologia_quantitativo",
+        "pergunta": "Como se obteve o quantitativo estimado?",
+        "variaveis_etp": ["obtencao_quantitativo_contratos_anteriores", "obtencao_quantitativo_contratos_similares", "obtencao_quantitativo_outro"],
+        "tipo_conteudo": "marcar_x_e_texto",
+        "opcoes": [
+          {"valor": "Análise de contratações anteriores", "variavel_etp": "obtencao_quantitativo_contratos_anteriores"},
+          {"valor": "Análise de contratações similares", "variavel_etp": "obtencao_quantitativo_contratos_similares"},
+          {"valor": "Outro", "variavel_etp": "obtencao_quantitativo_outro", "dependencia": "especificacao_metodo"}
+        ],
+        "dependencias": {
+          "especificacao_metodo": {
+            "tipo_conteudo": "texto",
+            "variavel_etp": "obtencao_quantitativo_especifico",
+            "descricao": "Especificar o método utilizado."
+          }
+        }
+      },
+      {
+        "id": "descricao_quantitativo",
+        "pergunta": "Descrição do Quantitativo",
+        "variaveis_etp": ["quantidade_total_estimada"],
+        "tipo_conteudo": "texto"
+      },
+      {
+        "id": "serie_historica",
+        "pergunta": "Série histórica de consumo",
+        "variaveis_etp": ["quantidade_item_descricao", "quantidade_item_un", "quantidade_item_qtd", "quantidade_item_exercicio", "quantidade_item_pae"],
+        "tipo_conteudo": "tabela_e_justificativa",
+        "tabela": {
+          "descricao": "Tabela com a série histórica de consumo.",
+          "colunas": ["DESCRIÇÃO", "UNIDADE", "EXERCÍCIO", "QUANTIDADE CONSUMIDA"]
+        },
+        "justificativa": {
+          "variavel_etp": "justificativa_nao_disponivel",
+          "condicional": "se_serie_nao_disponivel",
+          "descricao": "Justificar a base de cálculo se a série histórica não estiver disponível."
+        }
+      },
+      {
+        "id": "quantitativos_itens",
+        "pergunta": "Tabela de itens e quantidades",
+        "variaveis_etp": ["quantitativos_itens"],
+        "tipo_conteudo": "lista_itens_com_tabela",
+        "itens": {
+          "item": {
+            "variaveis_etp": ["item"],
+            "descricao": "Número do item."
+          },
+          "descricao": {
+            "variaveis_etp": ["descricao"],
+            "descricao": "Descrição detalhada do item."
+          },
+          "unidade": {
+            "variaveis_etp": ["unidade"],
+            "descricao": "Unidade de medida do item."
+          },
+          "quantidade": {
+            "variaveis_etp": ["quantidade"],
+            "descricao": "Quantidade do item."
+          }
+        }
+      }
+    ]
+  }
+}
+```
