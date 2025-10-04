@@ -1,16 +1,10 @@
-'use client';
+"use client";
 
-import { useAuth } from '../../lib/AuthContext';
-import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
-import { 
-  Users, 
-  Key, 
-  MessageSquare, 
-  BarChart3, 
-  LogOut
-} from 'lucide-react';
-import { Button } from '../../components/ui/button';
+import { useAuth } from "../../lib/AuthContext";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { Users, Key, MessageSquare, BarChart3, LogOut } from "lucide-react";
+import { Button } from "../../components/ui/button";
 
 export default function AdminLayout({ children }) {
   const { user, isAdmin, logout } = useAuth();
@@ -19,7 +13,7 @@ export default function AdminLayout({ children }) {
 
   useEffect(() => {
     if (!isAdmin) {
-      router.push('/');
+      router.push("/");
     }
   }, [isAdmin, router]);
 
@@ -27,26 +21,30 @@ export default function AdminLayout({ children }) {
 
   const menuItems = [
     {
-      title: 'Dashboard',
+      title: "Dashboard",
       icon: BarChart3,
-      href: '/admin/painel'
+      href: "/admin/painel",
     },
     {
-      title: 'Usuários',
+      title: "Usuários",
       icon: Users,
-      href: '/admin/usuarios'
+      href: "/admin/usuarios",
     },
-
     {
-      title: 'Prompts',
+      title: "Prompts",
       icon: MessageSquare,
-      href: '/admin/prompts'
-    }
+      href: "/admin/prompts",
+    },
+    {
+      title: "Tokens",
+      icon: Key,
+      href: "/admin/openai",
+    },
   ];
 
   const handleLogout = () => {
     logout();
-    router.push('/');
+    router.push("/");
   };
 
   const handleMenuClick = (href) => {
@@ -57,32 +55,32 @@ export default function AdminLayout({ children }) {
     <div className="min-h-screen bg-gray-50">
       {/* Top Bar */}
       <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-40">
-     
-        
         {/* Menu horizontal */}
         <nav className="hidden md:flex items-center space-x-6">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
-            
+
             return (
               <button
                 key={item.title}
                 onClick={() => handleMenuClick(item.href)}
                 className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-black text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? "bg-black text-white"
+                    : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
-                <Icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-gray-500'}`} />
+                <Icon
+                  className={`h-4 w-4 ${
+                    isActive ? "text-white" : "text-gray-500"
+                  }`}
+                />
                 <span>{item.title}</span>
               </button>
             );
           })}
         </nav>
-
-    
       </div>
 
       {/* Menu mobile */}
@@ -91,18 +89,22 @@ export default function AdminLayout({ children }) {
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
-            
+
             return (
               <button
                 key={item.title}
                 onClick={() => handleMenuClick(item.href)}
                 className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                   isActive
-                    ? 'bg-black text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? "bg-black text-white"
+                    : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
-                <Icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-gray-500'}`} />
+                <Icon
+                  className={`h-4 w-4 ${
+                    isActive ? "text-white" : "text-gray-500"
+                  }`}
+                />
                 <span>{item.title}</span>
               </button>
             );
@@ -111,9 +113,7 @@ export default function AdminLayout({ children }) {
       </div>
 
       {/* Main Content */}
-      <main className="p-6">
-        {children}
-      </main>
+      <main className="p-6">{children}</main>
     </div>
   );
 }
